@@ -69,45 +69,30 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
       <div className="pointer-events-none absolute inset-x-0 top-0 h-14 bg-linear-to-b from-black/25 to-transparent" />
 
       {/* Hero Content Block */}
-      <div className="absolute right-4 bottom-6 left-4 z-20 flex max-w-xl flex-col gap-2 sm:bottom-8 sm:gap-2.5 md:right-auto md:bottom-10 md:left-8 md:gap-3 lg:bottom-14 lg:max-w-2xl">
+      <div className="absolute right-4 bottom-8 left-4 z-20 flex max-w-xl flex-col gap-3 sm:bottom-10 sm:gap-3.5 md:right-auto md:bottom-14 md:left-12 lg:max-w-2xl">
         {/* Title */}
-        <h1 className="line-clamp-2 text-lg leading-tight font-bold tracking-tight text-white drop-shadow-[0_4px_14px_rgba(0,0,0,0.95)] sm:text-2xl md:text-3xl lg:text-4xl">
+        <h1 className="line-clamp-2 text-2xl leading-[1.05] font-bold tracking-tight text-white drop-shadow-[0_4px_14px_rgba(0,0,0,0.95)] sm:text-4xl md:text-5xl">
           {title}
         </h1>
 
         {/* Tagline if available */}
         {media.tagline && (
-          <p className="text-xs sm:text-sm font-medium italic text-gray-300 drop-shadow-sm line-clamp-1">
+          <p className="line-clamp-1 text-[13px] font-medium text-white/75 italic drop-shadow-sm">
             &ldquo;{media.tagline}&rdquo;
           </p>
         )}
 
         {/* Metadata Badges */}
-        <div className="flex flex-wrap items-center gap-1.5 text-[11px] sm:gap-2 sm:text-xs md:gap-3 md:text-sm">
-          <span className="font-medium text-[var(--sf-accent)] drop-shadow-sm">
-            {matchPercentage}% Match
-          </span>
-          <span className="font-medium text-gray-300">{releaseYear}</span>
-          <span className="sf-chip !py-0.5 !text-[10px] tracking-[0.14em] uppercase">
-            {media.adult ? "18+" : "16+"}
-          </span>
-          {runtimeText && <span className="sf-chip !py-0.5 !text-[10px]">{runtimeText}</span>}
-          {seasonsText && <span className="sf-chip !py-0.5 !text-[10px]">{seasonsText}</span>}
+        <div className="nf-meta drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+          <span className="font-medium text-[var(--sf-accent)]">{matchPercentage}% Match</span>
+          <span>{releaseYear}</span>
+          <span>{media.adult ? "18+" : "16+"}</span>
+          {runtimeText && <span>{runtimeText}</span>}
+          {seasonsText && <span>{seasonsText}</span>}
+          {media.genres?.slice(0, 2).map((g: any) => (
+            <span key={g.id}>{g.name}</span>
+          ))}
         </div>
-
-        {/* Genres Pills */}
-        {media.genres && media.genres.length > 0 && (
-          <div className="hidden flex-wrap gap-1.5 pt-0.5 sm:flex">
-            {media.genres.slice(0, 3).map((g: any) => (
-              <span
-                key={g.id}
-                className="text-[11px] text-gray-200 font-medium bg-black/50 px-2.5 py-0.5 rounded-full border border-white/10"
-              >
-                {g.name}
-              </span>
-            ))}
-          </div>
-        )}
 
         {/* Overview / Synopsis */}
         <p className="max-w-lg text-xs leading-relaxed text-gray-200/90 line-clamp-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] sm:text-sm sm:line-clamp-3 md:text-base">
@@ -117,11 +102,8 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
         {/* Action Buttons */}
         <div className="flex flex-wrap items-center gap-2 pt-1 sm:gap-3 sm:pt-2">
           {/* Main Play Button */}
-          <Link
-            href={playHref}
-            className="group/btn flex items-center gap-1.5 sm:gap-2.5 rounded-md bg-white px-4 sm:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-bold text-black shadow-lg transition-all duration-200 hover:bg-white/80 active:scale-95"
-          >
-            <FaPlay className="text-xs sm:text-sm md:text-base transition-transform group-hover/btn:scale-110" />
+          <Link href={playHref} className="nf-btn nf-btn-play px-6 py-2.5 md:px-8">
+            <FaPlay className="text-sm" />
             <span>Play</span>
           </Link>
 
@@ -130,29 +112,21 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
             <button
               type="button"
               onClick={onViewEpisodesClick}
-              className="flex items-center gap-1.5 sm:gap-2 rounded-md bg-white/20 backdrop-blur-md px-3.5 sm:px-5 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-medium text-white transition-all duration-200 hover:bg-white/30 active:scale-95 border border-white/15 cursor-pointer"
+              className="nf-btn nf-btn-ghost cursor-pointer px-5 py-2.5"
             >
-              <IoListOutline size={18} className="sm:size-[20px]" />
+              <IoListOutline className="size-4" />
               <span>Episodes</span>
             </button>
           )}
 
           {/* Trailer Modal Button */}
-          {videos.length > 0 && (
-            <div className="scale-95 sm:scale-100">
-              <Trailer videos={videos} />
-            </div>
-          )}
+          {videos.length > 0 && <Trailer videos={videos} />}
 
           {/* Bookmark / My List */}
-          <div className="scale-95 sm:scale-105">
-            <BookmarkButton data={bookmarkData} />
-          </div>
+          <BookmarkButton data={bookmarkData} />
 
           {/* Share Modal Button */}
-          <div className="scale-95 sm:scale-100">
-            <ShareButton id={media.id} title={title} type={type} />
-          </div>
+          <ShareButton id={media.id} title={title} type={type} />
         </div>
       </div>
     </div>

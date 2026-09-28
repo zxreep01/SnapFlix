@@ -1,6 +1,7 @@
 "use client";
 
 import Carousel from "@/components/ui/wrapper/Carousel";
+import RailHeader from "@/components/ui/other/RailHeader";
 import Reveal from "@/components/ui/other/Reveal";
 import { tmdb } from "@/api/tmdb";
 import { getImageUrl, mutateMovieTitle, mutateTvShowTitle } from "@/utils/movies";
@@ -55,40 +56,25 @@ const Top10Row: React.FC<Top10RowProps> = ({ contentType: propContentType }) => 
 
   return (
     <section className="flex min-h-[210px] flex-col gap-2">
-      {/* Marquee board heading, aligned with the rails */}
-      <div className="flex items-center justify-between gap-3 px-4 sm:px-5 md:px-8">
-        <Link
+      {/* Row heading, matching the rails */}
+      <div className="flex items-center gap-2 px-4 md:px-12">
+        <RailHeader
+          title={`Top 10 in ${isTv ? "Series" : "Films"} Today`}
           href={`/discover?type=todayTrending${isTv ? "&content=tv" : ""}`}
-          className="group min-w-0"
-          aria-label="Browse the Top 10 today"
-        >
-          <span className="sf-board">
-            <span className="sf-bulb" aria-hidden />
-            <span className="sf-board-title transition-colors group-hover:text-white">
-              Top 10 Today
-            </span>
-          </span>
-        </Link>
-
-        <Link
-          href={`/discover?type=todayTrending${isTv ? "&content=tv" : ""}`}
-          className="shrink-0 text-[11px] font-medium tracking-wide text-white/45 transition-colors hover:text-white"
-        >
-          See all
-        </Link>
+        />
       </div>
 
       {isPending && top10.length === 0 ? (
-        <div className="sf-no-scrollbar flex gap-4 overflow-hidden px-4 sm:px-5 md:px-8">
+        <div className="sf-no-scrollbar flex gap-4 overflow-hidden px-4 md:px-12">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <Skeleton className="h-24 w-10 rounded-sf opacity-20" />
-              <Skeleton className="aspect-square w-[104px] rounded-sf opacity-30 sm:w-[124px] md:w-[140px]" />
+            <div key={i} className="flex items-end gap-2">
+              <Skeleton className="h-24 w-9 rounded-sf opacity-20" />
+              <Skeleton className="aspect-[2/3] w-[124px] rounded-sf opacity-30 md:w-[150px]" />
             </div>
           ))}
         </div>
       ) : (
-        <Reveal className="px-4 sm:px-5 md:px-8">
+        <Reveal className="px-4 md:px-12">
           <Carousel>
             {top10.map((item, index) => {
               const rank = index + 1;
@@ -115,55 +101,33 @@ const Top10Row: React.FC<Top10RowProps> = ({ contentType: propContentType }) => 
                   >
                     <Link
                       href={href}
-                      className="group relative flex items-end transition-transform duration-300 ease-out hover:scale-105 active:scale-95"
+                      className="group relative flex items-end transition-transform duration-300 ease-out hover:scale-[1.03] active:scale-95"
                     >
-                      {/* Netflix Stylized Giant Ranking Number */}
-                      <span
-                        className={cn(
-                          "netflix-number pointer-events-none z-0 -mr-2 text-[52px] leading-none select-none sm:-mr-2.5 sm:text-[64px] md:text-[76px]",
-                        )}
-                        style={{
-                          WebkitTextStroke: "2px var(--sf-accent)",
-                          color: "transparent",
-                        }}
-                      >
+                      {/* Giant ranking numeral, half behind the poster */}
+                      <span className="netflix-number pointer-events-none z-0 -mr-4 text-[68px] leading-[0.75] select-none sm:-mr-5 sm:text-[86px] md:text-[104px]">
                         {rank}
                       </span>
 
-                      {/* Poster Card */}
-                      <div className="sf-case relative z-10 w-[104px] shadow-2xl sm:w-[124px] md:w-[140px]">
-                        <div className="sf-case-face">
-                          {/* Rank ribbon, kept on the case edge */}
-                          <div className="absolute top-1.5 right-1.5 z-20 rounded-full bg-[var(--sf-accent)] px-1.5 py-0.5 text-[8px] font-bold tracking-[0.14em] text-[var(--sf-on-accent)] uppercase shadow-[0_0_14px_var(--sf-glow-soft)]">
-                            Top 10
-                          </div>
-
+                      {/* Poster */}
+                      <div className="relative z-10 w-[124px] shrink-0 md:w-[150px]">
+                        <div className="nf-poster">
                           <img
                             src={posterUrl}
                             alt={title}
-                            className="absolute inset-0 size-full object-cover object-center transition-transform duration-700 ease-sf group-hover:scale-[1.05]"
                             loading="lazy"
                             decoding="async"
                           />
 
-                          <span className="sf-case-spine" />
-                          <span className="sf-case-gloss" />
-                          <span className="sf-case-sheen" />
-
-                          <div className="absolute inset-0 z-10 bg-linear-to-t from-black/85 via-transparent to-transparent" />
-
-                          <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/35 opacity-0 backdrop-blur-xs transition-opacity duration-500 group-hover:opacity-100">
-                            <div className="flex size-8 items-center justify-center rounded-full bg-[var(--sf-accent)] text-[var(--sf-on-accent)] shadow-[0_0_16px_var(--sf-glow)] transition-transform duration-500 ease-sf group-hover:scale-105">
-                              <FaPlay className="ml-0.5 text-[10px]" />
-                            </div>
-                          </div>
-
-                          <div className="absolute inset-x-0 bottom-0 z-20 p-2">
-                            <p className="truncate text-[11px] font-medium text-white drop-shadow-md">
-                              {title}
-                            </p>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="flex size-9 scale-90 items-center justify-center rounded-full border border-white/60 bg-black/40 opacity-0 transition-all duration-300 ease-sf group-hover:scale-100 group-hover:opacity-100">
+                              <FaPlay className="ml-0.5 text-[11px] text-white" />
+                            </span>
                           </div>
                         </div>
+
+                        <p className="mt-2 truncate text-[13px] font-medium text-white/85">
+                          {title}
+                        </p>
                       </div>
                     </Link>
                   </Tooltip>

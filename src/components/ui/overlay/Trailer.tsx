@@ -29,14 +29,12 @@ const Trailer: React.FC<TrailerProps> = ({ videos, color = "primary" }) => {
   if (!isEmpty(trailers)) {
     return (
       <>
-        <Button
-          color="danger"
-          variant="shadow"
-          startContent={<Youtube size={22} />}
+        <IconButton
+          icon={<Youtube size={20} />}
+          tooltip="Trailer"
           onPress={() => handlers.open()}
-        >
-          Trailer
-        </Button>
+          className="nf-btn nf-btn-icon"
+        />
 
         <Modal backdrop="blur" size="5xl" isOpen={opened} onClose={handleClose} placement="center">
           <ModalContent>

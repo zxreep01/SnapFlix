@@ -135,24 +135,21 @@ const LibraryList = () => {
 
   return (
     <>
-      <div className="relative flex flex-col gap-6 md:gap-8">
+      <div className="relative flex flex-col gap-5 md:gap-7">
         {/* Heading with the saved count */}
-        <div className="flex flex-col gap-2 border-b border-white/10 pb-3">
+        <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2.5">
-            <span className="sf-board min-w-0">
-              <span className="sf-bulb" aria-hidden />
-              <span className="sf-board-title">My Library</span>
-            </span>
+            <h1 className="text-xl font-bold text-white md:text-2xl">My Library</h1>
             {hasItems && (
-              <span className="rounded-full border border-primary/30 bg-primary/20 px-2 py-0.5 text-[11px] font-medium text-primary">
+              <span className="text-[13px] font-medium text-white/50">
                 {sortedWatchlist.length}
               </span>
             )}
           </div>
         </div>
 
-        {/* Responsive Toolbar: Switcher & Sort Controls */}
-        <div className="flex flex-col items-stretch justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-2 backdrop-blur-xl sm:flex-row sm:items-center sm:gap-4 sm:p-3">
+        {/* Toolbar: switcher and sort */}
+        <div className="flex flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-center sm:gap-4">
           {/* Switcher */}
           <ContentTypeSelection />
 
@@ -266,7 +263,7 @@ const LibraryList = () => {
             </div>
           </>
         ) : (
-          <div className="flex flex-col items-center justify-center min-h-[35vh] sm:min-h-[40vh] gap-4 text-center px-4 py-12 rounded-2xl bg-white/[0.02] border border-white/5 mt-4">
+          <div className="flex flex-col items-center justify-center min-h-[35vh] sm:min-h-[40vh] gap-4 text-center px-4 py-12 rounded-sf bg-white/[0.02] border border-white/5 mt-4">
             <div className="size-16 rounded-full bg-white/5 flex items-center justify-center text-gray-500 mb-1">
               <TbFolder className="size-6 text-gray-500" />
             </div>

@@ -1,6 +1,5 @@
 "use client";
 
-import ContentTypeSelection from "@/components/ui/other/ContentTypeSelection";
 import { siteConfig } from "@/config/site";
 import { Spinner } from "@heroui/react";
 import dynamic from "next/dynamic";
@@ -27,15 +26,8 @@ const HomePageList: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-6 md:gap-8">
-      {/* Media switcher, aligned with the rails below */}
-      <div className="flex px-4 sm:px-5 md:px-8">
-        <ContentTypeSelection />
-      </div>
-
       {/* Viewer's own progress */}
       <ContinueWatching />
-
-      <div className="sf-bulbs mx-4 md:mx-8" aria-hidden />
 
       <div className="relative flex min-h-32 flex-col gap-5 md:gap-7">
         <Suspense

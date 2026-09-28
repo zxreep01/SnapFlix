@@ -102,15 +102,17 @@ const TVShowDetailPage: NextPage<Params<{ id: number }>> = ({ params }) => {
           <Spinner size="lg" className="absolute-center" color="warning" variant="simple" />
         }
       >
-        {/* Full-bleed Home-Style Netflix Hero Billboard */}
-        <DetailHeroBillboard
-          media={tv}
-          type="tv"
-          onViewEpisodesClick={() => scrollIntoView({ alignment: "center" })}
-        />
+        {/* Full-bleed billboard that runs under the translucent top bar */}
+        <div className="-mt-14 md:-mt-16">
+          <DetailHeroBillboard
+            media={tv}
+            type="tv"
+            onViewEpisodesClick={() => scrollIntoView({ alignment: "center" })}
+          />
+        </div>
 
         {/* Episodes, Cast, Photos & Related Rails */}
-        <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-8 px-4 pb-16 sm:px-5 md:px-8">
+        <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-8 px-4 pb-16 md:px-12">
           <Reveal>
             <TvShowsSeasonsSelection ref={targetRef} id={id} seasons={tv.seasons} />
           </Reveal>

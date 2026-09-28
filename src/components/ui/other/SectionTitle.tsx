@@ -1,4 +1,4 @@
-import { colors, ColorType } from "@/types/component";
+import { ColorType } from "@/types/component";
 import { cn } from "@/utils/helpers";
 import { tv } from "tailwind-variants";
 
@@ -13,7 +13,7 @@ export interface SectionTitleProps extends React.HTMLAttributes<HTMLDivElement> 
 }
 
 const title = tv({
-  base: "font-bold",
+  base: "nf-row-title font-bold",
   variants: {
     size: {
       h1: "text-xl md:text-2xl",
@@ -22,23 +22,6 @@ const title = tv({
       h4: "text-xl md:text-2xl",
       h5: "text-lg md:text-xl",
       h6: "text-base md:text-lg",
-    },
-  },
-  defaultVariants: {
-    size: "h5",
-  },
-});
-
-const indicator = tv({
-  base: "rounded-full",
-  variants: {
-    size: {
-      h1: "h-16 w-3",
-      h2: "h-14 w-3",
-      h3: "h-12 w-2.5",
-      h4: "h-10 w-2.5",
-      h5: "h-8 w-2",
-      h6: "h-6 w-2",
     },
   },
   defaultVariants: {
@@ -56,7 +39,6 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
 }) => {
   return (
     <div className={cn("flex items-center gap-2", classNames?.container, className)} {...props}>
-      <div className={cn(indicator({ size }), colors({ color }), classNames?.indicator)} />
       <h1 className={cn(title({ size }), classNames?.title)}>{children}</h1>
     </div>
   );

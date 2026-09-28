@@ -59,12 +59,7 @@ const FAQ = () => {
         <AccordionItem
           key={title}
           aria-label={title}
-          title={
-            <span className="flex items-center gap-2.5">
-              <span className="sf-bulb" aria-hidden />
-              {title}
-            </span>
-          }
+          title={<span className="text-sm font-medium text-white/90">{title}</span>}
         >
           {description}
         </AccordionItem>

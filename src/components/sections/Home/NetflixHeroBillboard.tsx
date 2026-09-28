@@ -171,7 +171,7 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
     >
       {/* Infinite Scroll Viewport */}
       <div
-        className="sf-hero h-[54dvh] max-h-[620px] min-h-[380px] sm:h-[58dvh] lg:h-[62dvh] lg:min-h-[440px] 2xl:h-[68dvh]"
+        className="sf-hero h-[56dvh] max-h-[640px] min-h-[380px] sm:h-[62dvh] lg:h-[70dvh] lg:min-h-[460px] 2xl:h-[76dvh]"
         ref={emblaRef}
       >
         {/* Infinite Scroll Track */}
@@ -210,60 +210,57 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
 
       {/* Slide Content — single overlay so text never duplicates during the loop */}
       <div className="pointer-events-none absolute inset-0 z-20 flex flex-col justify-end">
-        <div className="flex w-full flex-col gap-2.5 px-4 pb-10 sm:gap-3 sm:px-5 md:px-8 md:pb-12 lg:pb-14">
-          <div className="pointer-events-auto flex max-w-[min(34rem,92%)] flex-col gap-2 text-left sm:gap-2.5">
-            {/* Title — clamped and clamped again so long names never overflow */}
+        <div className="flex w-full flex-col px-4 pb-14 sm:px-6 md:px-12 md:pb-20">
+          <div className="pointer-events-auto flex max-w-[min(36rem,90%)] flex-col gap-3 text-left md:gap-4">
+            {/* Title */}
             <h1
               title={activeTitle}
-              className="sf-clamp-2 text-[clamp(1.05rem,2.1vw,1.75rem)] leading-[1.15] font-bold tracking-tight text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.85)]"
+              className="sf-clamp-2 text-[clamp(1.5rem,3.4vw,3rem)] leading-[1.05] font-bold tracking-tight text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.85)]"
             >
               {activeTitle}
             </h1>
 
-            {/* Metadata chips */}
-            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-              <span className="sf-chip !text-[10px] font-medium text-[var(--sf-accent)]">
-                {activeMatch}% Match
-              </span>
-              <span className="sf-chip !text-[10px]">{activeYear}</span>
-              {activeRuntime && (
-                <span className="sf-chip hidden !text-xs sm:inline-flex">{activeRuntime}</span>
-              )}
+            {/* Metadata, separated by dots like the Netflix billboard */}
+            <div className="nf-meta">
+              <span className="font-medium text-[var(--sf-accent)]">{activeMatch}% Match</span>
+              <span>{activeYear}</span>
+              <span>{activeItem?.adult ? "18+" : "16+"}</span>
+              {activeRuntime && <span>{activeRuntime}</span>}
               {isTv && activeItem?.number_of_seasons && (
-                <span className="sf-chip hidden !text-xs sm:inline-flex">
+                <span>
                   {activeItem.number_of_seasons} Season
                   {activeItem.number_of_seasons > 1 ? "s" : ""}
                 </span>
               )}
             </div>
 
-            {/* Synopsis — clamped to two lines, hidden on the smallest screens */}
+            {/* Synopsis — clamped to the small screens out of the way */}
             {activeItem?.overview && (
-              <p className="sf-clamp-2 hidden max-w-lg text-[11px] leading-relaxed text-white/60 sm:block">
+              <p className="sf-clamp-2 hidden max-w-lg text-[13px] leading-snug text-white/85 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)] sm:block md:text-sm">
                 {activeItem.overview}
               </p>
             )}
 
             {/* Actions */}
-            <div className="flex flex-wrap items-center gap-2 pt-0.5 sm:gap-2.5">
+            <div className="flex flex-wrap items-center gap-2 pt-1 md:gap-3">
               <Link
                 href={
                   isTv ? `/watch/tv/${activeItem.id}/1/1` : `/watch/movie/${activeItem.id}`
                 }
-                className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-bold text-black transition-transform hover:scale-[1.02] active:scale-95 sm:px-5"
+                className="nf-btn nf-btn-play"
               >
-                <PlayFilled className="size-3" />
+                <PlayFilled className="size-4" />
                 Play
               </Link>
               <Link
                 href={isTv ? `/tv/${activeItem.id}` : `/movie/${activeItem.id}`}
-                className="sf-glass flex items-center gap-2 rounded-full px-3.5 py-2 text-xs font-medium text-white transition-colors hover:bg-white/20 sm:px-4"
+                className="nf-btn nf-btn-ghost"
               >
-                <Info className="size-3.5" />
+                <Info className="size-4" />
                 More Info
               </Link>
               {bookmarkData && (
-                <span className="sf-glass flex size-9 items-center justify-center rounded-full">
+                <span className="nf-btn nf-btn-icon">
                   <BookmarkButton data={bookmarkData} isTooltipDisabled />
                 </span>
               )}
@@ -272,8 +269,8 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
         </div>
       </div>
 
-      {/* Slide indicators + queue preview */}
-      <div className="absolute inset-x-0 bottom-0 z-30 flex items-end justify-start gap-3 px-4 pb-4 sm:px-5 md:px-8">
+      {/* Slide indicators, centred the way Netflix stacks its billboards */}
+      <div className="absolute inset-x-0 bottom-5 z-30 flex items-end justify-center gap-3 px-4">
         <div className="flex items-center gap-2">
           {heroItems.map((_, idx) => {
             const isCurrent = idx === currentIndex;
@@ -285,10 +282,8 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
                 aria-label={`Show slide ${idx + 1}`}
                 aria-current={isCurrent}
                 className={cn(
-                  "h-1.5 cursor-pointer rounded-full transition-all duration-300",
-                  isCurrent
-                    ? "w-7 bg-[var(--sf-accent)] shadow-[0_0_10px_var(--sf-glow)]"
-                    : "w-3 bg-white/35 hover:bg-white/70",
+                  "size-2 cursor-pointer rounded-full transition-colors duration-300",
+                  isCurrent ? "bg-white" : "bg-white/35 hover:bg-white/70",
                 )}
               />
             );
@@ -302,19 +297,14 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
 
 /** Loading placeholder that mirrors the hero's final layout. */
 const HeroSkeleton = () => (
-  <div className="sf-hero relative flex h-[54dvh] max-h-[620px] min-h-[380px] w-full flex-col justify-end overflow-hidden bg-black/40 sm:h-[58dvh] lg:h-[62dvh] 2xl:h-[68dvh]">
+  <div className="sf-hero relative flex h-[56dvh] max-h-[640px] min-h-[380px] w-full flex-col justify-end overflow-hidden bg-[#181818] sm:h-[62dvh] lg:h-[70dvh] 2xl:h-[76dvh]">
     <Skeleton className="absolute inset-0 size-full rounded-sf opacity-20" />
-    <div className="relative z-10 flex flex-col items-center gap-3 px-4 pb-8 sm:px-6 md:px-9">
-      <Skeleton className="h-4 w-40 rounded-full opacity-30" />
-      <Skeleton className="h-10 w-[min(24rem,80%)] rounded-lg opacity-40 sm:h-14" />
-      <div className="flex flex-wrap gap-2">
-        <Skeleton className="h-6 w-20 rounded-full opacity-30" />
-        <Skeleton className="h-6 w-14 rounded-full opacity-30" />
-        <Skeleton className="h-6 w-16 rounded-full opacity-30" />
-      </div>
+    <div className="relative z-10 flex flex-col gap-3 px-4 pb-20 sm:px-6 md:px-12">
+      <Skeleton className="h-8 w-[min(22rem,70%)] rounded-sf opacity-40 sm:h-12" />
+      <Skeleton className="h-4 w-52 rounded-sf opacity-30" />
       <div className="flex gap-2 pt-1">
-        <Skeleton className="h-10 w-24 rounded-full opacity-40" />
-        <Skeleton className="h-10 w-32 rounded-full opacity-30" />
+        <Skeleton className="h-10 w-28 rounded-sf opacity-40" />
+        <Skeleton className="h-10 w-32 rounded-sf opacity-30" />
       </div>
     </div>
   </div>

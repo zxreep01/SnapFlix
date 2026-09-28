@@ -26,7 +26,7 @@ const LibraryPage: NextPage = async () => {
 
   return (
     <Suspense>
-      <div className="mx-auto w-full max-w-[1600px] px-4 pt-5 pb-28 sm:px-5 md:px-8 md:pb-12">
+      <div className="mx-auto w-full max-w-[1600px] px-4 pt-8 pb-28 md:px-12 md:pb-14">
         {error || !user ? (
           <UnauthorizedNotice
             title="Sign in to access your library"

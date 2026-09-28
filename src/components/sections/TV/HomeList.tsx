@@ -38,32 +38,26 @@ const TvShowHomeList: React.FC<QueryList<TV>> = ({ query, name, param }) => {
   const href = `/discover?type=${param}&content=tv`;
 
   return (
-    <section id={key} className="min-h-[196px] py-1.5 md:min-h-[216px]" ref={ref}>
+    <section id={key} className="min-h-[168px] py-1 md:min-h-[204px]" ref={ref}>
       {isPending && results.length === 0 ? (
-        <div className="flex w-full flex-col gap-2 px-4 sm:px-5 md:px-8">
-          <div className="flex grow items-center justify-between">
-            <Skeleton className="h-5 w-36 rounded-full opacity-20" />
-            <Skeleton className="h-5 w-16 rounded-full opacity-20" />
-          </div>
-          <div className="sf-no-scrollbar flex gap-3 overflow-hidden">
+        <div className="flex w-full flex-col gap-2 px-4 md:px-12">
+          <Skeleton className="h-5 w-36 rounded-sf opacity-20" />
+          <div className="sf-no-scrollbar flex gap-2 overflow-hidden">
             {Array.from({ length: 6 }).map((_, i) => (
               <Skeleton
                 key={i}
-                className="aspect-square w-[112px] shrink-0 rounded-sf opacity-25 sm:w-[124px] md:w-[132px] lg:w-[144px]"
+                className="aspect-video w-[190px] shrink-0 rounded-sf opacity-25 sm:w-[220px] md:w-[248px] lg:w-[280px]"
               />
             ))}
           </div>
         </div>
       ) : (
         <Reveal className="flex flex-col gap-2">
-          <RailHeader title={name} href={href} className="px-4 sm:px-5 md:px-8" />
+          <RailHeader title={name} href={href} className="px-4 md:px-12" />
 
-          <Carousel classNames={{ viewport: "px-4 sm:px-5 md:px-8" }}>
+          <Carousel classNames={{ viewport: "px-4 md:px-12" }}>
             {results.map((tv) => (
-              <div
-                key={tv.id}
-                className="embla__slide flex min-h-fit max-w-fit items-center py-1.5 pr-2.5"
-              >
+              <div key={tv.id} className="embla__slide flex min-h-fit max-w-fit items-start pr-2">
                 <TvShowPosterCard tv={tv} />
               </div>
             ))}

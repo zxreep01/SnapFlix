@@ -14,20 +14,17 @@ export const metadata: Metadata = {
 const AboutPage: NextPage = () => {
   return (
     <div className="flex min-h-full flex-col justify-between pt-5">
-      <div className="flex w-full justify-center px-4 py-6 sm:px-5 md:px-8">
+      <div className="flex w-full justify-center px-4 py-8 md:px-12">
         <div className="flex w-full max-w-3xl flex-col items-center gap-6">
-          <div className="flex flex-col items-center gap-2 border-b border-white/10 pb-6 text-center">
-            <span className="sf-board min-w-0">
-              <span className="sf-bulb" aria-hidden />
-              <span className="sf-board-title">SnapFlix Help Center</span>
-            </span>
+          <div className="flex flex-col items-center gap-2 pb-4 text-center">
+            <h1 className="text-xl font-bold text-white md:text-2xl">Help Centre</h1>
           </div>
 
           <Suspense>
             <FAQ />
           </Suspense>
 
-          <div className="mt-6 flex flex-col items-center gap-3 rounded-2xl border border-white/10 bg-[#181818] px-6 py-5 text-center">
+          <div className="mt-6 flex flex-col items-center gap-3 rounded-sf border border-white/10 bg-[#181818] px-6 py-5 text-center">
             <h3 className="text-sm font-medium text-white">Still need help?</h3>
             <a
               href="mailto:support@snapflix.internal"

@@ -79,13 +79,15 @@ const MovieDetailPage: NextPage<Params<{ id: number }>> = ({ params }) => {
   if (!movie) notFound();
 
   return (
-    <div className="flex flex-col gap-10 w-full overflow-x-hidden">
+    <div className="flex w-full flex-col gap-10 overflow-x-hidden">
       <Suspense fallback={<Spinner size="lg" className="absolute-center" variant="simple" />}>
-        {/* Full-bleed Home-Style Netflix Hero Billboard */}
-        <DetailHeroBillboard media={movie} type="movie" />
+        {/* Full-bleed billboard that runs under the translucent top bar */}
+        <div className="-mt-14 md:-mt-16">
+          <DetailHeroBillboard media={movie} type="movie" />
+        </div>
 
         {/* Details & Recommended Rails */}
-        <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-8 px-4 pb-16 sm:px-5 md:px-8">
+        <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-8 px-4 pb-16 sm:px-5 md:px-12">
           <Reveal>
             <CastsSection casts={movie.credits.cast as Cast[]} />
           </Reveal>

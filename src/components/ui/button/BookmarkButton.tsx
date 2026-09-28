@@ -135,8 +135,8 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({ data, isTooltipDisabled
     <IconButton
       onPress={handleBookmark}
       icon={isSaved ? <BsBookmarkCheckFill size={20} /> : <BsBookmarkFill size={20} />}
-      variant={isSaved ? "shadow" : "faded"}
-      color="warning"
+      variant="light"
+      className="nf-btn nf-btn-icon"
       isLoading={isUserLoading || isChecking || isPending}
       tooltip={
         isTooltipDisabled ? undefined : isSaved ? "Remove from Watchlist" : "Add to Watchlist"

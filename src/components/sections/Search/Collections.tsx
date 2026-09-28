@@ -54,10 +54,7 @@ const Collections: React.FC<CollectionsProps> = ({ className }) => {
 
   return (
     <Reveal className={cn("flex w-full flex-col items-center gap-3", className)}>
-      <span className="sf-board min-w-0">
-        <span className="sf-bulb" aria-hidden />
-        <span className="sf-board-title">Collections</span>
-      </span>
+      <h2 className="nf-row-title">Browse by collection</h2>
 
       <div className="flex w-full flex-wrap items-start justify-center gap-2.5 sm:gap-3">
         {collections.map((collection, index) => (
@@ -68,14 +65,13 @@ const Collections: React.FC<CollectionsProps> = ({ className }) => {
             aria-label={`Browse ${collection.label}`}
           >
             <span
-              className="sf-tile flex size-[46px] items-center justify-center text-white/85 sm:size-[50px]"
-              style={{ background: `var(--sf-tile-${index % 7})` }}
+              className="flex size-[52px] items-center justify-center rounded-sf bg-[#2f2f2f] text-white/85 transition-colors duration-300 ease-sf group-hover:bg-[#3f3f3f] sm:size-[58px]"
             >
               <span className="transition-transform duration-500 ease-sf group-hover:scale-105">
                 {collection.icon}
               </span>
             </span>
-            <span className="w-full truncate text-center text-[10px] font-medium text-white/60 transition-colors group-hover:text-white sm:text-[11px]">
+            <span className="w-full truncate text-center text-[11px] font-medium text-white/60 transition-colors group-hover:text-white">
               {collection.label}
             </span>
           </Link>

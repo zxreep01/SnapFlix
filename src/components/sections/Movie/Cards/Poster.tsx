@@ -4,7 +4,6 @@ import { useCoverTheme } from "@/components/ui/theme/CoverThemeProvider";
 import VaulDrawer from "@/components/ui/overlay/VaulDrawer";
 import useBreakpoints from "@/hooks/useBreakpoints";
 import useDeviceVibration from "@/hooks/useDeviceVibration";
-import { cn } from "@/utils/helpers";
 import { PlayFilled } from "@/utils/icons";
 import { getImageUrl, mutateMovieTitle } from "@/utils/movies";
 import { Tooltip } from "@heroui/react";
@@ -23,14 +22,11 @@ interface MoviePosterCardProps {
 /**
  * Poster tile for movie rails and grids.
  *
- * The artwork sits inside a square CD jewel case — spine, gloss and a slow
- * sheen sweep — with the title and year on a quiet label underneath, so rails
- * and grids keep one ratio whatever the source posters look like.
+ * Rails use the landscape thumbnail Netflix scrolls horizontally, grids use
+ * the taller poster, and both keep the same hover preview card.
  */
 const MoviePosterCard: React.FC<MoviePosterCardProps> = ({ movie, variant = "full" }) => {
   const [opened, handlers] = useDisclosure(false);
-  const releaseDate = movie.release_date ? new Date(movie.release_date) : null;
-  const releaseYear = releaseDate?.getFullYear() ?? new Date().getFullYear();
   const posterImage = getImageUrl(movie.poster_path);
   const title = mutateMovieTitle(movie);
   const { mobile } = useBreakpoints();
@@ -69,75 +65,42 @@ const MoviePosterCard: React.FC<MoviePosterCardProps> = ({ movie, variant = "ful
           }
           onMouseLeave={clearFocusTheme}
         >
-          {variant === "full" && (
-            <div className="group w-[112px] shrink-0 text-white sm:w-[124px] md:w-[132px] lg:w-[144px]">
-              <div className="sf-case transition-transform duration-500 ease-sf group-hover:-translate-y-1">
-                <div className="sf-case-face">
-                  <img
-                    src={posterImage}
-                    alt={title}
-                    className="absolute inset-0 size-full object-cover object-center transition-transform duration-700 ease-sf group-hover:scale-[1.05]"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <span className="sf-case-spine" />
-                  <span className="sf-case-gloss" />
-                  <span className="sf-case-sheen" />
-                
-                  {movie.adult && (
-                    <span className="absolute top-1.5 left-1.5 rounded-full bg-black/60 px-1.5 py-0.5 text-[8px] font-bold tracking-wide text-white/80 uppercase backdrop-blur-md">
-                      18+
-                    </span>
-                  )}
-                
-                  <span className="absolute inset-0 flex items-center justify-center">
-                    <span className="flex size-9 scale-90 items-center justify-center rounded-full bg-[var(--sf-accent)] text-[var(--sf-on-accent)] opacity-0 shadow-[0_0_18px_var(--sf-glow)] transition-all duration-500 ease-sf group-hover:scale-100 group-hover:opacity-100">
-                      <PlayFilled className="size-3.5" />
-                    </span>
+          {variant === "full" ? (
+            <div className="group w-[190px] shrink-0 sm:w-[220px] md:w-[248px] lg:w-[280px]">
+              <div className="nf-thumb">
+                <img src={posterImage} alt={title} loading="lazy" decoding="async" />
+
+                <span className="absolute inset-0 flex items-center justify-center">
+                  <span className="flex size-9 scale-90 items-center justify-center rounded-full border border-white/60 bg-black/40 opacity-0 transition-all duration-300 ease-sf group-hover:scale-100 group-hover:opacity-100">
+                    <PlayFilled className="size-3.5 text-white" />
                   </span>
-                </div>
+                </span>
+
+                {movie.adult && (
+                  <span className="absolute top-1.5 left-1.5 rounded-sf bg-black/70 px-1.5 py-0.5 text-[9px] font-medium text-white/85">
+                    18+
+                  </span>
+                )}
               </div>
 
-              {/* Shelf label under the case keeps every row aligned */}
-              <div className="mt-2 flex items-center justify-between gap-2 px-0.5">
-                <p className="truncate text-[11px] font-medium text-white/85">{title}</p>
-                <span className="shrink-0 text-[10px] text-white/40">{releaseYear}</span>
-              </div>
+              <p className="mt-2 truncate text-[13px] font-medium text-white/85">{title}</p>
             </div>
-          )}
+          ) : (
+            <div className="group flex h-full flex-col">
+              <div className="nf-poster">
+                <img src={posterImage} alt={title} loading="lazy" decoding="async" />
 
-          {variant === "bordered" && (
-            <div className="group flex h-full flex-col gap-2 rounded-2xl border border-white/10 bg-white/[0.03] p-2.5 transition-colors hover:border-[color:var(--sf-hairline)]">
-              <div className="sf-case w-full transition-transform duration-500 ease-sf group-hover:-translate-y-1">
-                <div className="sf-case-face">
-                  <img
-                    src={posterImage}
-                    alt={title}
-                    className="absolute inset-0 size-full object-cover object-center transition-transform duration-700 ease-sf group-hover:scale-[1.05]"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <span className="sf-case-spine" />
-                  <span className="sf-case-gloss" />
-                  <span className="sf-case-sheen" />
-                
-                  {movie.adult && (
-                    <span className="absolute top-1.5 left-1.5 rounded-full bg-black/60 px-1.5 py-0.5 text-[8px] font-bold tracking-wide text-white/80 uppercase backdrop-blur-md">
-                      18+
-                    </span>
-                  )}
-                
-                  <span className="absolute inset-0 flex items-center justify-center">
-                    <span className="flex size-9 scale-90 items-center justify-center rounded-full bg-[var(--sf-accent)] text-[var(--sf-on-accent)] opacity-0 shadow-[0_0_18px_var(--sf-glow)] transition-all duration-500 ease-sf group-hover:scale-100 group-hover:opacity-100">
-                      <PlayFilled className="size-3.5" />
-                    </span>
+                <span className="absolute inset-0 flex items-center justify-center">
+                  <span className="flex size-9 scale-90 items-center justify-center rounded-full border border-white/60 bg-black/40 opacity-0 transition-all duration-300 ease-sf group-hover:scale-100 group-hover:opacity-100">
+                    <PlayFilled className="size-3.5 text-white" />
                   </span>
-                </div>
-              </div>
+                </span>
 
-              <div className="flex flex-col gap-0.5 px-0.5">
-                <p className="truncate text-xs font-medium text-white/90">{title}</p>
-                <p className="text-[10px] text-white/40">{releaseYear}</p>
+                {movie.adult && (
+                  <span className="absolute top-1.5 left-1.5 rounded-sf bg-black/70 px-1.5 py-0.5 text-[9px] font-medium text-white/85">
+                    18+
+                  </span>
+                )}
               </div>
             </div>
           )}
@@ -158,4 +121,5 @@ const MoviePosterCard: React.FC<MoviePosterCardProps> = ({ movie, variant = "ful
     </>
   );
 };
+
 export default MoviePosterCard;

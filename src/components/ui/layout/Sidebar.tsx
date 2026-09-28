@@ -1,58 +1,25 @@
 "use client";
 
-import AmbientBackdrop from "@/components/ui/background/AmbientBackdrop";
 import { cn } from "@/utils/helpers";
 import { usePathname } from "next/navigation";
-import { Suspense } from "react";
-import AppRail from "./AppRail";
 
 /**
  * Application shell.
  *
- * Builds the reference layout: a blurred room, a floating icon rail on the
- * left and one rounded glass panel that holds every page. Player and auth
- * routes opt out because they own the whole viewport.
+ * Netflix keeps its content on a flat near-black canvas, so the shell only
+ * switches the chrome on and off: the player and auth routes own the whole
+ * viewport, every other route sits under the top bar.
  */
 const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const pathName = usePathname();
   const immersive = pathName.includes("/player") || pathName.startsWith("/watch");
   const auth = pathName.includes("/auth");
 
-  if (auth) return <>{children}</>;
+  if (auth || immersive) return <>{children}</>;
 
   return (
-    <div className="relative min-h-dvh w-full">
-      {!immersive && <AmbientBackdrop />}
-      {!immersive && (
-        <Suspense fallback={null}>
-          <AppRail />
-        </Suspense>
-      )}
-
-      <div
-        className={cn("relative flex min-h-dvh w-full flex-col", {
-          // Desktop keeps a gutter for the rail and breathing room around the panel.
-          "md:py-4 md:pr-4 md:pl-[104px]": !immersive,
-          // Mobile starts below the slim top bar and hugs the viewport edges.
-          "pt-[64px] pb-20 md:pt-0 md:pb-0": !immersive,
-        })}
-      >
-        <main
-          className={cn(
-            "relative w-full flex-1",
-            !immersive && [
-              "overflow-hidden border border-white/8",
-              "bg-[linear-gradient(160deg,var(--sf-panel-from),var(--sf-panel-to))]",
-              "backdrop-blur-2xl",
-              "rounded-t-[22px] rounded-b-none border-b-0",
-              "md:rounded-[26px] md:border-b",
-              "shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]",
-            ],
-          )}
-        >
-          {children}
-        </main>
-      </div>
+    <div className={cn("relative min-h-dvh w-full", "pt-14 md:pt-16")}>
+      <main className="relative w-full">{children}</main>
     </div>
   );
 };

@@ -2,12 +2,9 @@ import { tmdb } from "@/api/tmdb";
 import { SiteConfigType } from "@/types";
 import { BiSearchAlt2, BiSolidSearchAlt2 } from "react-icons/bi";
 import { GoHomeFill, GoHome } from "react-icons/go";
-import {
-  IoCompass,
-  IoCompassOutline,
-  IoInformationCircle,
-  IoInformationCircleOutline,
-} from "react-icons/io5";
+import { FaTv } from "react-icons/fa6";
+import { IoTrendingUp } from "react-icons/io5";
+import { MdMovie } from "react-icons/md";
 import { TbFolder, TbFolderFilled } from "react-icons/tb";
 
 export const siteConfig: SiteConfigType = {
@@ -22,28 +19,28 @@ export const siteConfig: SiteConfigType = {
       activeIcon: <GoHomeFill className="size-full" />,
     },
     {
-      label: "Search",
-      href: "/search",
-      icon: <BiSearchAlt2 className="size-full" />,
-      activeIcon: <BiSolidSearchAlt2 className="size-full" />,
+      label: "TV Shows",
+      href: "/?content=tv",
+      icon: <FaTv className="size-full" />,
+      activeIcon: <FaTv className="size-full" />,
     },
     {
-      label: "Discover",
+      label: "Movies",
+      href: "/?content=movie",
+      icon: <MdMovie className="size-full" />,
+      activeIcon: <MdMovie className="size-full" />,
+    },
+    {
+      label: "New & Popular",
       href: "/discover",
-      icon: <IoCompassOutline className="size-full" />,
-      activeIcon: <IoCompass className="size-full" />,
+      icon: <IoTrendingUp className="size-full" />,
+      activeIcon: <IoTrendingUp className="size-full" />,
     },
     {
-      label: "Library",
+      label: "My Library",
       href: "/library",
       icon: <TbFolder className="size-full" />,
       activeIcon: <TbFolderFilled className="size-full" />,
-    },
-    {
-      label: "About",
-      href: "/about",
-      icon: <IoInformationCircleOutline className="size-full" />,
-      activeIcon: <IoInformationCircle className="size-full" />,
     },
   ],
   queryLists: {

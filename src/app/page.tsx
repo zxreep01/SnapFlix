@@ -18,11 +18,13 @@ const HomePage: NextPage<HomePageProps> = async ({ searchParams }) => {
 
   return (
     <div className="flex flex-col">
-      {/* Full-bleed cinematic hero, themed by its own artwork */}
-      <NetflixHeroBillboard contentType={content === "tv" ? "tv" : "movie"} />
+      {/* Full-bleed billboard that runs under the translucent top bar */}
+      <div className="-mt-14 md:-mt-16">
+        <NetflixHeroBillboard contentType={content === "tv" ? "tv" : "movie"} />
+      </div>
 
-      {/* Switcher, tiles, continue watching and content rails */}
-      <div className="pt-4 md:pt-6">
+      {/* Continue watching, the Top 10 row and the catalogue rails */}
+      <div className="pt-6 md:pt-10">
         <HomePageList />
       </div>
 

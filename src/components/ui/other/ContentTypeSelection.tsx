@@ -46,7 +46,7 @@ const ContentTypeSelection: React.FC<ContentTypeSelectionProps> = ({
       role="tablist"
       aria-label="Content type"
       className={cn(
-        "flex max-w-full items-center gap-0.5 overflow-x-auto rounded-full border border-white/10 bg-white/[0.05] p-0.5 backdrop-blur-xl sf-no-scrollbar",
+        "sf-no-scrollbar flex max-w-full items-center gap-0.5 overflow-x-auto rounded-sf border border-white/25 bg-black p-0.5",
         className,
       )}
     >
@@ -60,10 +60,8 @@ const ContentTypeSelection: React.FC<ContentTypeSelectionProps> = ({
             aria-selected={isActive}
             onClick={() => handleTabChange(option.key)}
             className={cn(
-              "shrink-0 rounded-full px-3 py-1 text-[11px] font-medium tracking-wide transition-all duration-500 ease-sf sm:px-3.5",
-              isActive
-                ? "bg-[var(--sf-accent)] text-[var(--sf-on-accent)] shadow-[0_0_20px_var(--sf-glow-soft)]"
-                : "text-white/70 hover:bg-white/10 hover:text-white",
+              "shrink-0 rounded-[3px] px-3.5 py-1.5 text-[13px] transition-colors duration-300 ease-sf",
+              isActive ? "bg-white font-medium text-black" : "text-white/70 hover:text-white",
             )}
           >
             {option.label}
@@ -75,10 +73,10 @@ const ContentTypeSelection: React.FC<ContentTypeSelectionProps> = ({
         <Link
           href="/discover"
           className={cn(
-            "flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-medium tracking-wide transition-all duration-500 ease-sf sm:px-3.5",
+            "flex shrink-0 items-center gap-1.5 rounded-[3px] px-3.5 py-1.5 text-[13px] transition-colors duration-300 ease-sf",
             pathName === "/discover"
-              ? "bg-[var(--sf-accent)] text-[var(--sf-on-accent)] shadow-[0_0_20px_var(--sf-glow-soft)]"
-              : "text-white/70 hover:bg-white/10 hover:text-white",
+              ? "bg-white font-medium text-black"
+              : "text-white/70 hover:text-white",
           )}
         >
           <Compass className="size-3" />
