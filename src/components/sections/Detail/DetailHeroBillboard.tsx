@@ -2,6 +2,7 @@
 
 import BookmarkButton from "@/components/ui/button/BookmarkButton";
 import ShareButton from "@/components/ui/button/ShareButton";
+import { useCoverArtTheme } from "@/components/ui/theme/CoverThemeProvider";
 import Trailer from "@/components/ui/overlay/Trailer";
 import { SavedMovieDetails } from "@/types/movie";
 import { getImageUrl, movieDurationString, mutateMovieTitle, mutateTvShowTitle } from "@/utils/movies";
@@ -42,12 +43,15 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
     saved_date: new Date().toISOString(),
   };
 
+  // The detail page takes its colour from this title's own artwork.
+  useCoverArtTheme([bgUrl, getImageUrl(media.poster_path)], bgUrl);
+
   const runtimeText = !isTv && media.runtime ? movieDurationString(media.runtime) : null;
   const seasonsText = isTv && media.number_of_seasons ? `${media.number_of_seasons} Season${media.number_of_seasons > 1 ? "s" : ""}` : null;
   const videos = media.videos?.results || [];
 
   return (
-    <div className="group relative h-[60dvh] min-h-[400px] max-h-[520px] sm:h-[68dvh] sm:min-h-[480px] sm:max-h-[620px] lg:h-[80dvh] lg:min-h-[540px] lg:max-h-[800px] 2xl:h-[78dvh] w-full select-none overflow-hidden bg-[#141414]">
+    <div className="sf-hero group relative h-[56dvh] min-h-[380px] max-h-[520px] sm:h-[62dvh] sm:min-h-[440px] sm:max-h-[600px] lg:h-[68dvh] lg:min-h-[500px] lg:max-h-[720px] w-full select-none overflow-hidden bg-black/30">
       {/* Background Backdrop: Edge-to-Edge Cinematic Brilliance */}
       <img
         src={bgUrl}
@@ -58,90 +62,48 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
 
       {/* Cinematic Vignette Gradients */}
       {/* Bottom smooth fade to content section */}
-      <div className="absolute inset-x-0 bottom-0 h-36 sm:h-48 md:h-56 bg-linear-to-t from-[#141414] via-[#141414]/50 to-transparent pointer-events-none z-10" />
-      {/* Left subtle vignette only behind text */}
-      <div className="absolute inset-y-0 left-0 w-full sm:w-3/4 md:w-3/5 bg-linear-to-r from-[#141414]/85 via-[#141414]/35 via-50% to-transparent pointer-events-none z-10" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-linear-to-t from-black/95 via-black/45 to-transparent sm:h-48 md:h-56" />
+      {/* Left vignette, only behind the copy */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-linear-to-r from-black/85 via-black/35 to-transparent sm:w-3/4 md:w-3/5" />
       {/* Top subtle navbar blend */}
-      <div className="absolute top-0 inset-x-0 h-14 bg-linear-to-b from-black/20 to-transparent pointer-events-none z-10" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-14 bg-linear-to-b from-black/25 to-transparent" />
 
       {/* Hero Content Block */}
-      <div className="absolute bottom-6 sm:bottom-10 md:bottom-16 lg:bottom-20 left-4 md:left-12 right-4 md:right-auto max-w-xl lg:max-w-2xl flex flex-col gap-2 sm:gap-2.5 md:gap-3 z-20">
-        {/* Netflix Brand Tagline / Badge */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <div className="flex items-center justify-center h-4 w-3.5 sm:h-5 sm:w-4 rounded-xs bg-linear-to-b from-[#E50914] to-[#B81D24] shadow-xs">
-            <span className="text-[9px] sm:text-[11px] font-black text-white">S</span>
-          </div>
-          <span className="text-[10px] sm:text-xs md:text-sm font-extrabold tracking-[0.18em] sm:tracking-[0.22em] text-white uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-            {isTv ? "SNAPFLIX ORIGINAL SERIES" : "SNAPFLIX FEATURE FILM"}
-          </span>
-        </div>
-
+      <div className="absolute right-4 bottom-8 left-4 z-20 flex max-w-xl flex-col gap-3 sm:bottom-10 sm:gap-3.5 md:right-auto md:bottom-14 md:left-12 lg:max-w-2xl">
         {/* Title */}
-        <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight drop-shadow-[0_4px_14px_rgba(0,0,0,0.95)] line-clamp-2 leading-tight">
+        <h1 className="line-clamp-2 text-2xl leading-[1.05] font-bold tracking-tight text-white drop-shadow-[0_4px_14px_rgba(0,0,0,0.95)] sm:text-4xl md:text-5xl">
           {title}
         </h1>
 
         {/* Tagline if available */}
         {media.tagline && (
-          <p className="text-xs sm:text-sm font-semibold italic text-gray-300 drop-shadow-sm line-clamp-1">
+          <p className="line-clamp-1 text-[13px] font-medium text-white/75 italic drop-shadow-sm">
             &ldquo;{media.tagline}&rdquo;
           </p>
         )}
 
         {/* Metadata Badges */}
-        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 md:gap-3 text-[11px] sm:text-xs md:text-sm">
-          <span className="font-extrabold text-[#46D369] drop-shadow-sm">
-            {matchPercentage}% Match
-          </span>
-          <span className="text-gray-300 font-medium">{releaseYear}</span>
-          <span className="border border-white/40 px-1 py-0.2 sm:px-1.5 sm:py-0.5 rounded-xs text-[10px] sm:text-[11px] font-bold text-white uppercase">
-            {media.adult ? "18+" : "16+"}
-          </span>
-          {runtimeText && (
-            <span className="border border-white/30 px-1.5 py-0.5 rounded-xs text-[11px] font-bold text-gray-200">
-              {runtimeText}
-            </span>
-          )}
-          {seasonsText && (
-            <span className="border border-white/30 px-1.5 py-0.5 rounded-xs text-[11px] font-bold text-gray-200">
-              {seasonsText}
-            </span>
-          )}
-          <span className="hidden sm:inline-block border border-white/30 px-1.5 py-0.5 rounded-xs text-[11px] font-bold text-gray-200">
-            4K Ultra HD
-          </span>
-          <span className="hidden md:inline-block border border-white/30 px-1.5 py-0.5 rounded-xs text-[11px] font-bold text-gray-200">
-            5.1 Audio
-          </span>
+        <div className="nf-meta drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+          <span className="font-medium text-[var(--sf-accent)]">{matchPercentage}% Match</span>
+          <span>{releaseYear}</span>
+          <span>{media.adult ? "18+" : "16+"}</span>
+          {runtimeText && <span>{runtimeText}</span>}
+          {seasonsText && <span>{seasonsText}</span>}
+          {media.genres?.slice(0, 2).map((g: any) => (
+            <span key={g.id}>{g.name}</span>
+          ))}
         </div>
 
-        {/* Genres Pills */}
-        {media.genres && media.genres.length > 0 && (
-          <div className="hidden sm:flex flex-wrap gap-1.5 pt-0.5">
-            {media.genres.slice(0, 4).map((g: any) => (
-              <span
-                key={g.id}
-                className="text-[11px] text-gray-200 font-medium bg-black/50 px-2.5 py-0.5 rounded-full border border-white/10"
-              >
-                {g.name}
-              </span>
-            ))}
-          </div>
-        )}
-
         {/* Overview / Synopsis */}
-        <p className="text-xs sm:text-sm md:text-base text-gray-200/90 leading-relaxed line-clamp-2 sm:line-clamp-3 max-w-lg drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+        <p className="max-w-lg text-xs leading-relaxed text-gray-200/90 line-clamp-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] sm:text-sm sm:line-clamp-3 md:text-base">
           {media.overview || "Stream this title now exclusively on SnapFlix."}
         </p>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-1 sm:pt-2">
+        <div className="flex flex-wrap items-center gap-2 pt-1 sm:gap-3 sm:pt-2">
           {/* Main Play Button */}
-          <Link
-            href={playHref}
-            className="group/btn flex items-center gap-1.5 sm:gap-2.5 rounded-md bg-white px-4 sm:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-bold text-black shadow-lg transition-all duration-200 hover:bg-white/80 active:scale-95"
-          >
-            <FaPlay className="text-xs sm:text-sm md:text-base transition-transform group-hover/btn:scale-110" />
+          <Link href={playHref} className="nf-btn nf-btn-play px-6 py-2.5 md:px-8">
+            <FaPlay className="text-sm" />
             <span>Play</span>
           </Link>
 
@@ -150,35 +112,22 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
             <button
               type="button"
               onClick={onViewEpisodesClick}
-              className="flex items-center gap-1.5 sm:gap-2 rounded-md bg-white/20 backdrop-blur-md px-3.5 sm:px-5 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-semibold text-white transition-all duration-200 hover:bg-white/30 active:scale-95 border border-white/15 cursor-pointer"
+              className="nf-btn nf-btn-ghost cursor-pointer px-5 py-2.5"
             >
-              <IoListOutline size={18} className="sm:size-[20px]" />
+              <IoListOutline className="size-4" />
               <span>Episodes</span>
             </button>
           )}
 
           {/* Trailer Modal Button */}
-          {videos.length > 0 && (
-            <div className="scale-95 sm:scale-100">
-              <Trailer videos={videos} />
-            </div>
-          )}
+          {videos.length > 0 && <Trailer videos={videos} />}
 
           {/* Bookmark / My List */}
-          <div className="scale-95 sm:scale-105">
-            <BookmarkButton data={bookmarkData} />
-          </div>
+          <BookmarkButton data={bookmarkData} />
 
           {/* Share Modal Button */}
-          <div className="scale-95 sm:scale-100">
-            <ShareButton id={media.id} title={title} type={type} />
-          </div>
+          <ShareButton id={media.id} title={title} type={type} />
         </div>
-      </div>
-
-      {/* Bottom Right: Maturity Rating Pill */}
-      <div className="absolute right-4 md:right-12 bottom-6 sm:bottom-10 md:bottom-16 lg:bottom-20 hidden sm:flex items-center bg-[#141414]/70 border-l-3 border-[#E50914] py-1.5 pl-3 pr-4 backdrop-blur-xs text-xs font-bold text-gray-200 uppercase tracking-wider z-30">
-        {media.adult ? "TV-MA / 18+" : "TV-14 / 16+"}
       </div>
     </div>
   );

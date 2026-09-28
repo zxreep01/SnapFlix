@@ -12,6 +12,7 @@ import { Params } from "@/types";
 import { NextPage } from "next";
 import { MOCK_MOVIES } from "@/utils/mockData";
 import Footer from "@/components/ui/layout/Footer";
+import Reveal from "@/components/ui/other/Reveal";
 const PhotosSection = dynamic(() => import("@/components/ui/other/PhotosSection"));
 const DetailHeroBillboard = dynamic(() => import("@/components/sections/Detail/DetailHeroBillboard"));
 const CastsSection = dynamic(() => import("@/components/sections/Movie/Detail/Casts"));
@@ -78,16 +79,24 @@ const MovieDetailPage: NextPage<Params<{ id: number }>> = ({ params }) => {
   if (!movie) notFound();
 
   return (
-    <div className="flex flex-col gap-10 w-full overflow-x-hidden">
+    <div className="flex w-full flex-col gap-10 overflow-x-hidden">
       <Suspense fallback={<Spinner size="lg" className="absolute-center" variant="simple" />}>
-        {/* Full-bleed Home-Style Netflix Hero Billboard */}
-        <DetailHeroBillboard media={movie} type="movie" />
+        {/* Full-bleed billboard that runs under the translucent top bar */}
+        <div className="-mt-14 md:-mt-16">
+          <DetailHeroBillboard media={movie} type="movie" />
+        </div>
 
         {/* Details & Recommended Rails */}
-        <div className="mx-auto max-w-7xl 2xl:max-w-[1800px] w-full px-4 md:px-12 flex flex-col gap-12 pb-16">
-          <CastsSection casts={movie.credits.cast as Cast[]} />
-          <PhotosSection images={movie.images.backdrops as Image[]} />
-          <RelatedSection movie={movie} />
+        <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-8 px-4 pb-16 sm:px-5 md:px-12">
+          <Reveal>
+            <CastsSection casts={movie.credits.cast as Cast[]} />
+          </Reveal>
+          <Reveal defer>
+            <PhotosSection images={movie.images.backdrops as Image[]} />
+          </Reveal>
+          <Reveal defer>
+            <RelatedSection movie={movie} />
+          </Reveal>
         </div>
       </Suspense>
 

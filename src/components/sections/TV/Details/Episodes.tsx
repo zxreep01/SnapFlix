@@ -171,7 +171,7 @@ export const EpisodeListCard: React.FC<EpisodeCardProps> = ({
         <p
           title={episode.name}
           className={cn(
-            "line-clamp-1 text-xl font-semibold transition-colors",
+            "line-clamp-1 text-xl font-medium transition-colors",
             !isNotReleased && "group-hover:text-warning",
           )}
         >
@@ -246,7 +246,7 @@ const EpisodeGridCard: React.FC<EpisodeCardProps> = ({ episode, id }) => {
           <p
             title={episode.name}
             className={cn(
-              "text-lg font-semibold transition-colors",
+              "text-lg font-medium transition-colors",
               !isNotReleased && "group-hover:text-warning",
             )}
           >

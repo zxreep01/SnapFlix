@@ -92,10 +92,10 @@ const AuthForms: React.FC = () => {
                 variant="light"
                 onClick={() => setForm("login")}
                 className="group motion-preset-focus absolute left-2 data-[hover=true]:bg-transparent"
-                icon={<ArrowLeft className="text-4xl transition-transform group-hover:scale-125" />}
+                icon={<ArrowLeft className="text-xl transition-transform duration-500 ease-sf group-hover:scale-110" />}
               />
             )}
-            <Brand className="text-3xl md:text-4xl" animate />
+            <Brand className="text-lg md:text-xl" animate />
           </CardHeader>
           <ScrollShadow hideScrollBar visibility="none">
             <AnimatePresence mode="sync">

@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "snapflix",
+  "main": ".open-next/worker.js",
+  // Set this to today's date
+  "compatibility_date": "2026-09-28",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  // Wrangler runs this before dev, preview and deploy so the bundle always exists
+  "build": {
+    "command": "npm run build:worker",
+  },
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS",
+  },
+  "observability": {
+    "enabled": true,
+  },
+  // Required by `wrangler preview` (Worker Previews), even when empty
+  "previews": {},
+}

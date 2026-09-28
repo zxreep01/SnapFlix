@@ -2,16 +2,17 @@
 
 import { tmdb } from "@/api/tmdb";
 import BookmarkButton from "@/components/ui/button/BookmarkButton";
+import { useCoverArtTheme } from "@/components/ui/theme/CoverThemeProvider";
 import { SavedMovieDetails } from "@/types/movie";
 import { MOCK_MOVIES, MOCK_TV_SHOWS } from "@/utils/mockData";
-import { getImageUrl, mutateMovieTitle, mutateTvShowTitle } from "@/utils/movies";
+import { getImageUrl, movieDurationString, mutateMovieTitle, mutateTvShowTitle } from "@/utils/movies";
+import { cn } from "@/utils/helpers";
+import { Info, PlayFilled } from "@/utils/icons";
 import { Skeleton } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import useEmblaCarousel from "embla-carousel-react";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { FaPlay } from "react-icons/fa6";
-import { IoInformationCircleOutline } from "react-icons/io5";
 import { useSearchParams } from "next/navigation";
 
 interface NetflixHeroBillboardProps {
@@ -20,7 +21,9 @@ interface NetflixHeroBillboardProps {
 
 const SLIDE_INTERVAL_MS = 3000; // 3 seconds infinite auto scroll
 
-const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({ contentType: propContentType }) => {
+const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
+  contentType: propContentType,
+}) => {
   const searchParams = useSearchParams();
   const currentContent = propContentType || searchParams.get("content") || "movie";
   const isTv = currentContent === "tv";
@@ -60,7 +63,8 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({ contentType
 
   // Extract top 4 trending titles
   const heroItems = useMemo(() => {
-    const rawList = data?.results && data.results.length > 0 ? data.results : (isTv ? MOCK_TV_SHOWS : MOCK_MOVIES);
+    const rawList =
+      data?.results && data.results.length > 0 ? data.results : isTv ? MOCK_TV_SHOWS : MOCK_MOVIES;
     const withBackdrop = rawList.filter((item: any) => Boolean(item.backdrop_path));
     if (withBackdrop.length >= 4) {
       return withBackdrop.slice(0, 4);
@@ -75,6 +79,16 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({ contentType
     }
     return combined.slice(0, 4);
   }, [data, isTv]);
+
+  const activeItem: any = heroItems[currentIndex] ?? heroItems[0];
+
+  // The whole interface takes its colour from the artwork currently on screen.
+  useCoverArtTheme(
+    activeItem
+      ? [getImageUrl(activeItem.backdrop_path, "backdrop", true), getImageUrl(activeItem.poster_path)]
+      : null,
+    activeItem ? getImageUrl(activeItem.backdrop_path, "backdrop", true) : null,
+  );
 
   // Sync selected index with Embla scroll events
   const onSelect = useCallback(() => {
@@ -115,187 +129,185 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({ contentType
     (index: number) => {
       if (emblaApi) emblaApi.scrollTo(index);
     },
-    [emblaApi]
+    [emblaApi],
   );
 
+  const activeTitle = activeItem
+    ? isTv
+      ? mutateTvShowTitle(activeItem as any)
+      : mutateMovieTitle(activeItem as any)
+    : "";
+
+  const activeRelease = activeItem?.release_date || activeItem?.first_air_date;
+  const activeYear = activeRelease ? new Date(activeRelease).getFullYear() : 2025;
+  const activeMatch = Math.min(99, Math.round((activeItem?.vote_average || 8.2) * 10 + 8));
+  const activeRuntime =
+    !isTv && activeItem?.runtime ? movieDurationString(activeItem.runtime) : null;
+
+  const bookmarkData: SavedMovieDetails | null = activeItem
+    ? {
+        type: isTv ? "tv" : "movie",
+        adult: activeItem.adult || false,
+        backdrop_path: activeItem.backdrop_path,
+        id: activeItem.id,
+        poster_path: activeItem.poster_path,
+        release_date: activeRelease || "",
+        title: activeTitle,
+        vote_average: activeItem.vote_average,
+        saved_date: new Date().toISOString(),
+      }
+    : null;
+
   if (isPending && (!heroItems || heroItems.length === 0)) {
-    return (
-      <div className="relative h-[62dvh] min-h-[400px] max-h-[520px] sm:h-[70dvh] sm:min-h-[480px] sm:max-h-[640px] lg:h-[82dvh] lg:min-h-[560px] lg:max-h-[820px] 2xl:h-[80dvh] w-full overflow-hidden bg-[#141414]">
-        <Skeleton className="size-full rounded-none opacity-20" />
-        <div className="absolute bottom-6 sm:bottom-10 md:bottom-16 lg:bottom-20 left-4 md:left-12 flex flex-col gap-3 max-w-xl z-20">
-          <Skeleton className="h-5 w-28 sm:h-6 sm:w-36 rounded-sm opacity-40" />
-          <Skeleton className="h-9 w-60 sm:h-14 sm:w-80 rounded-sm opacity-40" />
-          <Skeleton className="h-3.5 w-44 sm:h-4 sm:w-60 rounded-sm opacity-30" />
-          <Skeleton className="h-10 w-full sm:h-16 rounded-sm opacity-30" />
-          <div className="flex gap-2.5">
-            <Skeleton className="h-9 w-24 sm:h-11 sm:w-32 rounded-md opacity-40" />
-            <Skeleton className="h-9 w-28 sm:h-11 sm:w-36 rounded-md opacity-40" />
-          </div>
-        </div>
-      </div>
-    );
+    return <HeroSkeleton />;
   }
 
   if (!heroItems || heroItems.length === 0) return null;
 
   return (
-    <div className="group relative h-[62dvh] min-h-[400px] max-h-[520px] sm:h-[70dvh] sm:min-h-[480px] sm:max-h-[640px] lg:h-[82dvh] lg:min-h-[560px] lg:max-h-[820px] 2xl:h-[80dvh] w-full select-none overflow-hidden bg-[#141414]">
+    <section
+      aria-label="Featured titles"
+      className="relative w-full select-none overflow-hidden bg-black/20"
+    >
       {/* Infinite Scroll Viewport */}
-      <div className="size-full overflow-hidden" ref={emblaRef}>
+      <div
+        className="sf-hero h-[56dvh] max-h-[640px] min-h-[380px] sm:h-[62dvh] lg:h-[70dvh] lg:min-h-[460px] 2xl:h-[76dvh]"
+        ref={emblaRef}
+      >
         {/* Infinite Scroll Track */}
-        <div className="flex h-full w-full touch-pan-y">
+        <div className="flex size-full touch-pan-y">
           {heroItems.map((item: any, idx: number) => {
-            const title = isTv
-              ? mutateTvShowTitle(item as any)
-              : mutateMovieTitle(item as any);
-
-            const releaseDate = item.release_date || item.first_air_date;
-            const releaseYear = releaseDate ? new Date(releaseDate).getFullYear() : 2025;
-            const detailHref = isTv ? `/tv/${item.id}` : `/movie/${item.id}`;
-            const playHref = isTv ? `/watch/tv/${item.id}/1/1` : `/watch/movie/${item.id}`;
-
-            const voteAverage = item.vote_average || 8.2;
-            const matchPercentage = Math.min(99, Math.round(voteAverage * 10 + 8));
+            const title = isTv ? mutateTvShowTitle(item as any) : mutateMovieTitle(item as any);
             const bgUrl = getImageUrl(item.backdrop_path, "backdrop", true);
-
-            const bookmarkData: SavedMovieDetails = {
-              type: isTv ? "tv" : "movie",
-              adult: item.adult || false,
-              backdrop_path: item.backdrop_path,
-              id: item.id,
-              poster_path: item.poster_path,
-              release_date: releaseDate || "",
-              title,
-              vote_average: item.vote_average,
-              saved_date: new Date().toISOString(),
-            };
+            const isActive = idx === currentIndex;
 
             return (
-              <div key={item.id || idx} className="relative h-full w-full flex-none overflow-hidden">
-                {/* Background Backdrop: Vibrant, Crisp, 100% Brightness */}
+              <div
+                key={item.id || idx}
+                data-active={isActive}
+                className="sf-frame relative size-full flex-none overflow-hidden"
+              >
+                {/* Artwork — the colour source for the entire interface */}
                 <img
                   src={bgUrl}
                   alt={title}
-                  className="absolute inset-0 size-full object-cover object-center sm:object-top filter brightness-100 contrast-[1.03] saturate-[1.05] pointer-events-none"
+                  className={cn(
+                    "absolute inset-0 size-full object-cover object-center transition-transform duration-[6000ms] ease-out",
+                    isActive ? "scale-[1.03]" : "scale-100",
+                  )}
                   draggable={false}
                 />
 
-                {/* Cinematic Vignette Gradients */}
-                {/* Bottom smooth fade to content section */}
-                <div className="absolute inset-x-0 bottom-0 h-36 sm:h-48 md:h-56 bg-linear-to-t from-[#141414] via-[#141414]/50 to-transparent pointer-events-none z-10" />
-                {/* Left subtle vignette only behind text */}
-                <div className="absolute inset-y-0 left-0 w-full sm:w-3/4 md:w-3/5 bg-linear-to-r from-[#141414]/85 via-[#141414]/35 via-50% to-transparent pointer-events-none z-10" />
-                {/* Top subtle navbar blend */}
-                <div className="absolute top-0 inset-x-0 h-14 bg-linear-to-b from-black/20 to-transparent pointer-events-none z-10" />
-
-                {/* Slide Content */}
-                <div className="absolute bottom-6 sm:bottom-10 md:bottom-16 lg:bottom-20 left-4 md:left-12 right-4 md:right-auto max-w-xl lg:max-w-2xl flex flex-col gap-2 sm:gap-2.5 md:gap-3 z-20">
-                  {/* Netflix Brand Tagline / Badge */}
-                  <div className="flex items-center gap-1.5 sm:gap-2">
-                    <div className="flex items-center justify-center h-4 w-3.5 sm:h-5 sm:w-4 rounded-xs bg-linear-to-b from-[#E50914] to-[#B81D24] shadow-xs">
-                      <span className="text-[9px] sm:text-[11px] font-black text-white">S</span>
-                    </div>
-                    <span className="text-[10px] sm:text-xs md:text-sm font-extrabold tracking-[0.18em] sm:tracking-[0.22em] text-white uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                      {isTv ? "SNAPFLIX ORIGINAL" : "SNAPFLIX FILM"}
-                    </span>
-                    <span className="bg-[#E50914] text-white text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded-xs tracking-wider uppercase drop-shadow-sm">
-                      TOP {idx + 1}
-                    </span>
-                  </div>
-
-                  {/* Title */}
-                  <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight drop-shadow-[0_4px_14px_rgba(0,0,0,0.95)] line-clamp-2 leading-tight">
-                    {title}
-                  </h1>
-
-                  {/* Top Trending Badge & Metadata */}
-                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 md:gap-3 text-[11px] sm:text-xs md:text-sm">
-                    <div className="flex items-center gap-1 bg-black/60 border border-white/20 px-1.5 sm:px-2 py-0.5 rounded text-white font-bold">
-                      <span className="text-[#E50914] font-black text-[10px] sm:text-xs">TOP 10</span>
-                      <span className="text-[10px] sm:text-xs">#{idx + 1} Today</span>
-                    </div>
-                    <span className="font-extrabold text-[#46D369] drop-shadow-sm">
-                      {matchPercentage}% Match
-                    </span>
-                    <span className="text-gray-300 font-medium">{releaseYear}</span>
-                    <span className="border border-white/40 px-1 py-0.2 sm:px-1.5 sm:py-0.5 rounded-xs text-[10px] sm:text-[11px] font-bold text-white uppercase">
-                      {item.adult ? "18+" : "16+"}
-                    </span>
-                    <span className="hidden sm:inline-block border border-white/30 px-1.5 py-0.5 rounded-xs text-[11px] font-bold text-gray-200">
-                      4K Ultra HD
-                    </span>
-                    <span className="hidden md:inline-block border border-white/30 px-1.5 py-0.5 rounded-xs text-[11px] font-bold text-gray-200">
-                      5.1 Audio
-                    </span>
-                  </div>
-
-                  {/* Overview */}
-                  <p className="text-xs sm:text-sm md:text-base text-gray-200/90 leading-relaxed line-clamp-2 sm:line-clamp-3 max-w-lg drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                    {item.overview || "Stream this blockbuster title now exclusively on SnapFlix."}
-                  </p>
-
-                  {/* Action Buttons */}
-                  <div className="flex items-center gap-2 sm:gap-3 pt-1 sm:pt-2">
-                    <Link
-                      href={playHref}
-                      className="group/btn flex items-center gap-1.5 sm:gap-2.5 rounded-md bg-white px-4 sm:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-bold text-black shadow-lg transition-all duration-200 hover:bg-white/80 active:scale-95 shrink-0"
-                    >
-                      <FaPlay className="text-xs sm:text-sm md:text-base transition-transform group-hover/btn:scale-110" />
-                      <span>Play</span>
-                    </Link>
-
-                    <Link
-                      href={detailHref}
-                      className="flex items-center gap-1.5 sm:gap-2 rounded-md bg-white/25 backdrop-blur-md px-3.5 sm:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-semibold text-white transition-all duration-200 hover:bg-white/35 active:scale-95 border border-white/10 shrink-0"
-                    >
-                      <IoInformationCircleOutline size={18} className="sm:size-[22px]" />
-                      <span>More Info</span>
-                    </Link>
-
-                    <div className="scale-95 sm:scale-105 shrink-0">
-                      <BookmarkButton data={bookmarkData} />
-                    </div>
-                  </div>
-                </div>
+                {/* Cinematic vignettes keep copy legible over any artwork */}
+                <div className="absolute inset-0 bg-linear-to-r from-black/85 via-black/40 to-transparent" />
+                <div className="absolute inset-x-0 top-0 h-20 bg-linear-to-b from-black/50 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-black/90 via-black/45 to-transparent sm:h-48" />
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* Bottom Right: Clean Slide Indicators & Maturity Rating */}
-      <div className="absolute right-4 md:right-12 bottom-6 sm:bottom-10 md:bottom-16 lg:bottom-20 flex items-center gap-2.5 sm:gap-4 z-30">
-        {/* Clean Capsule Slide Indicators */}
-        <div className="flex items-center gap-1.5 sm:gap-2 bg-black/50 backdrop-blur-md px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full border border-white/15">
-          {heroItems.map((_, idx: number) => {
+      {/* Slide Content — single overlay so text never duplicates during the loop */}
+      <div className="pointer-events-none absolute inset-0 z-20 flex flex-col justify-end">
+        <div className="flex w-full flex-col px-4 pb-14 sm:px-6 md:px-12 md:pb-20">
+          <div className="pointer-events-auto flex max-w-[min(36rem,90%)] flex-col gap-3 text-left md:gap-4">
+            {/* Title */}
+            <h1
+              title={activeTitle}
+              className="sf-clamp-2 text-[clamp(1.5rem,3.4vw,3rem)] leading-[1.05] font-bold tracking-tight text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.85)]"
+            >
+              {activeTitle}
+            </h1>
+
+            {/* Metadata, separated by dots like the Netflix billboard */}
+            <div className="nf-meta">
+              <span className="font-medium text-[var(--sf-accent)]">{activeMatch}% Match</span>
+              <span>{activeYear}</span>
+              <span>{activeItem?.adult ? "18+" : "16+"}</span>
+              {activeRuntime && <span>{activeRuntime}</span>}
+              {isTv && activeItem?.number_of_seasons && (
+                <span>
+                  {activeItem.number_of_seasons} Season
+                  {activeItem.number_of_seasons > 1 ? "s" : ""}
+                </span>
+              )}
+            </div>
+
+            {/* Synopsis — clamped to the small screens out of the way */}
+            {activeItem?.overview && (
+              <p className="sf-clamp-2 hidden max-w-lg text-[13px] leading-snug text-white/85 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)] sm:block md:text-sm">
+                {activeItem.overview}
+              </p>
+            )}
+
+            {/* Actions */}
+            <div className="flex flex-wrap items-center gap-2 pt-1 md:gap-3">
+              <Link
+                href={
+                  isTv ? `/watch/tv/${activeItem.id}/1/1` : `/watch/movie/${activeItem.id}`
+                }
+                className="nf-btn nf-btn-play"
+              >
+                <PlayFilled className="size-4" />
+                Play
+              </Link>
+              <Link
+                href={isTv ? `/tv/${activeItem.id}` : `/movie/${activeItem.id}`}
+                className="nf-btn nf-btn-ghost"
+              >
+                <Info className="size-4" />
+                More Info
+              </Link>
+              {bookmarkData && (
+                <span className="nf-btn nf-btn-icon">
+                  <BookmarkButton data={bookmarkData} isTooltipDisabled />
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Slide indicators, centred the way Netflix stacks its billboards */}
+      <div className="absolute inset-x-0 bottom-5 z-30 flex items-end justify-center gap-3 px-4">
+        <div className="flex items-center gap-2">
+          {heroItems.map((_, idx) => {
             const isCurrent = idx === currentIndex;
             return (
               <button
-                key={idx}
+                key={`hero-dot-${idx}`}
+                type="button"
                 onClick={() => handleSlideClick(idx)}
-                aria-label={`Slide ${idx + 1}`}
-                className="group/dot relative h-2 rounded-full overflow-hidden transition-all duration-300 focus:outline-hidden cursor-pointer"
-                style={{ width: isCurrent ? "28px" : "10px" }}
-              >
-                <div
-                  className={`h-full w-full rounded-full transition-colors duration-300 ${
-                    isCurrent
-                      ? "bg-[#E50914] shadow-[0_0_8px_rgba(229,9,20,0.8)]"
-                      : "bg-white/40 group-hover/dot:bg-white/75"
-                  }`}
-                />
-              </button>
+                aria-label={`Show slide ${idx + 1}`}
+                aria-current={isCurrent}
+                className={cn(
+                  "size-2 cursor-pointer rounded-full transition-colors duration-300",
+                  isCurrent ? "bg-white" : "bg-white/35 hover:bg-white/70",
+                )}
+              />
             );
           })}
         </div>
-
-        {/* Maturity Rating Pill */}
-        <div className="hidden sm:flex items-center bg-[#141414]/70 border-l-3 border-[#E50914] py-1.5 pl-3 pr-4 backdrop-blur-xs text-xs font-bold text-gray-200 uppercase tracking-wider">
-          {heroItems[currentIndex]?.adult ? "TV-MA / 18+" : "TV-14 / 16+"}
-        </div>
       </div>
-    </div>
+
+    </section>
   );
 };
+
+/** Loading placeholder that mirrors the hero's final layout. */
+const HeroSkeleton = () => (
+  <div className="sf-hero relative flex h-[56dvh] max-h-[640px] min-h-[380px] w-full flex-col justify-end overflow-hidden bg-[#181818] sm:h-[62dvh] lg:h-[70dvh] 2xl:h-[76dvh]">
+    <Skeleton className="absolute inset-0 size-full rounded-sf opacity-20" />
+    <div className="relative z-10 flex flex-col gap-3 px-4 pb-20 sm:px-6 md:px-12">
+      <Skeleton className="h-8 w-[min(22rem,70%)] rounded-sf opacity-40 sm:h-12" />
+      <Skeleton className="h-4 w-52 rounded-sf opacity-30" />
+      <div className="flex gap-2 pt-1">
+        <Skeleton className="h-10 w-28 rounded-sf opacity-40" />
+        <Skeleton className="h-10 w-32 rounded-sf opacity-30" />
+      </div>
+    </div>
+  </div>
+);
 
 export default NetflixHeroBillboard;

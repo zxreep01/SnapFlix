@@ -115,7 +115,7 @@ const SearchList = () => {
         return (
           <h5 className="mt-56 text-center text-xl">
             No {content === "movie" ? "movies" : "TV series"} found with query{" "}
-            <span className="text-warning font-semibold">"{submittedSearchQuery}"</span>
+            <span className="text-warning font-medium">"{submittedSearchQuery}"</span>
           </h5>
         );
       }
@@ -125,9 +125,9 @@ const SearchList = () => {
           <h5 className="text-center text-xl">
             <span className="motion-preset-focus">
               Found{" "}
-              <span className="text-success font-semibold">{data?.pages[0].total_results}</span>{" "}
+              <span className="text-success font-medium">{data?.pages[0].total_results}</span>{" "}
               {content === "movie" ? "movies" : "TV series"} with query{" "}
-              <span className="text-warning font-semibold">"{submittedSearchQuery}"</span>
+              <span className="text-warning font-medium">"{submittedSearchQuery}"</span>
             </span>
           </h5>
           <div className="movie-grid">
@@ -187,8 +187,8 @@ const SearchList = () => {
       ) : (
         <div className="flex flex-col items-center gap-6 w-full max-w-7xl px-4 md:px-8 mt-2">
           <div className="flex items-center gap-2 self-start">
-            <span className="w-1.5 h-6 bg-[#E50914] rounded-full inline-block" />
-            <h3 className="text-xl md:text-2xl font-black text-white tracking-wide">
+            <span className="w-1.5 h-6 bg-[var(--sf-accent)] rounded-full inline-block" />
+            <h3 className="text-xl md:text-2xl font-bold text-white tracking-wide">
               Popular on SnapFlix
             </h3>
           </div>

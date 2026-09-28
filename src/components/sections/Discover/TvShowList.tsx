@@ -3,6 +3,7 @@
 import BackToTopButton from "@/components/ui/button/BackToTopButton";
 import Loop from "@/components/ui/other/Loop";
 import PosterCardSkeleton from "@/components/ui/other/PosterCardSkeleton";
+import Reveal from "@/components/ui/other/Reveal";
 import useDiscoverFilters from "@/hooks/useDiscoverFilters";
 import useFetchDiscoverTvShows from "@/hooks/useFetchDiscoverTvShow";
 import { DiscoverTvShowsFetchQueryType } from "@/types/movie";
@@ -40,37 +41,37 @@ const TvShowDiscoverList = () => {
 
   if (status === "error" || !data) {
     return (
-      <div className="flex flex-col items-center justify-center gap-10">
-        <div className="movie-grid">
+      <div className="flex flex-col items-center justify-center gap-8">
+        <Reveal className="movie-grid" defer>
           {MOCK_TV_SHOWS.map((tv) => (
             <TvShowPosterCard key={tv.id} tv={tv as any} variant="bordered" />
           ))}
-        </div>
+        </Reveal>
       </div>
     );
   }
 
   if (isPending) {
     return (
-      <div className="flex flex-col items-center justify-center gap-10">
-        <div className="movie-grid">
+      <div className="flex flex-col items-center justify-center gap-8">
+        <Reveal className="movie-grid" defer>
           <Loop count={20} prefix="SkeletonDiscoverPosterCard">
             <PosterCardSkeleton variant="bordered" />
           </Loop>
-        </div>
+        </Reveal>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center gap-10">
-      <div className="movie-grid">
+    <div className="flex flex-col items-center justify-center gap-8">
+      <Reveal className="movie-grid" defer>
         {data.pages.map((page) => {
           return page.results.map((tv) => {
             return <TvShowPosterCard key={tv.id} tv={tv} variant="bordered" />;
           });
         })}
-      </div>
+      </Reveal>
       <div ref={ref} className="flex h-24 items-center justify-center">
         {isFetchingNextPage && (
           <Spinner size="lg" variant="wave" color="warning" label={getLoadingLabel()} />

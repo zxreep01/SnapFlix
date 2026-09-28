@@ -52,10 +52,6 @@ export type SiteConfigType = {
     movies: QueryList<Movie>[];
     tvShows: QueryList<TV>[];
   };
-  themes: {
-    name: "light" | "dark" | "system";
-    icon: React.ReactNode;
-  }[];
   socials?: {
     help?: string;
     privacy?: string;

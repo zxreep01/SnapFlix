@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { siteConfig } from "@/config/site";
-import { BebasNeue, Poppins } from "@/utils/fonts";
 import "../styles/globals.css";
 import "../styles/lightbox.css";
 import Providers from "./providers";
@@ -9,8 +8,7 @@ import BottomNavbar from "@/components/ui/layout/BottomNavbar";
 import Sidebar from "@/components/ui/layout/Sidebar";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
-import { cn } from "@/utils/helpers";
-import { IS_PRODUCTION, SpacingClasses } from "@/utils/constants";
+import { IS_PRODUCTION } from "@/utils/constants";
 import dynamic from "next/dynamic";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Suspense } from "react";
@@ -62,13 +60,17 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html suppressHydrationWarning lang="en" className="dark">
+      {/* Ranade (Indian Type Foundry) is served by Fontshare */}
+      <link rel="preconnect" href="https://api.fontshare.com" />
+      <link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="anonymous" />
+      <link
+        rel="stylesheet"
+        precedence="default"
+        href="https://api.fontshare.com/v2/css?f[]=ranade@400,500,700&display=swap"
+      />
       <body
         suppressHydrationWarning
-        className={cn(
-          "bg-background min-h-dvh antialiased select-none text-foreground overflow-x-hidden",
-          Poppins.className,
-          BebasNeue.variable,
-        )}
+        className="bg-background min-h-dvh overflow-x-hidden text-foreground antialiased select-none"
       >
         <Suspense>
           <NuqsAdapter>
@@ -76,11 +78,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <AdShield />
               {IS_PRODUCTION && <Disclaimer />}
               <TopNavbar />
-              <Sidebar>
-                <main className="w-full min-h-screen overflow-x-hidden">
-                  {children}
-                </main>
-              </Sidebar>
+              {/* Floating panel shell: ambient backdrop + rail + glass panel */}
+              <Sidebar>{children}</Sidebar>
               <BottomNavbar />
             </Providers>
           </NuqsAdapter>

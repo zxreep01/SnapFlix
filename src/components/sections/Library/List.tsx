@@ -13,6 +13,7 @@ import { useDisclosure, useInViewport } from "@mantine/hooks";
 import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
 import { Suspense, useEffect, useMemo, useState, useTransition } from "react";
 import MoviePosterCard from "../Movie/Cards/Poster";
+import Reveal from "@/components/ui/other/Reveal";
 import TvShowPosterCard from "../TV/Cards/Poster";
 import { getLoadingLabel } from "@/utils/movies";
 import { ITEMS_PER_PAGE } from "@/utils/constants";
@@ -134,54 +135,26 @@ const LibraryList = () => {
 
   return (
     <>
-      <div className="relative flex flex-col gap-6 md:gap-8">
-        {/* Header with Title, Count badge, and Subtitle */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-2 border-b border-white/10">
-          <div>
-            <div className="flex items-center gap-3">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-                My Library
-              </h1>
-              {hasItems && (
-                <span className="text-xs sm:text-sm font-semibold px-2.5 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/30">
-                  {sortedWatchlist.length} {sortedWatchlist.length === 1 ? "item" : "items"}
-                </span>
-              )}
-            </div>
-            <p className="text-xs sm:text-sm text-gray-400 mt-1">
-              Your saved {content === "movie" ? "movies" : "TV shows"} and custom watchlist
-            </p>
+      <div className="relative flex flex-col gap-5 md:gap-7">
+        {/* Heading with the saved count */}
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-xl font-bold text-white md:text-2xl">My Library</h1>
+            {hasItems && (
+              <span className="text-[13px] font-medium text-white/50">
+                {sortedWatchlist.length}
+              </span>
+            )}
           </div>
-
-          {/* Action buttons (Clear button on tablet/desktop/TV) */}
-          {hasItems && (
-            <div className="hidden sm:flex items-center gap-2">
-              <Button
-                startContent={<Trash />}
-                color="danger"
-                variant="flat"
-                size="sm"
-                className="font-medium text-xs md:text-sm"
-                onPress={() => {
-                  if (user) open();
-                }}
-                isLoading={clearWatchlistMutation.isPending || isPending}
-              >
-                Clear Watchlist
-              </Button>
-            </div>
-          )}
         </div>
 
-        {/* Responsive Toolbar: Switcher & Sort Controls */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 bg-[#181818]/60 p-2 sm:p-3 rounded-2xl border border-white/5 backdrop-blur-sm">
+        {/* Toolbar: switcher and sort */}
+        <div className="flex flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-center sm:gap-4">
           {/* Switcher */}
-          <div className="flex justify-center sm:justify-start">
-            <ContentTypeSelection />
-          </div>
+          <ContentTypeSelection />
 
           {/* Sort & Mobile Clear Controls */}
-          <div className="flex items-center justify-between sm:justify-end gap-2.5 w-full sm:w-auto">
+          <div className="flex w-full items-center justify-between gap-2.5 sm:w-auto">
             <div className="w-full sm:w-44">
               <Select
                 aria-label="Sort by"
@@ -204,7 +177,7 @@ const LibraryList = () => {
             </div>
 
             {hasItems && (
-              <div className="sm:hidden shrink-0">
+              <div className="shrink-0">
                 <Button
                   isIconOnly
                   aria-label="Clear Watchlist"
@@ -233,7 +206,7 @@ const LibraryList = () => {
           />
         ) : hasItems ? (
           <>
-            <div className="movie-grid">
+            <Reveal className="movie-grid">
               {sortedWatchlist.map((data) => {
                 if (data.type === "tv") {
                   return (
@@ -272,7 +245,7 @@ const LibraryList = () => {
                   </Suspense>
                 );
               })}
-            </div>
+            </Reveal>
             <div ref={ref} className="flex h-24 items-center justify-center">
               {isFetchingNextPage && (
                 <Spinner
@@ -290,9 +263,9 @@ const LibraryList = () => {
             </div>
           </>
         ) : (
-          <div className="flex flex-col items-center justify-center min-h-[35vh] sm:min-h-[40vh] gap-4 text-center px-4 py-12 rounded-2xl bg-white/[0.02] border border-white/5 mt-4">
+          <div className="flex flex-col items-center justify-center min-h-[35vh] sm:min-h-[40vh] gap-4 text-center px-4 py-12 rounded-sf bg-white/[0.02] border border-white/5 mt-4">
             <div className="size-16 rounded-full bg-white/5 flex items-center justify-center text-gray-500 mb-1">
-              <TbFolder className="size-8 text-gray-400" />
+              <TbFolder className="size-6 text-gray-500" />
             </div>
             <h3 className="text-lg sm:text-xl font-bold text-white">
               No {content === "movie" ? "movies" : "TV shows"} saved yet

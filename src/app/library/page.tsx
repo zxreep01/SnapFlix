@@ -26,11 +26,11 @@ const LibraryPage: NextPage = async () => {
 
   return (
     <Suspense>
-      <div className="w-full min-h-[calc(100dvh-80px)] pt-20 sm:pt-24 pb-28 md:pb-16 px-4 sm:px-6 md:px-12 max-w-7xl 2xl:max-w-[1800px] mx-auto">
+      <div className="mx-auto w-full max-w-[1600px] px-4 pt-8 pb-28 md:px-12 md:pb-14">
         {error || !user ? (
           <UnauthorizedNotice
             title="Sign in to access your library"
-            description="Create a free account to save your favorite movies and TV shows!"
+            description="Create a free account to keep your watchlist in one place."
           />
         ) : (
           <LibraryList />

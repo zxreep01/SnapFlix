@@ -78,14 +78,21 @@ const SHARE_BUTTONS = [
 ];
 
 const ShareButton: React.FC<ShareButtonProps> = ({ title, id, type = "movie" }) => {
-  const url = `https://${location.hostname}/${type}/${id}`;
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const url = `${origin}/${type}/${id}`;
   const description = `Watch and stream ${title} on SnapFlix!`;
 
   const [opened, { open, close }] = useDisclosure(false);
 
   return (
     <>
-      <IconButton icon={<Share size={20} />} variant="ghost" tooltip="Share" onPress={open} />
+      <IconButton
+        icon={<Share size={20} />}
+        variant="light"
+        tooltip="Share"
+        onPress={open}
+        className="nf-btn nf-btn-icon"
+      />
       <VaulDrawer open={opened} onClose={close} backdrop="blur" title="Share via">
         <div className="space-y-8 px-6">
           <div className="grid grid-cols-4 gap-x-5 gap-y-3 md:gap-x-10 md:gap-y-5">

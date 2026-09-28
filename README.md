@@ -40,6 +40,18 @@ SnapFlix is a private, proprietary movies and TV shows streaming platform built 
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+## Deployment
+
+The app ships to Cloudflare Workers through the OpenNext adapter, configured in `wrangler.jsonc`:
+
+```bash
+npm run build:worker   # next build + OpenNext bundle into .open-next
+npm run preview        # serve the Worker locally through wrangler dev
+npm run deploy         # deploy the Worker to Cloudflare
+```
+
+Wrangler runs the build script automatically before `dev`, `preview` and `deploy`, so Workers Builds needs no extra build configuration.
+
 ## Contributing
 
 Contributions, issues, and feature requests are always welcome!  

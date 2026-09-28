@@ -7,6 +7,7 @@ import { useScrollIntoView } from "@mantine/hooks";
 import { useQuery } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
 import { Suspense, use } from "react";
+import Reveal from "@/components/ui/other/Reveal";
 import dynamic from "next/dynamic";
 import { NextPage } from "next";
 import { MOCK_TV_SHOWS } from "@/utils/mockData";
@@ -101,19 +102,29 @@ const TVShowDetailPage: NextPage<Params<{ id: number }>> = ({ params }) => {
           <Spinner size="lg" className="absolute-center" color="warning" variant="simple" />
         }
       >
-        {/* Full-bleed Home-Style Netflix Hero Billboard */}
-        <DetailHeroBillboard
-          media={tv}
-          type="tv"
-          onViewEpisodesClick={() => scrollIntoView({ alignment: "center" })}
-        />
+        {/* Full-bleed billboard that runs under the translucent top bar */}
+        <div className="-mt-14 md:-mt-16">
+          <DetailHeroBillboard
+            media={tv}
+            type="tv"
+            onViewEpisodesClick={() => scrollIntoView({ alignment: "center" })}
+          />
+        </div>
 
         {/* Episodes, Cast, Photos & Related Rails */}
-        <div className="mx-auto max-w-7xl 2xl:max-w-[1800px] w-full px-4 md:px-12 flex flex-col gap-12 pb-16">
-          <TvShowsSeasonsSelection ref={targetRef} id={id} seasons={tv.seasons} />
-          <TvShowCastsSection casts={tv.credits.cast} />
-          <PhotosSection images={tv.images.backdrops} type="tv" />
-          <TvShowRelatedSection tv={tv} />
+        <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-8 px-4 pb-16 md:px-12">
+          <Reveal>
+            <TvShowsSeasonsSelection ref={targetRef} id={id} seasons={tv.seasons} />
+          </Reveal>
+          <Reveal defer>
+            <TvShowCastsSection casts={tv.credits.cast} />
+          </Reveal>
+          <Reveal defer>
+            <PhotosSection images={tv.images.backdrops} type="tv" />
+          </Reveal>
+          <Reveal defer>
+            <TvShowRelatedSection tv={tv} />
+          </Reveal>
         </div>
       </Suspense>
     </div>

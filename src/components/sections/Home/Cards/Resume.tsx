@@ -1,11 +1,10 @@
 "use client";
 
-import Rating from "@/components/ui/other/Rating";
+import { useCoverTheme } from "@/components/ui/theme/CoverThemeProvider";
 import type { HistoryDetail } from "@/types/movie";
 import { cn } from "@/utils/helpers";
-import { PlayOutline } from "@/utils/icons";
+import { PlayFilled } from "@/utils/icons";
 import { formatDuration, getImageUrl, timeAgo } from "@/utils/movies";
-import { Chip, Image, Progress } from "@heroui/react";
 import Link from "next/link";
 import { useCallback } from "react";
 
@@ -13,9 +12,17 @@ interface ResumeCardProps {
   media: HistoryDetail;
 }
 
+/**
+ * Wide resume card for the "Continue Watching" rail.
+ *
+ * Progress is painted with the current cover-art accent, so the rail keeps
+ * matching whatever artwork is on screen.
+ */
 const ResumeCard: React.FC<ResumeCardProps> = ({ media }) => {
+  const { setFocusTheme, clearFocusTheme } = useCoverTheme();
   const releaseYear = new Date(media.release_date).getFullYear();
   const posterImage = getImageUrl(media.backdrop_path || media.poster_path || "");
+  const completion = media.duration > 0 ? Math.min(100, (media.last_position / media.duration) * 100) : 0;
 
   const getRedirectLink = useCallback(() => {
     if (media.type === "movie") {
@@ -28,70 +35,56 @@ const ResumeCard: React.FC<ResumeCardProps> = ({ media }) => {
   }, [media]);
 
   return (
-    <>
-      <Link href={getRedirectLink()}>
-        <div
-          className={cn(
-            "group motion-preset-focus relative aspect-video overflow-hidden rounded-lg text-white",
-          )}
-        >
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="z-10 flex h-12 w-12 items-center justify-center rounded-full bg-black/35 opacity-0 backdrop-blur-xs transition-opacity group-hover:opacity-100">
-              <PlayOutline className="h-6 w-6 text-white" />
-            </div>
-          </div>
-          {media.type === "tv" && (
-            <Chip
-              size="sm"
-              variant="faded"
-              radius="sm"
-              color="warning"
-              className="absolute right-2 top-2 z-20"
-              classNames={{ content: "font-bold" }}
-            >
-              S{media.season} E{media.episode}
-            </Chip>
-          )}
-          <Chip
-            radius="sm"
-            size="sm"
-            variant="faded"
-            className="absolute left-2 top-2 z-20"
-            color={media.completed ? "success" : undefined}
-          >
-            {media.completed ? "Completed" : formatDuration(media.last_position)}
-          </Chip>
-          <Progress
-            size="sm"
-            radius="md"
-            aria-label="Watch progress"
-            className="absolute bottom-0 z-10 w-full"
-            color={media.type === "movie" ? "primary" : "warning"}
-            value={(media.last_position / media.duration) * 100}
-          />
-          <div className="absolute bottom-0 z-2 h-1/2 w-full bg-linear-to-t from-black from-1%" />
-          <div className="absolute bottom-0 z-3 flex w-full flex-col gap-1 p-3">
-            <div className="grid grid-cols-[1fr_auto] items-end justify-between gap-5">
-              <h6 className="truncate text-sm font-semibold">{media.title}</h6>
-              <p className="truncate text-xs">{timeAgo(media.updated_at)}</p>
-            </div>
-            <div className="flex justify-between text-xs">
-              <p>{releaseYear}</p>
-              <Rating rate={media.vote_average} />
-            </div>
-          </div>
-          <Image
-            alt={media.title}
-            src={posterImage}
-            radius="none"
-            className="z-0 aspect-video h-[150px] object-cover object-center transition group-hover:scale-110 md:h-[200px]"
-            classNames={{
-              img: "group-hover:opacity-70",
-            }}
-          />
+    <Link
+      href={getRedirectLink()}
+      onMouseEnter={() =>
+        setFocusTheme([
+          getImageUrl(media.backdrop_path || undefined, "backdrop", true),
+          getImageUrl(media.poster_path || undefined),
+        ])
+      }
+      onMouseLeave={clearFocusTheme}
+      className="group block w-[228px] shrink-0 sm:w-[264px] lg:w-[300px]"
+    >
+      <div
+        className={cn(
+          "relative aspect-video overflow-hidden rounded-sf bg-[#2f2f2f]",
+          "transition-transform duration-300 ease-sf group-hover:scale-[1.03]",
+        )}
+      >
+        <img
+          src={posterImage}
+          alt={media.title}
+          className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/25 to-transparent" />
+
+        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
+
+        {/* Play affordance */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="flex size-11 items-center justify-center rounded-full border border-white/60 bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <PlayFilled className="size-4 text-white" />
+          </span>
         </div>
-      </Link>
-    </>
+
+        {/* Copy */}
+        <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-2.5">
+          <h6 className="truncate text-[13px] font-medium text-white">{media.title}</h6>
+          <div className="flex items-center gap-2 text-[11px] text-white/60">
+            <span className="truncate">{releaseYear}</span>
+            <span className="shrink-0">{timeAgo(media.updated_at)}</span>
+          </div>
+        </div>
+
+        {/* Progress bar */}
+        <div className="absolute inset-x-0 bottom-0 h-[3px] bg-white/25">
+          <div className="h-full bg-[var(--sf-accent)]" style={{ width: `${completion}%` }} />
+        </div>
+      </div>
+    </Link>
   );
 };
+
 export default ResumeCard;
