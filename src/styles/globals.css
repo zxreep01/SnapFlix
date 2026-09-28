@@ -205,16 +205,16 @@
     filter: blur(14px);
     opacity: 0.45;
     transform: scale(1.02);
+    transition:
+      filter 1.2s var(--sf-ease),
+      opacity 1.2s var(--sf-ease),
+      transform 6s linear;
   }
 
   .sf-frame[data-active="true"] {
     filter: blur(0);
     opacity: 1;
     transform: none;
-    transition:
-      filter 1.2s var(--sf-ease),
-      opacity 1.2s var(--sf-ease),
-      transform 6s linear;
   }
 
   @media (prefers-reduced-motion: reduce) {
