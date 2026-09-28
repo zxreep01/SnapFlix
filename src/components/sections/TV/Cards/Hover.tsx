@@ -85,7 +85,7 @@ const TvShowHoverCard: React.FC<{ id: number; fullWidth?: boolean }> = ({ id, fu
           </Chip>
           <h4 className="text-xl font-bold text-white">{fullTitle}</h4>
           <div className="flex flex-wrap items-center gap-2 text-xs md:gap-2">
-            <span className="font-extrabold text-[var(--sf-accent)]">
+            <span className="font-bold text-[var(--sf-accent)]">
               {Math.min(99, Math.round((tv.vote_average || 7.5) * 10 + 8))}% Match
             </span>
             <div className="flex items-center gap-1 text-gray-300">

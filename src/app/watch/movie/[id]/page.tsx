@@ -164,7 +164,7 @@ const WatchMoviePage: NextPage<Params<{ id: string }>> = ({ params }) => {
           <button
             onClick={handleBack}
             aria-label="Go back"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/80 hover:bg-black text-white/90 hover:text-white backdrop-blur-md border border-white/20 shadow-xl transition-all hover:scale-105 active:scale-95 text-xs font-semibold cursor-pointer group"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/80 hover:bg-black text-white/90 hover:text-white backdrop-blur-md border border-white/20 shadow-xl transition-all hover:scale-105 active:scale-95 text-xs font-medium cursor-pointer group"
           >
             <IoArrowBack size={16} className="transition-transform group-hover:-translate-x-0.5" />
             <span>Back</span>
@@ -177,7 +177,7 @@ const WatchMoviePage: NextPage<Params<{ id: string }>> = ({ params }) => {
         <div className="flex-1 lg:flex-none lg:w-[380px] xl:w-[440px] 2xl:w-[480px] overflow-y-auto w-full bg-[#141414] text-white px-4 sm:px-6 py-4 space-y-5 pb-20 lg:pb-8 player-responsive-details">
           {/* Title & Metadata Header */}
           <div className="space-y-1.5 border-b border-white/10 pb-3">
-            <h1 className="text-lg sm:text-xl font-extrabold text-white tracking-tight line-clamp-1">
+            <h1 className="text-lg sm:text-xl font-bold text-white tracking-tight line-clamp-1">
               {movieTitle}
             </h1>
 
@@ -253,13 +253,13 @@ const WatchMoviePage: NextPage<Params<{ id: string }>> = ({ params }) => {
                           className="size-full object-cover group-hover:scale-105 transition-transform duration-200"
                         />
                       </div>
-                      <h4 className="text-xs font-semibold text-white truncate group-hover:text-primary transition-colors">
+                      <h4 className="text-xs font-medium text-white truncate group-hover:text-primary transition-colors">
                         {rec.title}
                       </h4>
                       <div className="flex items-center justify-between text-[10px] text-gray-400">
                         <span>{rec.release_date ? new Date(rec.release_date).getFullYear() : ""}</span>
                         {rec.vote_average && (
-                          <span className="flex items-center gap-1 font-semibold text-[var(--sf-accent)]">
+                          <span className="flex items-center gap-1 font-medium text-[var(--sf-accent)]">
                             <Star className="size-2.5" />
                             {rec.vote_average.toFixed(1)}
                           </span>

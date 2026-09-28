@@ -28,10 +28,10 @@ const AboutPage: NextPage = () => {
           </Suspense>
 
           <div className="mt-6 flex flex-col items-center gap-3 rounded-2xl border border-white/10 bg-[#181818] px-6 py-5 text-center">
-            <h3 className="text-sm font-semibold text-white">Still need help?</h3>
+            <h3 className="text-sm font-medium text-white">Still need help?</h3>
             <a
               href="mailto:support@snapflix.internal"
-              className="rounded-full bg-[var(--sf-accent)] px-4 py-1.5 text-[11px] font-semibold text-[var(--sf-on-accent)] transition-[filter] hover:brightness-110"
+              className="rounded-full bg-[var(--sf-accent)] px-4 py-1.5 text-[11px] font-medium text-[var(--sf-on-accent)] transition-[filter] hover:brightness-110"
             >
               Contact support
             </a>

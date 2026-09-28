@@ -144,7 +144,7 @@ const LibraryList = () => {
               <span className="sf-board-title">My Library</span>
             </span>
             {hasItems && (
-              <span className="rounded-full border border-primary/30 bg-primary/20 px-2 py-0.5 text-[11px] font-semibold text-primary">
+              <span className="rounded-full border border-primary/30 bg-primary/20 px-2 py-0.5 text-[11px] font-medium text-primary">
                 {sortedWatchlist.length}
               </span>
             )}

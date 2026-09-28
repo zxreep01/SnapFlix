@@ -154,7 +154,7 @@ const Top10Row: React.FC<Top10RowProps> = ({ contentType: propContentType }) => 
                           </div>
 
                           <div className="absolute inset-x-0 bottom-0 z-20 p-2">
-                            <p className="truncate text-[11px] font-semibold text-white drop-shadow-md">
+                            <p className="truncate text-[11px] font-medium text-white drop-shadow-md">
                               {title}
                             </p>
                           </div>

@@ -60,7 +60,7 @@ const UserProfileButton: React.FC<UserProfileButtonProps> = ({
               icon: <User className="text-zinc-400" />,
               showDivider: true,
               isReadOnly: true,
-              className: "font-semibold text-white cursor-default select-none",
+              className: "font-medium text-white cursor-default select-none",
             },
             {
               label: "Logout",

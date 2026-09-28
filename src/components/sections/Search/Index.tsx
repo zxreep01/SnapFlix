@@ -87,7 +87,7 @@ const SearchIndex: React.FC = () => {
   return (
     <div className="mx-auto flex w-full max-w-[1600px] flex-col items-center gap-6 px-4 pt-6 pb-16 sm:px-5 md:px-8">
       {/* Centred search field */}
-      <div className="flex w-full max-w-xl items-center gap-2.5 rounded-full border border-[color:var(--sf-hairline)] bg-white/[0.05] px-4 py-2.5 backdrop-blur-xl transition-colors focus-within:border-[color:var(--sf-accent)]">
+      <div className="flex w-full max-w-xl items-center gap-2.5 rounded-full border border-white/12 bg-white/[0.05] px-4 py-2.5 backdrop-blur-xl transition-[border-color,box-shadow] duration-500 ease-sf focus-within:border-[color:var(--sf-accent)] focus-within:shadow-[0_0_28px_var(--sf-glow-soft)]">
         <IoSearchOutline className="size-4 shrink-0 text-white/50" />
         <input
           value={query}

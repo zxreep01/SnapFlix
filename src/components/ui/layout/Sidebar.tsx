@@ -46,6 +46,7 @@ const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               "backdrop-blur-2xl",
               "rounded-t-[22px] rounded-b-none border-b-0",
               "md:rounded-[26px] md:border-b",
+              "shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]",
             ],
           )}
         >

@@ -234,7 +234,7 @@ const DiscoverFilters: React.FC = () => {
                   type="button"
                   onClick={() => handleSelectGenre(null)}
                   className={cn(
-                    "w-full px-2.5 py-1.5 rounded-lg text-xs font-semibold text-left transition-colors flex items-center justify-between cursor-pointer",
+                    "w-full px-2.5 py-1.5 rounded-lg text-xs font-medium text-left transition-colors flex items-center justify-between cursor-pointer",
                     !selectedGenre
                       ? "bg-[var(--sf-accent)] text-white"
                       : "text-zinc-300 hover:text-white hover:bg-white/10",
@@ -258,7 +258,7 @@ const DiscoverFilters: React.FC = () => {
                         className={cn(
                           "px-2 py-1.5 rounded-md text-xs font-medium text-left transition-colors flex items-center justify-between truncate cursor-pointer",
                           isSelected
-                            ? "bg-[var(--sf-accent)] text-white font-semibold"
+                            ? "bg-[var(--sf-accent)] text-white font-medium"
                             : "text-zinc-300 hover:text-white hover:bg-white/10",
                         )}
                       >
@@ -289,7 +289,7 @@ const DiscoverFilters: React.FC = () => {
               className={cn(
                 "px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-150 cursor-pointer select-none",
                 isSelected
-                  ? "bg-white text-black font-semibold shadow-sm"
+                  ? "bg-white text-black font-medium shadow-sm"
                   : "text-zinc-400 hover:text-white hover:bg-white/10",
               )}
             >

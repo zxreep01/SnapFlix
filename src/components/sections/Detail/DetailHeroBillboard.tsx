@@ -77,14 +77,14 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
 
         {/* Tagline if available */}
         {media.tagline && (
-          <p className="text-xs sm:text-sm font-semibold italic text-gray-300 drop-shadow-sm line-clamp-1">
+          <p className="text-xs sm:text-sm font-medium italic text-gray-300 drop-shadow-sm line-clamp-1">
             &ldquo;{media.tagline}&rdquo;
           </p>
         )}
 
         {/* Metadata Badges */}
         <div className="flex flex-wrap items-center gap-1.5 text-[11px] sm:gap-2 sm:text-xs md:gap-3 md:text-sm">
-          <span className="font-semibold text-[var(--sf-accent)] drop-shadow-sm">
+          <span className="font-medium text-[var(--sf-accent)] drop-shadow-sm">
             {matchPercentage}% Match
           </span>
           <span className="font-medium text-gray-300">{releaseYear}</span>
@@ -130,7 +130,7 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
             <button
               type="button"
               onClick={onViewEpisodesClick}
-              className="flex items-center gap-1.5 sm:gap-2 rounded-md bg-white/20 backdrop-blur-md px-3.5 sm:px-5 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-semibold text-white transition-all duration-200 hover:bg-white/30 active:scale-95 border border-white/15 cursor-pointer"
+              className="flex items-center gap-1.5 sm:gap-2 rounded-md bg-white/20 backdrop-blur-md px-3.5 sm:px-5 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-medium text-white transition-all duration-200 hover:bg-white/30 active:scale-95 border border-white/15 cursor-pointer"
             >
               <IoListOutline size={18} className="sm:size-[20px]" />
               <span>Episodes</span>

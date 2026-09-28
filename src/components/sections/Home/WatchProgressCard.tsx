@@ -72,7 +72,7 @@ const WatchProgressCard: React.FC<WatchProgressCardProps> = ({ items }) => {
           <ChevronRight className="size-4" />
         </Link>
 
-        <p className="text-3xl leading-none font-semibold text-white">
+        <p className="text-3xl leading-none font-medium text-white">
           {stats.average}
           <span className="text-lg">%</span>
         </p>

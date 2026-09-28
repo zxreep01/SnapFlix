@@ -39,7 +39,7 @@ const Highlight: React.FC<HighlightProps> = ({
             key={i}
             className={cn({
               "text-background bg-warning rounded-small px-1": markType === "mark",
-              "bg-transparent font-extrabold text-inherit": markType === "bold",
+              "bg-transparent font-bold text-inherit": markType === "bold",
             })}
           >
             {part}

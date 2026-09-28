@@ -75,7 +75,7 @@ const Collections: React.FC<CollectionsProps> = ({ className }) => {
                 {collection.icon}
               </span>
             </span>
-            <span className="w-full truncate text-center text-[10px] font-semibold text-white/60 transition-colors group-hover:text-white sm:text-[11px]">
+            <span className="w-full truncate text-center text-[10px] font-medium text-white/60 transition-colors group-hover:text-white sm:text-[11px]">
               {collection.label}
             </span>
           </Link>

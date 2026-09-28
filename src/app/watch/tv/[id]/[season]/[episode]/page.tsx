@@ -238,7 +238,7 @@ const WatchTvPage: NextPage<
           <button
             onClick={handleBack}
             aria-label="Go back"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/80 hover:bg-black text-white/90 hover:text-white backdrop-blur-md border border-white/20 shadow-xl transition-all hover:scale-105 active:scale-95 text-xs font-semibold cursor-pointer group"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/80 hover:bg-black text-white/90 hover:text-white backdrop-blur-md border border-white/20 shadow-xl transition-all hover:scale-105 active:scale-95 text-xs font-medium cursor-pointer group"
           >
             <IoArrowBack size={16} className="transition-transform group-hover:-translate-x-0.5" />
             <span>Back</span>
@@ -251,11 +251,11 @@ const WatchTvPage: NextPage<
         <div className="flex-1 lg:flex-none lg:w-[380px] xl:w-[440px] 2xl:w-[480px] overflow-y-auto w-full bg-[#141414] text-white px-4 sm:px-6 py-4 space-y-5 pb-20 lg:pb-8 player-responsive-details">
           {/* Title & Active Episode Header */}
           <div className="space-y-1.5 border-b border-white/10 pb-3">
-            <h1 className="text-lg sm:text-xl font-extrabold text-white tracking-tight line-clamp-1">
+            <h1 className="text-lg sm:text-xl font-bold text-white tracking-tight line-clamp-1">
               {seriesName}
             </h1>
             <div className="flex items-center gap-2">
-              <span className="text-xs sm:text-sm font-semibold text-primary">
+              <span className="text-xs sm:text-sm font-medium text-primary">
                 S{currentSeason}:E{currentEpisode}
               </span>
               <span className="text-xs text-gray-400 font-medium line-clamp-1">
@@ -288,7 +288,7 @@ const WatchTvPage: NextPage<
                   size="sm"
                   color="primary"
                   variant="solid"
-                  className="font-semibold text-xs"
+                  className="font-medium text-xs"
                   startContent={<FaForwardStep size={12} />}
                   onPress={() => handleSelectEpisode(currentSeason, currentEpisode + 1)}
                 >
@@ -320,7 +320,7 @@ const WatchTvPage: NextPage<
                     className="w-full"
                     classNames={{
                       trigger: "bg-[#202020] border border-white/10 h-8 min-h-8",
-                      value: "text-xs font-semibold",
+                      value: "text-xs font-medium",
                     }}
                     onChange={(e) => {
                       if (e.target.value) {
@@ -381,7 +381,7 @@ const WatchTvPage: NextPage<
                     {/* Episode Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-1">
-                        <h3 className="text-xs sm:text-sm font-semibold text-white truncate group-hover:text-primary transition-colors">
+                        <h3 className="text-xs sm:text-sm font-medium text-white truncate group-hover:text-primary transition-colors">
                           {ep.episode_number}. {ep.name}
                         </h3>
                         {isPlaying && (

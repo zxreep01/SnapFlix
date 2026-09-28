@@ -51,7 +51,7 @@ const AdsWarning: React.FC = () => {
                 color="danger"
                 href="https://ublockorigin.com/"
                 underline="hover"
-                className="font-semibold"
+                className="font-medium"
               >
                 uBlock Origin
               </Link>{" "}
@@ -62,7 +62,7 @@ const AdsWarning: React.FC = () => {
                 color="success"
                 href="https://adguard.com/"
                 underline="hover"
-                className="font-semibold"
+                className="font-medium"
               >
                 AdGuard
               </Link>

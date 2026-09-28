@@ -91,23 +91,23 @@
   }
 
   h1 {
-    @apply text-xl font-semibold tracking-tight md:text-2xl;
+    @apply text-xl font-medium tracking-tight md:text-2xl;
   }
 
   h2 {
-    @apply text-lg font-semibold tracking-tight md:text-xl;
+    @apply text-lg font-medium tracking-tight md:text-xl;
   }
 
   h3 {
-    @apply text-base font-semibold tracking-tight md:text-lg;
+    @apply text-base font-medium tracking-tight md:text-lg;
   }
 
   h4 {
-    @apply text-sm font-semibold md:text-base;
+    @apply text-sm font-medium md:text-base;
   }
 
   h5 {
-    @apply text-xs font-semibold md:text-sm;
+    @apply text-xs font-medium md:text-sm;
   }
 
   h6 {
@@ -183,7 +183,7 @@
     padding: 0.25rem 0.625rem;
     font-size: 0.6875rem;
     line-height: 1.1rem;
-    font-weight: 600;
+    font-weight: 500;
     letter-spacing: 0.01em;
     color: rgba(255, 255, 255, 0.86);
     backdrop-filter: blur(12px);
@@ -280,7 +280,7 @@
   .sf-board-title {
     overflow: hidden;
     font-size: 0.7rem;
-    font-weight: 600;
+    font-weight: 500;
     letter-spacing: 0.16em;
     color: rgba(255, 255, 255, 0.9);
     text-transform: uppercase;

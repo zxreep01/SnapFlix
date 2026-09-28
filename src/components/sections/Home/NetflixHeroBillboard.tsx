@@ -222,7 +222,7 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
 
             {/* Metadata chips */}
             <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-              <span className="sf-chip !text-[10px] font-semibold text-[var(--sf-accent)]">
+              <span className="sf-chip !text-[10px] font-medium text-[var(--sf-accent)]">
                 {activeMatch}% Match
               </span>
               <span className="sf-chip !text-[10px]">{activeYear}</span>
@@ -257,7 +257,7 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
               </Link>
               <Link
                 href={isTv ? `/tv/${activeItem.id}` : `/movie/${activeItem.id}`}
-                className="sf-glass flex items-center gap-2 rounded-full px-3.5 py-2 text-xs font-semibold text-white transition-colors hover:bg-white/20 sm:px-4"
+                className="sf-glass flex items-center gap-2 rounded-full px-3.5 py-2 text-xs font-medium text-white transition-colors hover:bg-white/20 sm:px-4"
               >
                 <Info className="size-3.5" />
                 More Info
