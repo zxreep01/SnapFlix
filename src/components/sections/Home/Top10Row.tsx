@@ -9,7 +9,6 @@ import { Skeleton, Tooltip } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { FaPlay } from "react-icons/fa6";
-import { ChevronRight } from "@/utils/icons";
 import HoverPosterCard from "../Movie/Cards/Hover";
 import TvShowHoverCard from "../TV/Cards/Hover";
 import useBreakpoints from "@/hooks/useBreakpoints";
@@ -56,8 +55,8 @@ const Top10Row: React.FC<Top10RowProps> = ({ contentType: propContentType }) => 
 
   return (
     <section className="flex min-h-[210px] flex-col gap-2">
-      {/* Centred marquee board instead of a plain heading */}
-      <div className="flex items-center justify-center px-4 sm:px-5 md:px-8">
+      {/* Marquee board heading, aligned with the rails */}
+      <div className="flex items-center justify-between gap-3 px-4 sm:px-5 md:px-8">
         <Link
           href={`/discover?type=todayTrending${isTv ? "&content=tv" : ""}`}
           className="group min-w-0"
@@ -66,10 +65,16 @@ const Top10Row: React.FC<Top10RowProps> = ({ contentType: propContentType }) => 
           <span className="sf-board">
             <span className="sf-bulb" aria-hidden />
             <span className="sf-board-title transition-colors group-hover:text-white">
-              Top 10
+              Top 10 Today
             </span>
-            <ChevronRight className="size-3 shrink-0 text-white/40 transition-transform duration-500 ease-sf group-hover:translate-x-0.5" />
           </span>
+        </Link>
+
+        <Link
+          href={`/discover?type=todayTrending${isTv ? "&content=tv" : ""}`}
+          className="shrink-0 text-[11px] font-medium tracking-wide text-white/45 transition-colors hover:text-white"
+        >
+          See all
         </Link>
       </div>
 
