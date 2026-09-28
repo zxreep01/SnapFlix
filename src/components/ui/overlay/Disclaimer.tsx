@@ -1,7 +1,7 @@
 "use client";
 
-import { memo, useCallback, useMemo, useState } from "react";
-import { useDisclosure, useInterval, useLocalStorage } from "@mantine/hooks";
+import { memo, useState } from "react";
+import { useDisclosure, useLocalStorage } from "@mantine/hooks";
 import {
   Modal,
   ModalContent,
@@ -9,12 +9,11 @@ import {
   ModalBody,
   ModalFooter,
   Button,
+  Checkbox,
   ScrollShadow,
 } from "@heroui/react";
 import { DISCLAIMER_STORAGE_KEY, IS_BROWSER } from "@/utils/constants";
-import { cn } from "@/utils/helpers";
 
-const COUNTDOWN_DURATION = 10;
 const MODAL_SIZE = "3xl";
 const DISCLAIMER_CONTENT = {
   title: "SnapFlix Disclaimer & Terms",
@@ -83,26 +82,16 @@ const Disclaimer: React.FC = () => {
     getInitialValueInEffect: false,
   });
 
-  const [secondsRemaining, setSecondsRemaining] = useState(COUNTDOWN_DURATION);
+  const [hasAcceptedTerms, setHasAcceptedTerms] = useState(false);
 
-  const shouldShowModal = useMemo(() => !hasAgreed && IS_BROWSER, [hasAgreed]);
+  const shouldShowModal = !hasAgreed && IS_BROWSER;
 
   const [isOpen, { close }] = useDisclosure(shouldShowModal);
 
-  useInterval(() => setSecondsRemaining((prev) => Math.max(0, prev - 1)), 1000, {
-    autoInvoke: shouldShowModal && secondsRemaining > 0,
-  });
-
-  const isButtonDisabled = secondsRemaining > 0;
-  const buttonText = useMemo(
-    () => `Agree${isButtonDisabled ? ` (${secondsRemaining})` : ""}`,
-    [isButtonDisabled, secondsRemaining],
-  );
-
-  const handleAgree = useCallback(() => {
+  const handleContinue = () => {
     close();
     setHasAgreed(true);
-  }, [close, setHasAgreed]);
+  };
 
   if (hasAgreed || !IS_BROWSER) {
     return null;
@@ -119,12 +108,12 @@ const Disclaimer: React.FC = () => {
       scrollBehavior="inside"
     >
       <ModalContent>
-        <ModalHeader className="flex flex-col gap-1 text-center text-3xl uppercase">
+        <ModalHeader className="flex flex-col gap-1 text-center text-xl uppercase sm:text-2xl md:text-3xl">
           {DISCLAIMER_CONTENT.title}
         </ModalHeader>
 
         <ModalBody>
-          <ScrollShadow hideScrollBar className="space-y-4">
+          <ScrollShadow hideScrollBar className="space-y-4 text-sm sm:text-base">
             {DISCLAIMER_CONTENT.paragraphs.map((paragraph) => (
               <DisclaimerParagraph
                 key={paragraph.id}
@@ -136,15 +125,24 @@ const Disclaimer: React.FC = () => {
           </ScrollShadow>
         </ModalBody>
 
-        <ModalFooter className="justify-center">
-          <Button
-            className={cn(isButtonDisabled && "pointer-events-auto cursor-not-allowed")}
-            isDisabled={isButtonDisabled}
-            color={isButtonDisabled ? "danger" : "primary"}
-            variant="shadow"
-            onPress={handleAgree}
+        <ModalFooter className="flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <Checkbox
+            size="sm"
+            color="primary"
+            isSelected={hasAcceptedTerms}
+            onValueChange={setHasAcceptedTerms}
+            classNames={{ label: "text-xs text-default-500 sm:text-sm" }}
           >
-            {buttonText}
+            I have read and agree to the disclaimer & terms.
+          </Checkbox>
+          <Button
+            className="w-full sm:w-auto"
+            isDisabled={!hasAcceptedTerms}
+            color="primary"
+            variant="shadow"
+            onPress={handleContinue}
+          >
+            Continue
           </Button>
         </ModalFooter>
       </ModalContent>
