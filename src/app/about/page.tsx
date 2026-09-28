@@ -17,10 +17,11 @@ const AboutPage: NextPage = () => {
       <div className="flex w-full justify-center px-4 py-6 sm:px-5 md:px-8">
         <div className="flex w-full max-w-3xl flex-col gap-6">
           <div className="flex flex-col gap-2 text-center md:text-left border-b border-white/10 pb-6">
-            <h1 className="text-3xl md:text-4xl font-black text-white">
-              SnapFlix <span className="text-[var(--sf-accent)]">Help Center</span>
-            </h1>
-            <p className="text-gray-400 text-sm md:text-base">
+            <span className="sf-board mx-auto min-w-0 md:mx-0">
+              <span className="sf-bulb" aria-hidden />
+              <span className="sf-board-title">SnapFlix Help Center</span>
+            </span>
+            <p className="text-xs text-gray-400 md:text-sm">
               Frequently asked questions and guides for your private streaming experience.
             </p>
           </div>

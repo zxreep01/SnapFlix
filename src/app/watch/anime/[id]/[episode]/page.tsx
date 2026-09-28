@@ -259,7 +259,7 @@ const WatchAnimePage: NextPage<Params<{ id: string; episode: string }>> = ({ par
               {animeDetails?.first_air_date && (
                 <span>{new Date(animeDetails.first_air_date).getFullYear()}</span>
               )}
-              <span className="border border-white/20 px-1 rounded-xs text-[10px] text-gray-300">
+              <span className="border border-white/20 px-1 rounded-md text-[10px] text-gray-300">
                 HD
               </span>
               <span>{episodesList.length} Episodes</span>

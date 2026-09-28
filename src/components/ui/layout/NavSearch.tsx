@@ -9,7 +9,7 @@ import { useClickOutside, useDebouncedValue } from "@mantine/hooks";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { FaPlay } from "react-icons/fa6";
+import { FaPlay, FaStar } from "react-icons/fa6";
 import { IoClose, IoInformationCircleOutline, IoSearchOutline } from "react-icons/io5";
 
 export interface SearchResultItem {
@@ -350,10 +350,10 @@ const NavSearch: React.FC<NavSearchProps> = ({ variant = "bar" }) => {
                       key={idx}
                       className="flex items-center gap-3 p-2 rounded-lg bg-white/5 animate-pulse"
                     >
-                      <div className="w-11 h-15 rounded-xs bg-white/10 shrink-0" />
+                      <div className="w-11 h-15 rounded-md bg-white/10 shrink-0" />
                       <div className="flex flex-col gap-2 flex-1">
-                        <div className="h-3.5 w-3/4 bg-white/10 rounded-xs" />
-                        <div className="h-2.5 w-1/3 bg-white/10 rounded-xs" />
+                        <div className="h-3.5 w-3/4 bg-white/10 rounded-md" />
+                        <div className="h-2.5 w-1/3 bg-white/10 rounded-md" />
                       </div>
                     </div>
                   ))}
@@ -425,11 +425,11 @@ const FloatingListItem: React.FC<FloatingListItemProps> = ({ item, onClose }) =>
           <img
             src={posterUrl}
             alt={item.title}
-            className="w-9 h-13 rounded-xs object-cover bg-[#222] shrink-0 border border-white/10 group-hover:border-white/30 transition-colors"
+            className="w-9 h-13 rounded-md object-cover bg-[#222] shrink-0 border border-white/10 group-hover:border-white/30 transition-colors"
             loading="lazy"
           />
         ) : (
-          <div className="w-9 h-13 rounded-xs bg-[#222] shrink-0 flex items-center justify-center text-[9px] text-gray-500 font-bold border border-white/10">
+          <div className="w-9 h-13 rounded-md bg-[#222] shrink-0 flex items-center justify-center text-[9px] text-gray-500 font-bold border border-white/10">
             {isTv ? "TV" : "MOVIE"}
           </div>
         )}
@@ -441,11 +441,14 @@ const FloatingListItem: React.FC<FloatingListItemProps> = ({ item, onClose }) =>
           </h4>
 
           <div className="flex items-center gap-2 text-[11px] text-gray-300">
-            <span className="bg-[var(--sf-accent)] text-[var(--sf-on-accent)] text-[9px] font-black uppercase px-1 py-0.5 rounded-xs tracking-wider">
+            <span className="bg-[var(--sf-accent)] text-[var(--sf-on-accent)] text-[9px] font-black uppercase px-1 py-0.5 rounded-md tracking-wider">
               {isTv ? "SERIES" : "MOVIE"}
             </span>
             {releaseYear && <span>{releaseYear}</span>}
-            <span className="text-[var(--sf-accent)] font-semibold">★ {rating}</span>
+            <span className="flex items-center gap-1 font-semibold text-[var(--sf-accent)]">
+              <FaStar className="size-2.5" />
+              {rating}
+            </span>
           </div>
 
           {item.overview && (

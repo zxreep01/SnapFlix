@@ -24,7 +24,7 @@ const BottomNavbar = () => {
       className="fixed inset-x-3 bottom-3 z-50 rounded-[22px] border border-white/10 bg-black/55 backdrop-blur-2xl shadow-[0_18px_50px_rgba(0,0,0,0.6)] md:hidden"
       style={{ paddingBottom: "max(0px, env(safe-area-inset-bottom))" }}
     >
-      <div className="mx-auto grid h-16 max-w-lg grid-cols-4 items-center gap-1 px-2">
+      <div className="mx-auto grid h-14 max-w-lg grid-cols-4 items-center gap-1 px-2">
         {siteConfig.navItems.map((item) => {
           const isActive = pathName === item.href;
           return (
@@ -36,19 +36,19 @@ const BottomNavbar = () => {
             >
               <span
                 className={cn(
-                  "flex size-9 items-center justify-center rounded-full transition-all duration-300",
+                  "flex size-8 items-center justify-center rounded-full transition-all duration-500 ease-sf",
                   isActive
                     ? "bg-[var(--sf-accent)] text-[var(--sf-on-accent)] shadow-[0_0_18px_var(--sf-glow)]"
                     : "bg-white/6 text-white/75",
                 )}
               >
-                <span className="block size-[19px]">
+                <span className="block size-4">
                   {isActive ? item.activeIcon : item.icon}
                 </span>
               </span>
               <span
                 className={cn(
-                  "max-w-full truncate text-[10px] leading-none",
+                  "max-w-full truncate text-[9px] leading-none",
                   isActive ? "font-bold text-white" : "font-medium",
                 )}
               >

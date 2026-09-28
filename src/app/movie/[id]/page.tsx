@@ -12,6 +12,7 @@ import { Params } from "@/types";
 import { NextPage } from "next";
 import { MOCK_MOVIES } from "@/utils/mockData";
 import Footer from "@/components/ui/layout/Footer";
+import Reveal from "@/components/ui/other/Reveal";
 const PhotosSection = dynamic(() => import("@/components/ui/other/PhotosSection"));
 const DetailHeroBillboard = dynamic(() => import("@/components/sections/Detail/DetailHeroBillboard"));
 const CastsSection = dynamic(() => import("@/components/sections/Movie/Detail/Casts"));
@@ -84,10 +85,16 @@ const MovieDetailPage: NextPage<Params<{ id: number }>> = ({ params }) => {
         <DetailHeroBillboard media={movie} type="movie" />
 
         {/* Details & Recommended Rails */}
-        <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-10 px-4 pb-16 sm:px-5 md:px-8">
-          <CastsSection casts={movie.credits.cast as Cast[]} />
-          <PhotosSection images={movie.images.backdrops as Image[]} />
-          <RelatedSection movie={movie} />
+        <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-8 px-4 pb-16 sm:px-5 md:px-8">
+          <Reveal>
+            <CastsSection casts={movie.credits.cast as Cast[]} />
+          </Reveal>
+          <Reveal defer>
+            <PhotosSection images={movie.images.backdrops as Image[]} />
+          </Reveal>
+          <Reveal defer>
+            <RelatedSection movie={movie} />
+          </Reveal>
         </div>
       </Suspense>
 

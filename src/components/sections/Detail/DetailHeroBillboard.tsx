@@ -72,7 +72,7 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
       <div className="absolute bottom-6 sm:bottom-8 md:bottom-10 lg:bottom-14 left-4 sm:left-5 md:left-8 right-4 md:right-auto max-w-xl lg:max-w-2xl flex flex-col gap-2 sm:gap-2.5 md:gap-3 z-20">
         {/* Netflix Brand Tagline / Badge */}
         <div className="flex items-center gap-1.5 sm:gap-2">
-          <div className="flex items-center justify-center h-4 w-3.5 sm:h-5 sm:w-4 rounded-xs bg-[var(--sf-accent)] shadow-[0_0_12px_var(--sf-glow-soft)]">
+          <div className="flex size-4 items-center justify-center rounded-full bg-[var(--sf-accent)] shadow-[0_0_12px_var(--sf-glow-soft)]">
             <span className="text-[9px] sm:text-[11px] font-black text-white">S</span>
           </div>
           <span className="text-[10px] sm:text-xs md:text-sm font-extrabold tracking-[0.18em] sm:tracking-[0.22em] text-white uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
@@ -81,7 +81,7 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
         </div>
 
         {/* Title */}
-        <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight drop-shadow-[0_4px_14px_rgba(0,0,0,0.95)] line-clamp-2 leading-tight">
+        <h1 className="line-clamp-2 text-lg leading-tight font-bold tracking-tight text-white drop-shadow-[0_4px_14px_rgba(0,0,0,0.95)] sm:text-2xl md:text-3xl lg:text-4xl">
           {title}
         </h1>
 
@@ -98,23 +98,23 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
             {matchPercentage}% Match
           </span>
           <span className="text-gray-300 font-medium">{releaseYear}</span>
-          <span className="border border-white/40 px-1 py-0.2 sm:px-1.5 sm:py-0.5 rounded-xs text-[10px] sm:text-[11px] font-bold text-white uppercase">
+          <span className="sf-chip !py-0.5 !text-[10px] tracking-[0.14em] uppercase">
             {media.adult ? "18+" : "16+"}
           </span>
           {runtimeText && (
-            <span className="border border-white/30 px-1.5 py-0.5 rounded-xs text-[11px] font-bold text-gray-200">
+            <span className="sf-chip !py-0.5 !text-[10px]">
               {runtimeText}
             </span>
           )}
           {seasonsText && (
-            <span className="border border-white/30 px-1.5 py-0.5 rounded-xs text-[11px] font-bold text-gray-200">
+            <span className="sf-chip !py-0.5 !text-[10px]">
               {seasonsText}
             </span>
           )}
-          <span className="hidden sm:inline-block border border-white/30 px-1.5 py-0.5 rounded-xs text-[11px] font-bold text-gray-200">
+          <span className="sf-chip hidden !py-0.5 !text-[10px] sm:inline-flex">
             4K Ultra HD
           </span>
-          <span className="hidden md:inline-block border border-white/30 px-1.5 py-0.5 rounded-xs text-[11px] font-bold text-gray-200">
+          <span className="sf-chip hidden !py-0.5 !text-[10px] md:inline-flex">
             5.1 Audio
           </span>
         </div>

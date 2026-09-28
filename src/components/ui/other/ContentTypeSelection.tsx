@@ -46,7 +46,7 @@ const ContentTypeSelection: React.FC<ContentTypeSelectionProps> = ({
       role="tablist"
       aria-label="Content type"
       className={cn(
-        "flex max-w-full items-center gap-1 overflow-x-auto rounded-full border border-white/10 bg-white/[0.06] p-1 backdrop-blur-xl sf-no-scrollbar",
+        "flex max-w-full items-center gap-0.5 overflow-x-auto rounded-full border border-white/10 bg-white/[0.05] p-0.5 backdrop-blur-xl sf-no-scrollbar",
         className,
       )}
     >
@@ -60,7 +60,7 @@ const ContentTypeSelection: React.FC<ContentTypeSelectionProps> = ({
             aria-selected={isActive}
             onClick={() => handleTabChange(option.key)}
             className={cn(
-              "shrink-0 rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-300 sm:px-5 sm:text-sm",
+              "shrink-0 rounded-full px-3 py-1 text-[11px] font-medium tracking-wide transition-all duration-500 ease-sf sm:px-3.5",
               isActive
                 ? "bg-[var(--sf-accent)] text-[var(--sf-on-accent)] shadow-[0_0_20px_var(--sf-glow-soft)]"
                 : "text-white/70 hover:bg-white/10 hover:text-white",
@@ -75,13 +75,13 @@ const ContentTypeSelection: React.FC<ContentTypeSelectionProps> = ({
         <Link
           href="/discover"
           className={cn(
-            "flex shrink-0 items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-300 sm:px-5 sm:text-sm",
+            "flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-medium tracking-wide transition-all duration-500 ease-sf sm:px-3.5",
             pathName === "/discover"
               ? "bg-[var(--sf-accent)] text-[var(--sf-on-accent)] shadow-[0_0_20px_var(--sf-glow-soft)]"
               : "text-white/70 hover:bg-white/10 hover:text-white",
           )}
         >
-          <Compass className="size-3.5" />
+          <Compass className="size-3" />
           New &amp; Popular
         </Link>
       )}

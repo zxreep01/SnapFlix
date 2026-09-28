@@ -38,7 +38,7 @@ const AdsWarning: React.FC = () => {
       scrollBehavior="inside"
     >
       <ModalContent>
-        <ModalHeader className="flex flex-col gap-1 text-center text-3xl uppercase">
+        <ModalHeader className="flex flex-col gap-1 text-center text-lg uppercase sm:text-xl">
           Before you watch!
         </ModalHeader>
         <ModalBody>

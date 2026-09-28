@@ -16,9 +16,9 @@ const title = tv({
   base: "font-bold",
   variants: {
     size: {
-      h1: "text-4xl md:text-5xl",
-      h2: "text-3xl md:text-4xl",
-      h3: "text-2xl md:text-3xl",
+      h1: "text-xl md:text-2xl",
+      h2: "text-lg md:text-xl",
+      h3: "text-base md:text-lg",
       h4: "text-xl md:text-2xl",
       h5: "text-lg md:text-xl",
       h6: "text-base md:text-lg",

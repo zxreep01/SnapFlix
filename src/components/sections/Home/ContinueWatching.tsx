@@ -2,6 +2,7 @@
 
 import Carousel from "@/components/ui/wrapper/Carousel";
 import useWatchHistory from "@/hooks/useWatchHistory";
+import Reveal from "@/components/ui/other/Reveal";
 import Link from "next/link";
 import WatchProgressCard from "./WatchProgressCard";
 import ResumeCard from "./Cards/Resume";
@@ -20,14 +21,17 @@ const ContinueWatching: React.FC = () => {
   return (
     <section id="continue-watching" aria-label="Continue watching" className="w-full">
       {/* Mobile: activity sheet */}
-      <WatchProgressCard items={list} />
+      <Reveal>
+        <WatchProgressCard items={list} />
+      </Reveal>
 
       {/* Tablet & desktop: resume rail */}
-      <div className="hidden flex-col gap-3 md:flex">
+      <Reveal className="hidden flex-col gap-3 md:flex">
         <div className="flex items-baseline justify-between gap-3 px-4 md:px-8">
-          <h2 className="truncate text-lg font-bold tracking-wide text-white md:text-xl">
-            Continue Watching
-          </h2>
+          <span className="sf-board min-w-0">
+            <span className="sf-bulb" aria-hidden />
+            <span className="sf-board-title">Continue Watching</span>
+          </span>
           <Link
             href="/library"
             className="shrink-0 text-[11px] font-semibold text-white/55 transition-colors hover:text-white"
@@ -46,7 +50,7 @@ const ContinueWatching: React.FC = () => {
             </div>
           ))}
         </Carousel>
-      </div>
+      </Reveal>
     </section>
   );
 };

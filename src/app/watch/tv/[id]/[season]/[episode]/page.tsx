@@ -273,7 +273,7 @@ const WatchTvPage: NextPage<
               {tvDetails?.first_air_date && (
                 <span>{new Date(tvDetails.first_air_date).getFullYear()}</span>
               )}
-              <span className="border border-white/20 px-1 rounded-xs text-[10px] text-gray-300">
+              <span className="border border-white/20 px-1 rounded-md text-[10px] text-gray-300">
                 {(tvDetails as any)?.adult ? "18+" : "16+"}
               </span>
               <span>{seasonsList.length} Seasons</span>

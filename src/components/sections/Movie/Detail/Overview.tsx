@@ -71,7 +71,7 @@ const OverviewSection: React.FC<OverviewSectionProps> = ({ movie }) => {
                 </Chip>
               )}
             </div>
-            <h2 className="text-2xl font-black md:text-4xl">{fullTitle}</h2>
+            <h2 className="text-base font-semibold md:text-xl">{fullTitle}</h2>
             <div className="md:text-md flex flex-wrap gap-1 text-xs md:gap-2">
               <div className="flex items-center gap-1">
                 <Clock />

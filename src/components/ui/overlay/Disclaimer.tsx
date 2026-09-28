@@ -108,7 +108,7 @@ const Disclaimer: React.FC = () => {
       scrollBehavior="inside"
     >
       <ModalContent>
-        <ModalHeader className="flex flex-col gap-1 text-center text-xl uppercase sm:text-2xl md:text-3xl">
+        <ModalHeader className="flex flex-col gap-1 text-center text-base uppercase sm:text-lg">
           {DISCLAIMER_CONTENT.title}
         </ModalHeader>
 

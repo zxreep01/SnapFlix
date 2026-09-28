@@ -138,9 +138,10 @@ const DiscoverFilters: React.FC = () => {
     <div className="flex w-full flex-col justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-3 backdrop-blur-xl md:flex-row md:items-center">
       {/* Left: Title + Media Toggle + Genre Dropdown */}
       <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
-        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white whitespace-nowrap">
-          New & Popular
-        </h1>
+        <span className="sf-board min-w-0">
+          <span className="sf-bulb" aria-hidden />
+          <span className="sf-board-title">New &amp; Popular</span>
+        </span>
 
         {/* Media Toggle: Movies vs TV Series */}
         <div className="inline-flex items-center gap-0.5 rounded-full border border-white/10 bg-white/[0.06] p-0.5 backdrop-blur-xl">

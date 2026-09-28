@@ -6,6 +6,7 @@ import { MOCK_MOVIES, MOCK_TV_SHOWS } from "@/utils/mockData";
 import { cn } from "@/utils/helpers";
 import { getImageUrl, mutateMovieTitle, mutateTvShowTitle } from "@/utils/movies";
 import { PlayFilled } from "@/utils/icons";
+import Reveal from "@/components/ui/other/Reveal";
 import { Skeleton } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
@@ -64,15 +65,21 @@ const FeaturedSplit: React.FC<FeaturedSplitProps> = ({ contentType }) => {
     return (
       <div className="mx-auto grid w-full max-w-[1600px] grid-cols-1 gap-6 px-4 sm:px-5 md:px-8 lg:grid-cols-[minmax(190px,240px)_1fr] lg:gap-8">
         <div className="flex flex-col gap-3">
-          <h3 className="text-base font-bold text-white sm:text-lg">Recent</h3>
-          <Skeleton className="aspect-video rounded-2xl opacity-25" />
-          <Skeleton className="aspect-video rounded-2xl opacity-25" />
+          <span className="sf-board">
+            <span className="sf-bulb" aria-hidden />
+            <span className="sf-board-title">Recent</span>
+          </span>
+          <Skeleton className="aspect-video rounded-sf opacity-25" />
+          <Skeleton className="aspect-video rounded-sf opacity-25" />
         </div>
         <div className="flex flex-col gap-3">
-          <h3 className="text-base font-bold text-white sm:text-lg">Recommended For You</h3>
+          <span className="sf-board">
+            <span className="sf-bulb" aria-hidden />
+            <span className="sf-board-title">Recommended</span>
+          </span>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {Array.from({ length: 4 }).map((_, index) => (
-              <Skeleton key={index} className="aspect-2/3 rounded-2xl opacity-25" />
+              <Skeleton key={index} className="aspect-square rounded-sf opacity-25" />
             ))}
           </div>
         </div>
@@ -85,8 +92,11 @@ const FeaturedSplit: React.FC<FeaturedSplitProps> = ({ contentType }) => {
       {/* Recent — stacked wide cards */}
       <div className="flex flex-col gap-3">
         <div className="flex items-baseline justify-between gap-2">
-          <h3 className="truncate text-base font-bold text-white sm:text-lg">Recent</h3>
-          <span className="shrink-0 text-[11px] font-semibold text-[var(--sf-accent)]">
+          <span className="sf-board min-w-0">
+            <span className="sf-bulb" aria-hidden />
+            <span className="sf-board-title">Recent</span>
+          </span>
+          <span className="shrink-0 text-[10px] font-medium tracking-[0.12em] text-[var(--sf-accent)] uppercase">
             Just added
           </span>
         </div>
@@ -115,7 +125,7 @@ const FeaturedSplit: React.FC<FeaturedSplitProps> = ({ contentType }) => {
                   <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/25 to-transparent" />
 
                   <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-2.5">
-                    <p className="truncate text-xs font-bold text-white sm:text-sm">{title}</p>
+                    <p className="truncate text-[11px] font-semibold text-white sm:text-xs">{title}</p>
                     <div className="flex items-center justify-between gap-2">
                       <span className="truncate text-[10px] text-white/60">
                         {date ? new Date(date).getFullYear() : "New"}
@@ -143,9 +153,10 @@ const FeaturedSplit: React.FC<FeaturedSplitProps> = ({ contentType }) => {
       {/* Recommended For You — poster row */}
       <div className="flex min-w-0 flex-col gap-3">
         <div className="flex items-baseline justify-between gap-2">
-          <h3 className="truncate text-base font-bold text-white sm:text-lg">
-            Recommended For You
-          </h3>
+          <span className="sf-board min-w-0">
+            <span className="sf-bulb" aria-hidden />
+            <span className="sf-board-title">Recommended</span>
+          </span>
           <Link
             href={`/discover${isTv ? "?content=tv" : ""}`}
             className="shrink-0 text-[11px] font-semibold text-white/55 transition-colors hover:text-white"
@@ -174,7 +185,7 @@ const FeaturedSplit: React.FC<FeaturedSplitProps> = ({ contentType }) => {
                 <img
                   src={getImageUrl(item.poster_path)}
                   alt={title}
-                  className="aspect-2/3 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="aspect-square w-full object-cover transition-transform duration-700 ease-sf group-hover:scale-[1.05]"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/85 via-transparent to-transparent" />

@@ -13,6 +13,7 @@ import { useDisclosure, useInViewport } from "@mantine/hooks";
 import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
 import { Suspense, useEffect, useMemo, useState, useTransition } from "react";
 import MoviePosterCard from "../Movie/Cards/Poster";
+import Reveal from "@/components/ui/other/Reveal";
 import TvShowPosterCard from "../TV/Cards/Poster";
 import { getLoadingLabel } from "@/utils/movies";
 import { ITEMS_PER_PAGE } from "@/utils/constants";
@@ -139,9 +140,10 @@ const LibraryList = () => {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-2 border-b border-white/10">
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-                My Library
-              </h1>
+              <span className="sf-board min-w-0">
+                <span className="sf-bulb" aria-hidden />
+                <span className="sf-board-title">My Library</span>
+              </span>
               {hasItems && (
                 <span className="text-xs sm:text-sm font-semibold px-2.5 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/30">
                   {sortedWatchlist.length} {sortedWatchlist.length === 1 ? "item" : "items"}
@@ -233,7 +235,7 @@ const LibraryList = () => {
           />
         ) : hasItems ? (
           <>
-            <div className="movie-grid">
+            <Reveal className="movie-grid">
               {sortedWatchlist.map((data) => {
                 if (data.type === "tv") {
                   return (
@@ -272,7 +274,7 @@ const LibraryList = () => {
                   </Suspense>
                 );
               })}
-            </div>
+            </Reveal>
             <div ref={ref} className="flex h-24 items-center justify-center">
               {isFetchingNextPage && (
                 <Spinner
@@ -292,7 +294,7 @@ const LibraryList = () => {
         ) : (
           <div className="flex flex-col items-center justify-center min-h-[35vh] sm:min-h-[40vh] gap-4 text-center px-4 py-12 rounded-2xl bg-white/[0.02] border border-white/5 mt-4">
             <div className="size-16 rounded-full bg-white/5 flex items-center justify-center text-gray-500 mb-1">
-              <TbFolder className="size-8 text-gray-400" />
+              <TbFolder className="size-6 text-gray-500" />
             </div>
             <h3 className="text-lg sm:text-xl font-bold text-white">
               No {content === "movie" ? "movies" : "TV shows"} saved yet

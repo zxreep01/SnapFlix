@@ -7,6 +7,7 @@ import { useScrollIntoView } from "@mantine/hooks";
 import { useQuery } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
 import { Suspense, use } from "react";
+import Reveal from "@/components/ui/other/Reveal";
 import dynamic from "next/dynamic";
 import { NextPage } from "next";
 import { MOCK_TV_SHOWS } from "@/utils/mockData";
@@ -109,11 +110,19 @@ const TVShowDetailPage: NextPage<Params<{ id: number }>> = ({ params }) => {
         />
 
         {/* Episodes, Cast, Photos & Related Rails */}
-        <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-10 px-4 pb-16 sm:px-5 md:px-8">
-          <TvShowsSeasonsSelection ref={targetRef} id={id} seasons={tv.seasons} />
-          <TvShowCastsSection casts={tv.credits.cast} />
-          <PhotosSection images={tv.images.backdrops} type="tv" />
-          <TvShowRelatedSection tv={tv} />
+        <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-8 px-4 pb-16 sm:px-5 md:px-8">
+          <Reveal>
+            <TvShowsSeasonsSelection ref={targetRef} id={id} seasons={tv.seasons} />
+          </Reveal>
+          <Reveal defer>
+            <TvShowCastsSection casts={tv.credits.cast} />
+          </Reveal>
+          <Reveal defer>
+            <PhotosSection images={tv.images.backdrops} type="tv" />
+          </Reveal>
+          <Reveal defer>
+            <TvShowRelatedSection tv={tv} />
+          </Reveal>
         </div>
       </Suspense>
     </div>

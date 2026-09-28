@@ -2,6 +2,7 @@
 
 import { usePlayerEvents } from "@/hooks/usePlayerEvents";
 import { siteConfig } from "@/config/site";
+import { Star } from "@/utils/icons";
 import { Params } from "@/types";
 import { tmdb } from "@/api/tmdb";
 import { useQuery } from "@tanstack/react-query";
@@ -188,11 +189,11 @@ const WatchMoviePage: NextPage<Params<{ id: string }>> = ({ params }) => {
                 </span>
               )}
               <span>{releaseYear}</span>
-              <span className="border border-white/20 px-1 rounded-xs text-[10px] text-gray-300">
+              <span className="border border-white/20 px-1 rounded-md text-[10px] text-gray-300">
                 {movieDetails?.adult ? "18+" : "16+"}
               </span>
               {runtimeText && <span>{runtimeText}</span>}
-              <span className="border border-white/20 px-1 rounded-xs text-[10px] text-gray-300">
+              <span className="border border-white/20 px-1 rounded-md text-[10px] text-gray-300">
                 4K Ultra HD
               </span>
             </div>
@@ -261,8 +262,9 @@ const WatchMoviePage: NextPage<Params<{ id: string }>> = ({ params }) => {
                       <div className="flex items-center justify-between text-[10px] text-gray-400">
                         <span>{rec.release_date ? new Date(rec.release_date).getFullYear() : ""}</span>
                         {rec.vote_average && (
-                          <span className="text-[var(--sf-accent)] font-bold">
-                            ★ {rec.vote_average.toFixed(1)}
+                          <span className="flex items-center gap-1 font-semibold text-[var(--sf-accent)]">
+                            <Star className="size-2.5" />
+                            {rec.vote_average.toFixed(1)}
                           </span>
                         )}
                       </div>

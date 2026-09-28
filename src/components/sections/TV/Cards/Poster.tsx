@@ -7,7 +7,7 @@ import useDeviceVibration from "@/hooks/useDeviceVibration";
 import { cn } from "@/utils/helpers";
 import { PlayFilled } from "@/utils/icons";
 import { getImageUrl, mutateTvShowTitle } from "@/utils/movies";
-import { Card, CardBody, CardFooter, CardHeader, Chip, Image, Tooltip } from "@heroui/react";
+import { Tooltip } from "@heroui/react";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useCallback } from "react";
@@ -22,7 +22,7 @@ interface TvShowPosterCardProps {
 
 /**
  * Poster tile for series rails and grids — the TV counterpart of
- * {@link MoviePosterCard}, sharing the same sizing and theming rules.
+ * {@link MoviePosterCard}, sharing the same CD case, sizing and theming rules.
  */
 const TvShowPosterCard: React.FC<TvShowPosterCardProps> = ({ tv, variant = "full" }) => {
   const [opened, handlers] = useDisclosure(false);
@@ -67,84 +67,76 @@ const TvShowPosterCard: React.FC<TvShowPosterCardProps> = ({ tv, variant = "full
           onMouseLeave={clearFocusTheme}
         >
           {variant === "full" && (
-            <div
-              className={cn(
-                "group relative w-[136px] shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-black/40 text-white sm:w-[148px] md:w-[156px] lg:w-[168px]",
-                "transition-all duration-300 hover:-translate-y-1 hover:border-[color:var(--sf-hairline)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.55)]",
-              )}
-            >
-              <div className="relative aspect-2/3 w-full">
-                <img
-                  src={posterImage}
-                  alt={title}
-                  className="absolute inset-0 size-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
-                />
-
-                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent" />
-
-                {/* Date chip, mirroring the reference tiles */}
-                <span className="absolute top-2 right-2 rounded-md bg-black/55 px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-white/85 backdrop-blur-md">
-                  {airDate ? airDate.toISOString().slice(0, 10).replace(/-/g, ".") : "NEW"}
-                </span>
-
-                {tv.adult && (
-                  <span className="absolute top-2 left-2 rounded-md bg-danger px-1.5 py-0.5 text-[9px] font-black text-white uppercase">
-                    18+
+            <div className="group w-[112px] shrink-0 text-white sm:w-[124px] md:w-[132px] lg:w-[144px]">
+              <div className="sf-case">
+                <div className="sf-case-face">
+                  <img
+                    src={posterImage}
+                    alt={title}
+                    className="absolute inset-0 size-full object-cover object-center transition-transform duration-700 ease-sf group-hover:scale-[1.05]"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span className="sf-case-spine" />
+                  <span className="sf-case-gloss" />
+                  <span className="sf-case-sheen" />
+                
+                  {tv.adult && (
+                    <span className="absolute top-1.5 left-1.5 rounded-full bg-black/60 px-1.5 py-0.5 text-[8px] font-bold tracking-wide text-white/80 uppercase backdrop-blur-md">
+                      18+
+                    </span>
+                  )}
+                
+                  <span className="absolute inset-0 flex items-center justify-center">
+                    <span className="flex size-7 scale-90 items-center justify-center rounded-full bg-[var(--sf-accent)] text-[var(--sf-on-accent)] opacity-0 shadow-[0_0_14px_var(--sf-glow)] transition-all duration-500 group-hover:scale-100 group-hover:opacity-100">
+                      <PlayFilled className="size-2.5" />
+                    </span>
                   </span>
-                )}
-
-                {/* Play affordance */}
-                <span className="absolute inset-0 flex items-center justify-center">
-                  <span className="flex size-10 scale-90 items-center justify-center rounded-full bg-[var(--sf-accent)] text-[var(--sf-on-accent)] opacity-0 shadow-[0_0_18px_var(--sf-glow)] transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
-                    <PlayFilled className="size-3.5" />
-                  </span>
-                </span>
-
-                <div className="absolute inset-x-0 bottom-0 flex flex-col gap-0.5 p-2.5">
-                  <h6 className="truncate text-xs font-bold sm:text-sm">{title}</h6>
-                  <p className="truncate text-[10px] text-white/60">{releaseYear}</p>
                 </div>
+              </div>
+
+              {/* Shelf label under the case keeps every row aligned */}
+              <div className="mt-2 flex items-center justify-between gap-2 px-0.5">
+                <p className="truncate text-[11px] font-medium text-white/85">{title}</p>
+                <span className="shrink-0 text-[10px] text-white/40">{releaseYear}</span>
               </div>
             </div>
           )}
 
           {variant === "bordered" && (
-            <Card
-              isHoverable
-              fullWidth
-              shadow="md"
-              className="group h-full border border-white/10 bg-secondary-background"
-            >
-              <CardHeader className="flex items-center justify-center pb-0">
-                <div className="relative size-full">
+            <div className="group flex h-full flex-col gap-2 rounded-2xl border border-white/10 bg-white/[0.03] p-2.5 transition-colors hover:border-[color:var(--sf-hairline)]">
+              <div className="sf-case w-full">
+                <div className="sf-case-face">
+                  <img
+                    src={posterImage}
+                    alt={title}
+                    className="absolute inset-0 size-full object-cover object-center transition-transform duration-700 ease-sf group-hover:scale-[1.05]"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span className="sf-case-spine" />
+                  <span className="sf-case-gloss" />
+                  <span className="sf-case-sheen" />
+                
                   {tv.adult && (
-                    <Chip
-                      color="danger"
-                      size="sm"
-                      variant="shadow"
-                      className="absolute top-2 left-2 z-20"
-                    >
+                    <span className="absolute top-1.5 left-1.5 rounded-full bg-black/60 px-1.5 py-0.5 text-[8px] font-bold tracking-wide text-white/80 uppercase backdrop-blur-md">
                       18+
-                    </Chip>
+                    </span>
                   )}
-                  <div className="relative overflow-hidden rounded-2xl">
-                    <Image
-                      isBlurred
-                      alt={title}
-                      className="aspect-2/3 rounded-2xl object-cover object-center group-hover:scale-105"
-                      src={getImageUrl(tv.poster_path)}
-                    />
-                  </div>
+                
+                  <span className="absolute inset-0 flex items-center justify-center">
+                    <span className="flex size-7 scale-90 items-center justify-center rounded-full bg-[var(--sf-accent)] text-[var(--sf-on-accent)] opacity-0 shadow-[0_0_14px_var(--sf-glow)] transition-all duration-500 group-hover:scale-100 group-hover:opacity-100">
+                      <PlayFilled className="size-2.5" />
+                    </span>
+                  </span>
                 </div>
-              </CardHeader>
-              <CardBody className="justify-end pb-1">
-                <p className="truncate text-sm font-bold">{title}</p>
-              </CardBody>
-              <CardFooter className="justify-between pt-0 text-xs">
-                <p>{releaseYear}</p>
-              </CardFooter>
-            </Card>
+              </div>
+
+              <div className="flex flex-col gap-0.5 px-0.5">
+                <p className="truncate text-xs font-medium text-white/90">{title}</p>
+                <p className="text-[10px] text-white/40">{releaseYear}</p>
+              </div>
+            </div>
           )}
         </Link>
       </Tooltip>

@@ -95,7 +95,7 @@ const UserProfileButton: React.FC<UserProfileButtonProps> = ({
       size="sm"
       className={cn(
         "p-0 bg-transparent hover:bg-white/10 transition-all flex items-center justify-center focus:outline-none cursor-pointer",
-        large ? "size-11 min-w-11 rounded-full" : "size-8 min-w-8 rounded-xs",
+        large ? "size-11 min-w-11 rounded-full" : "size-8 min-w-8 rounded-md",
       )}
       aria-label={user?.username ? `Profile for ${user.username}` : "Sign In"}
     >
@@ -103,7 +103,7 @@ const UserProfileButton: React.FC<UserProfileButtonProps> = ({
         <div
           className={cn(
             "flex items-center justify-center border border-white/20 bg-white/10 text-white/90 transition-all hover:border-white/40 hover:bg-white/20 hover:text-white shadow-xs",
-            large ? "size-9 rounded-full" : "size-7 rounded-xs",
+            large ? "size-9 rounded-full" : "size-7 rounded-md",
           )}
         >
           <User className={large ? "size-4" : "size-3.5"} />
@@ -113,7 +113,7 @@ const UserProfileButton: React.FC<UserProfileButtonProps> = ({
           size={large ? 36 : 28}
           className={cn(
             "ring-1 ring-white/30 transition-all hover:scale-105 hover:ring-white/70 shadow-xs",
-            large ? "size-9 rounded-full" : "size-7 rounded-xs",
+            large ? "size-9 rounded-full" : "size-7 rounded-md",
           )}
         />
       )}

@@ -219,7 +219,11 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
             const isActive = idx === currentIndex;
 
             return (
-              <div key={item.id || idx} className="relative size-full flex-none overflow-hidden">
+              <div
+                key={item.id || idx}
+                data-active={isActive}
+                className="sf-frame relative size-full flex-none overflow-hidden"
+              >
                 {/* Artwork — the colour source for the entire interface */}
                 <img
                   src={bgUrl}
@@ -243,19 +247,17 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
 
       {/* Slide Content — single overlay so text never duplicates during the loop */}
       <div className="pointer-events-none absolute inset-0 z-20 flex flex-col justify-end">
-        <div className="flex w-full flex-col gap-3 px-4 pb-6 sm:gap-4 sm:px-6 md:px-9 md:pb-8 lg:pb-10">
-          <div className="pointer-events-auto flex max-w-[min(46rem,94%)] flex-col gap-2.5 sm:gap-3">
+        <div className="flex w-full flex-col gap-2.5 px-4 pb-5 sm:gap-3 sm:px-5 md:px-8 md:pb-7 lg:pb-9">
+          <div className="pointer-events-auto flex max-w-[min(38rem,94%)] flex-col gap-2 sm:gap-2.5">
             {/* Brand + rank badges */}
             <div className="flex flex-wrap items-center gap-2">
-              <span className="flex items-center gap-1.5">
-                <span className="flex h-4 w-3.5 items-center justify-center rounded-xs bg-[var(--sf-accent)] text-[9px] font-black text-[var(--sf-on-accent)] sm:h-5 sm:w-4 sm:text-[11px]">
-                  S
-                </span>
-                <span className="text-[10px] font-extrabold tracking-[0.2em] text-white/90 uppercase sm:text-xs">
-                  {isTv ? "SnapFlix Original Series" : "SnapFlix Feature Film"}
+              <span className="sf-board !py-1">
+                <span className="sf-bulb" aria-hidden />
+                <span className="sf-board-title">
+                  {isTv ? "SnapFlix Series" : "SnapFlix Feature"}
                 </span>
               </span>
-              <span className="sf-chip sf-chip-accent !py-0.5 text-[10px] uppercase">
+              <span className="sf-chip sf-chip-accent !py-0.5 !text-[9px] tracking-[0.16em] uppercase">
                 Top {currentIndex + 1}
               </span>
             </div>
@@ -263,17 +265,17 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
             {/* Title — clamped and clamped again so long names never overflow */}
             <h1
               title={activeTitle}
-              className="sf-clamp-2 text-[clamp(1.55rem,4.4vw,3.5rem)] leading-[1.05] font-black tracking-tight text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.85)]"
+              className="sf-clamp-2 text-[clamp(1.05rem,2.1vw,1.75rem)] leading-[1.15] font-bold tracking-tight text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.85)]"
             >
               {activeTitle}
             </h1>
 
             {/* Metadata chips */}
             <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-              <span className="sf-chip !text-[10px] font-bold text-[var(--sf-accent)] sm:!text-xs">
+              <span className="sf-chip !text-[10px] font-semibold text-[var(--sf-accent)]">
                 {activeMatch}% Match
               </span>
-              <span className="sf-chip !text-[10px] sm:!text-xs">{activeYear}</span>
+              <span className="sf-chip !text-[10px]">{activeYear}</span>
               <span className="sf-chip !text-[10px] sm:!text-xs">
                 {activeItem?.adult ? "18+" : "16+"}
               </span>
@@ -297,7 +299,7 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
 
             {/* Synopsis — clamped to two lines, hidden on the smallest screens */}
             {activeItem?.overview && (
-              <p className="sf-clamp-2 hidden max-w-xl text-sm text-white/70 sm:block">
+              <p className="sf-clamp-2 hidden max-w-lg text-[11px] leading-relaxed text-white/60 sm:block">
                 {activeItem.overview}
               </p>
             )}
@@ -308,20 +310,20 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
                 href={
                   isTv ? `/watch/tv/${activeItem.id}/1/1` : `/watch/movie/${activeItem.id}`
                 }
-                className="flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-black transition-transform hover:scale-[1.03] active:scale-95 sm:px-6"
+                className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-bold text-black transition-transform hover:scale-[1.02] active:scale-95 sm:px-5"
               >
-                <PlayFilled className="size-3.5" />
+                <PlayFilled className="size-3" />
                 Play
               </Link>
               <Link
                 href={isTv ? `/tv/${activeItem.id}` : `/movie/${activeItem.id}`}
-                className="sf-glass flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/20 sm:px-5"
+                className="sf-glass flex items-center gap-2 rounded-full px-3.5 py-2 text-xs font-semibold text-white transition-colors hover:bg-white/20 sm:px-4"
               >
-                <Info className="size-4" />
+                <Info className="size-3.5" />
                 More Info
               </Link>
               {bookmarkData && (
-                <span className="sf-glass flex size-10 items-center justify-center rounded-full">
+                <span className="sf-glass flex size-9 items-center justify-center rounded-full">
                   <BookmarkButton data={bookmarkData} isTooltipDisabled />
                 </span>
               )}
@@ -331,7 +333,7 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
       </div>
 
       {/* Slide indicators + queue preview */}
-      <div className="absolute inset-x-0 bottom-0 z-30 flex items-end justify-between gap-3 px-4 pb-3 sm:px-6 md:px-9">
+      <div className="absolute inset-x-0 bottom-0 z-30 flex items-end justify-between gap-3 px-4 pb-3 sm:px-5 md:px-8">
         <div className="flex items-center gap-2">
           {heroItems.map((_, idx) => {
             const isCurrent = idx === currentIndex;
@@ -375,7 +377,7 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
           <img
             src={getImageUrl(heroItems[(currentIndex + 1) % heroItems.length]?.poster_path)}
             alt=""
-            className="aspect-2/3 w-full object-cover opacity-90"
+            className="aspect-square w-full rounded-lg object-cover opacity-90"
             draggable={false}
           />
           <span className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/90 to-transparent px-2.5 pt-6 pb-2 text-[10px] font-bold text-white">
@@ -390,7 +392,7 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
 /** Loading placeholder that mirrors the hero's final layout. */
 const HeroSkeleton = () => (
   <div className="sf-hero relative flex h-[54dvh] max-h-[620px] min-h-[380px] w-full flex-col justify-end overflow-hidden bg-black/40 sm:h-[58dvh] lg:h-[62dvh] 2xl:h-[68dvh]">
-    <Skeleton className="absolute inset-0 size-full rounded-none opacity-20" />
+    <Skeleton className="absolute inset-0 size-full rounded-sf opacity-20" />
     <div className="relative z-10 flex flex-col gap-3 px-4 pb-8 sm:px-6 md:px-9">
       <Skeleton className="h-4 w-40 rounded-full opacity-30" />
       <Skeleton className="h-10 w-[min(24rem,80%)] rounded-lg opacity-40 sm:h-14" />

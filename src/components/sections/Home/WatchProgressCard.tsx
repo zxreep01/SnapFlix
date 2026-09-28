@@ -72,7 +72,7 @@ const WatchProgressCard: React.FC<WatchProgressCardProps> = ({ items }) => {
               Continue where you left off
             </p>
             <p className="mt-1 flex items-baseline gap-2">
-              <span className="text-3xl leading-none font-black text-white">
+              <span className="text-lg leading-none font-semibold text-white">
                 {stats.average}
                 <span className="text-xl">%</span>
               </span>

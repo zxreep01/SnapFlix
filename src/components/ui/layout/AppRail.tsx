@@ -39,7 +39,7 @@ interface RailItemProps {
  */
 const RailItem: React.FC<RailItemProps> = ({ label, icon, href, active, onClick }) => {
   const className = cn(
-    "flex size-11 shrink-0 items-center justify-center rounded-full text-[18px] transition-all duration-300 cursor-pointer select-none",
+    "flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full text-[16px] transition-all duration-500 ease-sf select-none",
     active
       ? "bg-[var(--sf-accent)] text-[var(--sf-on-accent)] shadow-[0_0_22px_var(--sf-glow)]"
       : "text-white/65 hover:bg-white/10 hover:text-white active:scale-95",
@@ -106,11 +106,11 @@ const AppRail: React.FC<{ className?: string }> = ({ className }) => {
         className,
       )}
     >
-      <div className="mb-1">
+      <div className="mb-0.5">
         <UserProfileButton placement="right-end" size="lg" />
       </div>
 
-      <div className="h-px w-7 shrink-0 bg-white/10" />
+      <div className="h-px w-6 shrink-0 bg-white/10" />
 
       {/* Search lives in the rail on desktop */}
       <NavSearch variant="rail" />
@@ -119,24 +119,24 @@ const AppRail: React.FC<{ className?: string }> = ({ className }) => {
         label="Home"
         href="/"
         active={isHome && !content}
-        icon={isHome && !content ? <HomeFilled className="text-[18px]" /> : <Home className="text-[18px]" />}
+        icon={isHome && !content ? <HomeFilled className="text-[16px]" /> : <Home className="text-[16px]" />}
       />
       <RailItem
         label="Movies"
         href="/?content=movie"
         active={isMovies}
-        icon={<Movie className="text-[18px]" />}
+        icon={<Movie className="text-[16px]" />}
       />
-      <RailItem label="TV Series" href="/?content=tv" active={isTv} icon={<TV className="text-[18px]" />} />
+      <RailItem label="TV Series" href="/?content=tv" active={isTv} icon={<TV className="text-[16px]" />} />
       <RailItem
         label="Discover"
         href="/discover"
         active={pathName.startsWith("/discover")}
         icon={
           pathName.startsWith("/discover") ? (
-            <CompassFilled className="text-[18px]" />
+            <CompassFilled className="text-[16px]" />
           ) : (
-            <Compass className="text-[18px]" />
+            <Compass className="text-[16px]" />
           )
         }
       />
@@ -146,28 +146,28 @@ const AppRail: React.FC<{ className?: string }> = ({ className }) => {
         active={pathName.startsWith("/library")}
         icon={
           pathName.startsWith("/library") ? (
-            <LibraryFilled className="text-[18px]" />
+            <LibraryFilled className="text-[16px]" />
           ) : (
-            <Library className="text-[18px]" />
+            <Library className="text-[16px]" />
           )
         }
       />
       <RailItem
         label="Surprise me"
         onClick={handleShuffle}
-        icon={<Shuffle className={cn("text-[18px]", isShuffling && "animate-pulse")} />}
+        icon={<Shuffle className={cn("text-[16px]", isShuffling && "animate-pulse")} />}
       />
 
-      <div className="my-1 h-px w-7 shrink-0 bg-white/10" />
+      <div className="my-0.5 h-px w-6 shrink-0 bg-white/10" />
 
-      <div className="flex size-11 shrink-0 items-center justify-center rounded-full text-white/65 transition-colors hover:bg-white/10 hover:text-white">
+      <div className="flex size-10 shrink-0 items-center justify-center rounded-full text-white/65 transition-colors hover:bg-white/10 hover:text-white">
         <ThemeSwitchDropdown />
       </div>
       <RailItem
         label="Help & FAQ"
         href="/about"
         active={pathName.startsWith("/about")}
-        icon={<Help className="text-[19px]" />}
+        icon={<Help className="text-[16px]" />}
       />
     </aside>
   );

@@ -20,7 +20,7 @@ export const NetflixAvatar: React.FC<NetflixAvatarProps> = ({
       viewBox="0 0 900 900"
       width={size}
       height={size}
-      className={cn("shrink-0 select-none overflow-hidden rounded-xs", className)}
+      className={cn("shrink-0 select-none overflow-hidden rounded-md", className)}
       {...props}
     >
       <path d="M0 0 C297 0 594 0 900 0 C900 297 900 594 900 900 C603 900 306 900 0 900 C0 603 0 306 0 0 Z " fill="#FE010B" transform="translate(0,0)" />
