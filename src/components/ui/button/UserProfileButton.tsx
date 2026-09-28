@@ -57,7 +57,6 @@ const UserProfileButton: React.FC<UserProfileButtonProps> = ({
         : [
             {
               label: displayName,
-              description: user?.email || undefined,
               icon: <User className="text-zinc-400" />,
               showDivider: true,
               isReadOnly: true,

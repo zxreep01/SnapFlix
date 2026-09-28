@@ -24,7 +24,10 @@ const BottomNavbar = () => {
       className="fixed inset-x-3 bottom-3 z-50 rounded-[22px] border border-white/10 bg-black/55 backdrop-blur-2xl shadow-[0_18px_50px_rgba(0,0,0,0.6)] md:hidden"
       style={{ paddingBottom: "max(0px, env(safe-area-inset-bottom))" }}
     >
-      <div className="mx-auto grid h-14 max-w-lg grid-cols-4 items-center gap-1 px-2">
+      <div
+        className="mx-auto grid h-14 max-w-lg items-center gap-1 px-2"
+        style={{ gridTemplateColumns: `repeat(${siteConfig.navItems.length}, minmax(0, 1fr))` }}
+      >
         {siteConfig.navItems.map((item) => {
           const isActive = pathName === item.href;
           return (

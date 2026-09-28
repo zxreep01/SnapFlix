@@ -12,7 +12,7 @@ const FAQS = [
   {
     title: "So what do we actually do?",
     description:
-      "Well, let me tell you what we don’t do: we definitely don’t illegally host our files. We do not store any copyright-protected content on our website. Any linked content is stored only in third-party websites. This is a promotional website only. All files placed here are for introducing purpose. We highly ENCOURAGE users to BUY the CDs or DVDs of the movie or the music they like.",
+      "We do not host or store any copyright-protected files. Everything you stream is embedded from third-party providers, so please support the official release where you can.",
   },
   {
     title: "I cannot watch video because of ads",
@@ -36,7 +36,7 @@ const FAQS = [
   {
     title: "Streaming speed is slow or all videos do not play",
     description:
-      "When you go on the page with the episode, in 99% of the cases there is a video player. What you have to do is click the Play button, of course. If it does not work (Don’t be judgmental! Everybody makes mistakes!), just click on the Servers you see on the top right of your device. You will get a list of servers [Vidlink, VidSrc etc.] Try choosing different server, it will definitely solve the problem.",
+      "Open the episode and press Play. If the stream stalls, switch to another server from the list in the top right of the player.",
   },
   {
     title: "I want to download video",
@@ -54,7 +54,7 @@ const FAQ = () => {
   const { mobile } = useBreakpoints();
 
   return (
-    <Accordion variant="splitted" isCompact={mobile}>
+    <Accordion variant="splitted" isCompact={mobile} className="w-full">
       {FAQS.map(({ title, description }) => (
         <AccordionItem
           key={title}

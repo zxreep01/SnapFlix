@@ -136,54 +136,30 @@ const LibraryList = () => {
   return (
     <>
       <div className="relative flex flex-col gap-6 md:gap-8">
-        {/* Header with Title, Count badge, and Subtitle */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-2 border-b border-white/10">
-          <div>
-            <div className="flex items-center gap-3">
-              <span className="sf-board min-w-0">
-                <span className="sf-bulb" aria-hidden />
-                <span className="sf-board-title">My Library</span>
+        {/* Centred heading with the saved count */}
+        <div className="flex flex-col items-center gap-2 border-b border-white/10 pb-3 text-center">
+          <div className="flex items-center gap-2.5">
+            <span className="sf-board min-w-0">
+              <span className="sf-bulb" aria-hidden />
+              <span className="sf-board-title">My Library</span>
+            </span>
+            {hasItems && (
+              <span className="rounded-full border border-primary/30 bg-primary/20 px-2 py-0.5 text-[11px] font-semibold text-primary">
+                {sortedWatchlist.length}
               </span>
-              {hasItems && (
-                <span className="text-xs sm:text-sm font-semibold px-2.5 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/30">
-                  {sortedWatchlist.length} {sortedWatchlist.length === 1 ? "item" : "items"}
-                </span>
-              )}
-            </div>
-            <p className="text-xs sm:text-sm text-gray-400 mt-1">
-              Your saved {content === "movie" ? "movies" : "TV shows"} and custom watchlist
-            </p>
+            )}
           </div>
-
-          {/* Action buttons (Clear button on tablet/desktop/TV) */}
-          {hasItems && (
-            <div className="hidden sm:flex items-center gap-2">
-              <Button
-                startContent={<Trash />}
-                color="danger"
-                variant="flat"
-                size="sm"
-                className="font-medium text-xs md:text-sm"
-                onPress={() => {
-                  if (user) open();
-                }}
-                isLoading={clearWatchlistMutation.isPending || isPending}
-              >
-                Clear Watchlist
-              </Button>
-            </div>
-          )}
         </div>
 
         {/* Responsive Toolbar: Switcher & Sort Controls */}
-        <div className="flex flex-col items-stretch justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-2 backdrop-blur-xl sm:flex-row sm:items-center sm:gap-4 sm:p-3">
+        <div className="flex flex-col items-stretch justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-2 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-center sm:gap-4 sm:p-3">
           {/* Switcher */}
           <div className="flex justify-center sm:justify-start">
             <ContentTypeSelection />
           </div>
 
           {/* Sort & Mobile Clear Controls */}
-          <div className="flex items-center justify-between sm:justify-end gap-2.5 w-full sm:w-auto">
+          <div className="flex items-center justify-between sm:justify-center gap-2.5 w-full sm:w-auto">
             <div className="w-full sm:w-44">
               <Select
                 aria-label="Sort by"
@@ -206,7 +182,7 @@ const LibraryList = () => {
             </div>
 
             {hasItems && (
-              <div className="sm:hidden shrink-0">
+              <div className="shrink-0">
                 <Button
                   isIconOnly
                   aria-label="Clear Watchlist"

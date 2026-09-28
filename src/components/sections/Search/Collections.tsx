@@ -2,35 +2,24 @@
 
 import { siteConfig } from "@/config/site";
 import { cn } from "@/utils/helpers";
-import {
-  Calendar,
-  Clock,
-  Compass,
-  Like,
-  Play,
-  Rocket,
-  Season,
-  Star,
-} from "@/utils/icons";
+import { Calendar, Clock, Compass, Like, Play, Rocket, Season, Star } from "@/utils/icons";
 import Link from "next/link";
 import Reveal from "@/components/ui/other/Reveal";
 import { useMemo } from "react";
 
-interface CollectionTilesProps {
-  contentType: "movie" | "tv";
+interface CollectionsProps {
   className?: string;
 }
 
 /**
- * Rounded "app tile" row, borrowed from the reference layout's service strip.
+ * Catalogue collections, shown on the search surface when nothing is typed.
  *
- * Every tile is a catalogue collection instead of a third-party brand, and all
- * tiles share the artwork hue (each one only shifts in lightness) so the row
- * always reads as one theme.
+ * Every tile is a discovery shortcut and all of them share the artwork hue
+ * (each one only shifts in lightness), so the row always reads as one theme.
  */
-const CollectionTiles: React.FC<CollectionTilesProps> = ({ contentType, className }) => {
+const Collections: React.FC<CollectionsProps> = ({ className }) => {
   const collections = useMemo(() => {
-    const { movies, tvShows } = siteConfig.queryLists;
+    const { movies } = siteConfig.queryLists;
 
     const iconFor = (param: string) => {
       const map: Record<string, React.ReactNode> = {
@@ -45,10 +34,10 @@ const CollectionTiles: React.FC<CollectionTilesProps> = ({ contentType, classNam
       return map[param] ?? <Star className="size-4" />;
     };
 
-    const list = (contentType === "tv" ? tvShows : movies).slice(0, 6).map((item) => ({
+    const list = movies.slice(0, 6).map((item) => ({
       key: item.param,
       label: item.name.replace(/(Movies|TV Shows)/g, "").trim(),
-      href: `/discover?type=${item.param}${contentType === "tv" ? "&content=tv" : ""}`,
+      href: `/discover?type=${item.param}`,
       icon: iconFor(item.param),
     }));
 
@@ -57,25 +46,20 @@ const CollectionTiles: React.FC<CollectionTilesProps> = ({ contentType, classNam
       {
         key: "discover",
         label: "Discover",
-        href: `/discover${contentType === "tv" ? "?content=tv" : ""}`,
+        href: "/discover",
         icon: <Compass className="size-4" />,
       },
     ];
-  }, [contentType]);
+  }, []);
 
   return (
-    <Reveal className={cn("flex w-full flex-col gap-2", className)}>
-      <div className="flex items-center justify-between gap-3">
-        <span className="sf-board min-w-0">
-          <span className="sf-bulb" aria-hidden />
-          <span className="sf-board-title">Collections</span>
-        </span>
-        <span className="hidden shrink-0 text-[10px] tracking-[0.12em] text-white/35 uppercase sm:block">
-          {contentType === "tv" ? "Series curated daily" : "Films curated daily"}
-        </span>
-      </div>
+    <Reveal className={cn("flex w-full flex-col items-center gap-3", className)}>
+      <span className="sf-board min-w-0">
+        <span className="sf-bulb" aria-hidden />
+        <span className="sf-board-title">Collections</span>
+      </span>
 
-      <div className="sf-no-scrollbar -mx-1 flex gap-2.5 overflow-x-auto px-1 pb-1 sm:gap-3">
+      <div className="flex w-full flex-wrap items-start justify-center gap-2.5 sm:gap-3">
         {collections.map((collection, index) => (
           <Link
             key={collection.key}
@@ -101,4 +85,4 @@ const CollectionTiles: React.FC<CollectionTilesProps> = ({ contentType, classNam
   );
 };
 
-export default CollectionTiles;
+export default Collections;

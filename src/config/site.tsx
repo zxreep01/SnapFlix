@@ -25,6 +25,12 @@ export const siteConfig: SiteConfigType = {
       activeIcon: <GoHomeFill className="size-full" />,
     },
     {
+      label: "Search",
+      href: "/search",
+      icon: <BiSearchAlt2 className="size-full" />,
+      activeIcon: <BiSolidSearchAlt2 className="size-full" />,
+    },
+    {
       label: "Discover",
       href: "/discover",
       icon: <IoCompassOutline className="size-full" />,

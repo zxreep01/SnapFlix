@@ -15,31 +15,25 @@ const AboutPage: NextPage = () => {
   return (
     <div className="flex min-h-full flex-col justify-between pt-5">
       <div className="flex w-full justify-center px-4 py-6 sm:px-5 md:px-8">
-        <div className="flex w-full max-w-3xl flex-col gap-6">
-          <div className="flex flex-col gap-2 text-center md:text-left border-b border-white/10 pb-6">
-            <span className="sf-board mx-auto min-w-0 md:mx-0">
+        <div className="flex w-full max-w-3xl flex-col items-center gap-6">
+          <div className="flex flex-col items-center gap-2 border-b border-white/10 pb-6 text-center">
+            <span className="sf-board min-w-0">
               <span className="sf-bulb" aria-hidden />
               <span className="sf-board-title">SnapFlix Help Center</span>
             </span>
-            <p className="text-xs text-gray-400 md:text-sm">
-              Frequently asked questions and guides for your private streaming experience.
-            </p>
           </div>
 
           <Suspense>
             <FAQ />
           </Suspense>
 
-          <div className="mt-8 rounded-lg bg-[#181818] border border-white/10 p-6 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-            <div>
-              <h3 className="text-base md:text-lg font-bold text-white">Need more assistance?</h3>
-              <p className="text-xs text-gray-400 mt-1">Our customer support specialists are available 24/7.</p>
-            </div>
+          <div className="mt-6 flex flex-col items-center gap-3 rounded-2xl border border-white/10 bg-[#181818] px-6 py-5 text-center">
+            <h3 className="text-sm font-semibold text-white">Still need help?</h3>
             <a
               href="mailto:support@snapflix.internal"
-              className="bg-[var(--sf-accent)] hover:brightness-110 text-white font-semibold text-xs md:text-sm px-5 py-2.5 rounded-sm transition-colors shadow-md"
+              className="rounded-full bg-[var(--sf-accent)] px-4 py-1.5 text-[11px] font-semibold text-[var(--sf-on-accent)] transition-[filter] hover:brightness-110"
             >
-              Contact Support
+              Contact support
             </a>
           </div>
         </div>

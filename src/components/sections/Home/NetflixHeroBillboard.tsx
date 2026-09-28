@@ -21,37 +21,6 @@ interface NetflixHeroBillboardProps {
 
 const SLIDE_INTERVAL_MS = 3000; // 3 seconds infinite auto scroll
 
-/** TMDB genre ids are stable, so the hero can label slides without a request. */
-const GENRE_NAMES: Record<number, string> = {
-  28: "Action",
-  12: "Adventure",
-  16: "Animation",
-  35: "Comedy",
-  80: "Crime",
-  99: "Documentary",
-  18: "Drama",
-  10751: "Family",
-  14: "Fantasy",
-  36: "History",
-  27: "Horror",
-  10402: "Music",
-  9648: "Mystery",
-  10749: "Romance",
-  878: "Sci-Fi",
-  10770: "TV Movie",
-  53: "Thriller",
-  10752: "War",
-  37: "Western",
-  10759: "Action & Adventure",
-  10762: "Kids",
-  10763: "News",
-  10764: "Reality",
-  10765: "Sci-Fi & Fantasy",
-  10766: "Soap",
-  10767: "Talk",
-  10768: "War & Politics",
-};
-
 const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
   contentType: propContentType,
 }) => {
@@ -170,11 +139,6 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
       : mutateMovieTitle(activeItem as any)
     : "";
 
-  const activeGenres: string[] = (activeItem?.genre_ids ?? [])
-    .map((id: number) => GENRE_NAMES[id])
-    .filter(Boolean)
-    .slice(0, 3);
-
   const activeRelease = activeItem?.release_date || activeItem?.first_air_date;
   const activeYear = activeRelease ? new Date(activeRelease).getFullYear() : 2025;
   const activeMatch = Math.min(99, Math.round((activeItem?.vote_average || 8.2) * 10 + 8));
@@ -236,9 +200,8 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
                 />
 
                 {/* Cinematic vignettes keep copy legible over any artwork */}
-                <div className="absolute inset-0 bg-linear-to-r from-black/85 via-black/45 to-transparent" />
                 <div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-black/55 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-black/90 via-black/45 to-transparent sm:h-48" />
+                <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-black/90 via-black/50 to-transparent sm:h-56" />
               </div>
             );
           })}
@@ -246,21 +209,13 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
       </div>
 
       {/* Slide Content — single overlay so text never duplicates during the loop */}
-      <div className="pointer-events-none absolute inset-0 z-20 flex flex-col justify-end">
-        <div className="flex w-full flex-col gap-2.5 px-4 pb-5 sm:gap-3 sm:px-5 md:px-8 md:pb-7 lg:pb-9">
-          <div className="pointer-events-auto flex max-w-[min(38rem,94%)] flex-col gap-2 sm:gap-2.5">
-            {/* Brand + rank badges */}
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="sf-board !py-1">
-                <span className="sf-bulb" aria-hidden />
-                <span className="sf-board-title">
-                  {isTv ? "SnapFlix Series" : "SnapFlix Feature"}
-                </span>
-              </span>
-              <span className="sf-chip sf-chip-accent !py-0.5 !text-[9px] tracking-[0.16em] uppercase">
-                Top {currentIndex + 1}
-              </span>
-            </div>
+      <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-end">
+        <div className="flex w-full flex-col items-center gap-2.5 px-4 pb-8 sm:gap-3 sm:px-5 md:px-8 md:pb-10 lg:pb-12">
+          <div className="pointer-events-auto flex max-w-[min(38rem,94%)] flex-col items-center gap-2 text-center sm:gap-2.5">
+            {/* Marquee rank chip */}
+            <span className="sf-chip sf-chip-accent !py-0.5 !text-[9px] tracking-[0.16em] uppercase">
+              Top {currentIndex + 1}
+            </span>
 
             {/* Title — clamped and clamped again so long names never overflow */}
             <h1
@@ -271,30 +226,20 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
             </h1>
 
             {/* Metadata chips */}
-            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
               <span className="sf-chip !text-[10px] font-semibold text-[var(--sf-accent)]">
                 {activeMatch}% Match
               </span>
               <span className="sf-chip !text-[10px]">{activeYear}</span>
-              <span className="sf-chip !text-[10px] sm:!text-xs">
-                {activeItem?.adult ? "18+" : "16+"}
-              </span>
               {activeRuntime && (
                 <span className="sf-chip hidden !text-xs sm:inline-flex">{activeRuntime}</span>
               )}
-              {isTv && (
+              {isTv && activeItem?.number_of_seasons && (
                 <span className="sf-chip hidden !text-xs sm:inline-flex">
-                  {activeItem?.number_of_seasons
-                    ? `${activeItem.number_of_seasons} Season${activeItem.number_of_seasons > 1 ? "s" : ""}`
-                    : "Series"}
+                  {activeItem.number_of_seasons} Season
+                  {activeItem.number_of_seasons > 1 ? "s" : ""}
                 </span>
               )}
-              {activeGenres.map((genre) => (
-                <span key={genre} className="sf-chip hidden !text-xs md:inline-flex">
-                  {genre}
-                </span>
-              ))}
-              <span className="sf-chip hidden !text-xs lg:inline-flex">Ultra HD · Subtitles</span>
             </div>
 
             {/* Synopsis — clamped to two lines, hidden on the smallest screens */}
@@ -333,7 +278,7 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
       </div>
 
       {/* Slide indicators + queue preview */}
-      <div className="absolute inset-x-0 bottom-0 z-30 flex items-end justify-between gap-3 px-4 pb-3 sm:px-5 md:px-8">
+      <div className="absolute inset-x-0 bottom-0 z-30 flex items-end justify-center gap-3 px-4 pb-3 sm:px-5 md:px-8">
         <div className="flex items-center gap-2">
           {heroItems.map((_, idx) => {
             const isCurrent = idx === currentIndex;
@@ -393,7 +338,7 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
 const HeroSkeleton = () => (
   <div className="sf-hero relative flex h-[54dvh] max-h-[620px] min-h-[380px] w-full flex-col justify-end overflow-hidden bg-black/40 sm:h-[58dvh] lg:h-[62dvh] 2xl:h-[68dvh]">
     <Skeleton className="absolute inset-0 size-full rounded-sf opacity-20" />
-    <div className="relative z-10 flex flex-col gap-3 px-4 pb-8 sm:px-6 md:px-9">
+    <div className="relative z-10 flex flex-col items-center gap-3 px-4 pb-8 sm:px-6 md:px-9">
       <Skeleton className="h-4 w-40 rounded-full opacity-30" />
       <Skeleton className="h-10 w-[min(24rem,80%)] rounded-lg opacity-40 sm:h-14" />
       <div className="flex flex-wrap gap-2">

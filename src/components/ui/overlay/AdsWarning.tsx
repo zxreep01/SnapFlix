@@ -39,14 +39,12 @@ const AdsWarning: React.FC = () => {
     >
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1 text-center text-lg uppercase sm:text-xl">
-          Before you watch!
+          Before you watch
         </ModalHeader>
         <ModalBody>
           <ScrollShadow hideScrollBar className="space-y-4">
             <p className="text-center">
-              As our content is hosted by various third party providers, you may encounter pop up
-              advertisements while streaming. To improve your viewing experience, we suggest using
-              an ad-blocker like{" "}
+              Third-party streams may show pop-ups. An ad-blocker like{" "}
               <Link
                 showAnchorIcon
                 isExternal
@@ -68,8 +66,7 @@ const AdsWarning: React.FC = () => {
               >
                 AdGuard
               </Link>
-              . Please be aware that we don't have control over the ads displayed and cannot be held
-              responsible for their content or any issues they may cause.
+              {" "}keeps playback clean.
             </p>
           </ScrollShadow>
         </ModalBody>

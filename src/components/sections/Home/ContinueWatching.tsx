@@ -3,7 +3,7 @@
 import Carousel from "@/components/ui/wrapper/Carousel";
 import useWatchHistory from "@/hooks/useWatchHistory";
 import Reveal from "@/components/ui/other/Reveal";
-import Link from "next/link";
+import RailHeader from "@/components/ui/other/RailHeader";
 import WatchProgressCard from "./WatchProgressCard";
 import ResumeCard from "./Cards/Resume";
 
@@ -27,18 +27,7 @@ const ContinueWatching: React.FC = () => {
 
       {/* Tablet & desktop: resume rail */}
       <Reveal className="hidden flex-col gap-3 md:flex">
-        <div className="flex items-baseline justify-between gap-3 px-4 md:px-8">
-          <span className="sf-board min-w-0">
-            <span className="sf-bulb" aria-hidden />
-            <span className="sf-board-title">Continue Watching</span>
-          </span>
-          <Link
-            href="/library"
-            className="shrink-0 text-[11px] font-semibold text-white/55 transition-colors hover:text-white"
-          >
-            See all
-          </Link>
-        </div>
+        <RailHeader title="Continue Watching" href="/library" className="px-4 md:px-8" />
 
         <Carousel classNames={{ viewport: "px-4 md:px-8" }}>
           {list.map((media) => (

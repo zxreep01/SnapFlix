@@ -5,7 +5,8 @@ import { useWindowScroll } from "@mantine/hooks";
 import { usePathname } from "next/navigation";
 import UserProfileButton from "../button/UserProfileButton";
 import BrandLogo from "../other/BrandLogo";
-import NavSearch from "./NavSearch";
+import Link from "next/link";
+import { IoSearchOutline } from "react-icons/io5";
 
 /**
  * Slim top bar for phones and tablets.
@@ -35,8 +36,13 @@ const TopNavbar = () => {
       <BrandLogo size="sm" align="left" />
 
       <div className="flex min-w-0 items-center gap-1">
-        {/* The bar instance only reacts below md, the rail instance above it */}
-        <NavSearch variant="bar" />
+        <Link
+          href="/search"
+          aria-label="Search titles, actors and genres"
+          className="flex size-9 items-center justify-center rounded-full text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+        >
+          <IoSearchOutline className="size-5" />
+        </Link>
         <UserProfileButton />
       </div>
     </header>

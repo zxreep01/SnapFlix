@@ -11,17 +11,15 @@ import {
   HomeFilled,
   Library,
   LibraryFilled,
-  Movie,
   Shuffle,
-  TV,
 } from "@/utils/icons";
+import { BiSearchAlt2 } from "react-icons/bi";
 import { Tooltip } from "@heroui/react";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import UserProfileButton from "../button/UserProfileButton";
 import ThemeSwitchDropdown from "../input/ThemeSwitchDropdown";
-import NavSearch from "./NavSearch";
 
 interface RailItemProps {
   label: string;
@@ -68,14 +66,23 @@ const RailItem: React.FC<RailItemProps> = ({ label, icon, href, active, onClick 
  */
 const AppRail: React.FC<{ className?: string }> = ({ className }) => {
   const pathName = usePathname();
-  const searchParams = useSearchParams();
   const router = useRouter();
   const [isShuffling, setIsShuffling] = useState(false);
 
-  const content = searchParams.get("content");
   const isHome = pathName === "/";
-  const isMovies = isHome && content === "movie";
-  const isTv = isHome && content === "tv";
+
+  // The rail's search icon used to expand inline; the shortcut now opens the
+  // dedicated search page.
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        router.push("/search");
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [router]);
 
   /** Sends the viewer to a random title from the trending catalog. */
   const handleShuffle = useCallback(async () => {
@@ -112,22 +119,18 @@ const AppRail: React.FC<{ className?: string }> = ({ className }) => {
 
       <div className="h-px w-6 shrink-0 bg-white/10" />
 
-      {/* Search lives in the rail on desktop */}
-      <NavSearch variant="rail" />
-
       <RailItem
         label="Home"
         href="/"
-        active={isHome && !content}
-        icon={isHome && !content ? <HomeFilled className="text-[16px]" /> : <Home className="text-[16px]" />}
+        active={isHome}
+        icon={isHome ? <HomeFilled className="text-[16px]" /> : <Home className="text-[16px]" />}
       />
       <RailItem
-        label="Movies"
-        href="/?content=movie"
-        active={isMovies}
-        icon={<Movie className="text-[16px]" />}
+        label="Search"
+        href="/search"
+        active={pathName.startsWith("/search")}
+        icon={<BiSearchAlt2 className="text-[16px]" />}
       />
-      <RailItem label="TV Series" href="/?content=tv" active={isTv} icon={<TV className="text-[16px]" />} />
       <RailItem
         label="Discover"
         href="/discover"

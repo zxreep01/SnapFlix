@@ -193,9 +193,6 @@ const WatchMoviePage: NextPage<Params<{ id: string }>> = ({ params }) => {
                 {movieDetails?.adult ? "18+" : "16+"}
               </span>
               {runtimeText && <span>{runtimeText}</span>}
-              <span className="border border-white/20 px-1 rounded-md text-[10px] text-gray-300">
-                4K Ultra HD
-              </span>
             </div>
 
             {/* Genres */}

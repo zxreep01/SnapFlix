@@ -30,7 +30,7 @@ const LibraryPage: NextPage = async () => {
         {error || !user ? (
           <UnauthorizedNotice
             title="Sign in to access your library"
-            description="Create a free account to save your favorite movies and TV shows!"
+            description="Create a free account to keep your watchlist in one place."
           />
         ) : (
           <LibraryList />

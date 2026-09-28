@@ -63,23 +63,11 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
       {/* Cinematic Vignette Gradients */}
       {/* Bottom smooth fade to content section */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-linear-to-t from-black/95 via-black/45 to-transparent sm:h-48 md:h-56" />
-      {/* Left subtle vignette only behind text */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-linear-to-r from-black/85 via-black/35 to-transparent sm:w-3/4 md:w-3/5" />
       {/* Top subtle navbar blend */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-14 bg-linear-to-b from-black/25 to-transparent" />
 
       {/* Hero Content Block */}
-      <div className="absolute bottom-6 sm:bottom-8 md:bottom-10 lg:bottom-14 left-4 sm:left-5 md:left-8 right-4 md:right-auto max-w-xl lg:max-w-2xl flex flex-col gap-2 sm:gap-2.5 md:gap-3 z-20">
-        {/* Netflix Brand Tagline / Badge */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <div className="flex size-4 items-center justify-center rounded-full bg-[var(--sf-accent)] shadow-[0_0_12px_var(--sf-glow-soft)]">
-            <span className="text-[9px] sm:text-[11px] font-black text-white">S</span>
-          </div>
-          <span className="text-[10px] sm:text-xs md:text-sm font-extrabold tracking-[0.18em] sm:tracking-[0.22em] text-white uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-            {isTv ? "SNAPFLIX ORIGINAL SERIES" : "SNAPFLIX FEATURE FILM"}
-          </span>
-        </div>
-
+      <div className="absolute inset-x-4 bottom-6 z-20 mx-auto flex max-w-xl flex-col items-center gap-2 text-center sm:bottom-8 sm:gap-2.5 md:bottom-10 md:gap-3 lg:bottom-14 lg:max-w-2xl">
         {/* Title */}
         <h1 className="line-clamp-2 text-lg leading-tight font-bold tracking-tight text-white drop-shadow-[0_4px_14px_rgba(0,0,0,0.95)] sm:text-2xl md:text-3xl lg:text-4xl">
           {title}
@@ -93,36 +81,22 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
         )}
 
         {/* Metadata Badges */}
-        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 md:gap-3 text-[11px] sm:text-xs md:text-sm">
-          <span className="font-extrabold text-[var(--sf-accent)] drop-shadow-sm">
+        <div className="flex flex-wrap items-center justify-center gap-1.5 text-[11px] sm:gap-2 md:gap-3 sm:text-xs md:text-sm">
+          <span className="font-semibold text-[var(--sf-accent)] drop-shadow-sm">
             {matchPercentage}% Match
           </span>
-          <span className="text-gray-300 font-medium">{releaseYear}</span>
+          <span className="font-medium text-gray-300">{releaseYear}</span>
           <span className="sf-chip !py-0.5 !text-[10px] tracking-[0.14em] uppercase">
             {media.adult ? "18+" : "16+"}
           </span>
-          {runtimeText && (
-            <span className="sf-chip !py-0.5 !text-[10px]">
-              {runtimeText}
-            </span>
-          )}
-          {seasonsText && (
-            <span className="sf-chip !py-0.5 !text-[10px]">
-              {seasonsText}
-            </span>
-          )}
-          <span className="sf-chip hidden !py-0.5 !text-[10px] sm:inline-flex">
-            4K Ultra HD
-          </span>
-          <span className="sf-chip hidden !py-0.5 !text-[10px] md:inline-flex">
-            5.1 Audio
-          </span>
+          {runtimeText && <span className="sf-chip !py-0.5 !text-[10px]">{runtimeText}</span>}
+          {seasonsText && <span className="sf-chip !py-0.5 !text-[10px]">{seasonsText}</span>}
         </div>
 
         {/* Genres Pills */}
         {media.genres && media.genres.length > 0 && (
-          <div className="hidden sm:flex flex-wrap gap-1.5 pt-0.5">
-            {media.genres.slice(0, 4).map((g: any) => (
+          <div className="hidden flex-wrap justify-center gap-1.5 pt-0.5 sm:flex">
+            {media.genres.slice(0, 3).map((g: any) => (
               <span
                 key={g.id}
                 className="text-[11px] text-gray-200 font-medium bg-black/50 px-2.5 py-0.5 rounded-full border border-white/10"
@@ -134,12 +108,12 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
         )}
 
         {/* Overview / Synopsis */}
-        <p className="text-xs sm:text-sm md:text-base text-gray-200/90 leading-relaxed line-clamp-2 sm:line-clamp-3 max-w-lg drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+        <p className="max-w-lg text-xs leading-relaxed text-gray-200/90 line-clamp-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] sm:text-sm sm:line-clamp-3 md:text-base">
           {media.overview || "Stream this title now exclusively on SnapFlix."}
         </p>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-1 sm:pt-2">
+        <div className="flex flex-wrap items-center justify-center gap-2 pt-1 sm:gap-3 sm:pt-2">
           {/* Main Play Button */}
           <Link
             href={playHref}
@@ -178,11 +152,6 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
             <ShareButton id={media.id} title={title} type={type} />
           </div>
         </div>
-      </div>
-
-      {/* Bottom Right: Maturity Rating Pill */}
-      <div className="absolute right-4 sm:right-5 md:right-8 bottom-6 sm:bottom-8 md:bottom-10 lg:bottom-14 hidden sm:flex items-center bg-[#141414]/70 border-l-3 border-[color:var(--sf-accent)] py-1.5 pl-3 pr-4 backdrop-blur-xs text-xs font-bold text-gray-200 uppercase tracking-wider z-30">
-        {media.adult ? "TV-MA / 18+" : "TV-14 / 16+"}
       </div>
     </div>
   );

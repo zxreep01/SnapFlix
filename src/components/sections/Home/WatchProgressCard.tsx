@@ -52,8 +52,6 @@ const WatchProgressCard: React.FC<WatchProgressCardProps> = ({ items }) => {
       average,
       tracked: tracked.slice(0, 3),
       days,
-      peak: Math.max(...days, 1),
-      weekly: days.reduce((total, value) => total + value, 0),
     };
   }, [items]);
 
@@ -64,47 +62,29 @@ const WatchProgressCard: React.FC<WatchProgressCardProps> = ({ items }) => {
       aria-label="Your watch activity"
       className="flex flex-col gap-4 px-4 md:hidden"
     >
-      {/* Headline figures + curve */}
-      <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-black/45 p-4 backdrop-blur-xl">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <p className="text-[11px] font-semibold tracking-wide text-white/55 uppercase">
-              Continue where you left off
-            </p>
-            <p className="mt-1 flex items-baseline gap-2">
-              <span className="text-lg leading-none font-semibold text-white">
-                {stats.average}
-                <span className="text-xl">%</span>
-              </span>
-              <span className="truncate text-[11px] font-semibold text-[var(--sf-accent)]">
-                {stats.weekly > 0 ? `${stats.weekly} plays this week` : "Start a title today"}
-              </span>
-            </p>
-          </div>
+      {/* Headline figure + weekly curve */}
+      <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-black/45 p-4 text-center backdrop-blur-xl">
+        <Link
+          href="/library"
+          aria-label="Open your library"
+          className="absolute top-3 right-3 flex size-8 items-center justify-center rounded-full bg-[var(--sf-accent)] text-[var(--sf-on-accent)] shadow-[0_0_18px_var(--sf-glow)] transition-transform active:scale-95"
+        >
+          <ChevronRight className="size-4" />
+        </Link>
 
-          <Link
-            href="/library"
-            aria-label="Open your library"
-            className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[var(--sf-accent)] text-[var(--sf-on-accent)] shadow-[0_0_18px_var(--sf-glow)] transition-transform active:scale-95"
-          >
-            <ChevronRight className="size-4" />
-          </Link>
-        </div>
+        <p className="text-3xl leading-none font-semibold text-white">
+          {stats.average}
+          <span className="text-lg">%</span>
+        </p>
 
-        {/* Activity curve drawn from the last seven days */}
-        <Sparkline values={stats.days} className="mt-4" />
-
-        <div className="mt-2 flex justify-between text-[10px] font-medium text-white/40">
-          <span>7 days ago</span>
-          <span>Today</span>
-        </div>
+        <Sparkline values={stats.days} className="mt-3" />
       </div>
 
       {/* Rows */}
       <div className="flex flex-col gap-1.5 rounded-3xl border border-white/10 bg-black/45 p-2 backdrop-blur-xl">
         {stats.tracked.length === 0 && (
           <p className="px-2 py-3 text-xs text-white/55">
-            Everything you started is finished — pick something new.
+            Nothing in progress.
           </p>
         )}
 
@@ -113,7 +93,7 @@ const WatchProgressCard: React.FC<WatchProgressCardProps> = ({ items }) => {
           const remaining = Math.max(0, item.duration - item.last_position);
           const subtitle =
             item.type === "tv"
-              ? `S${item.season} · E${item.episode} · ${formatDuration(remaining)} left`
+              ? `S${item.season}·E${item.episode} · ${formatDuration(remaining)}`
               : `${formatDuration(remaining)} left`;
 
           return (

@@ -6,7 +6,6 @@ import { Spinner } from "@heroui/react";
 import dynamic from "next/dynamic";
 import { parseAsStringLiteral, useQueryState } from "nuqs";
 import { Suspense } from "react";
-import CollectionTiles from "./CollectionTiles";
 import ContinueWatching from "./ContinueWatching";
 import FeaturedSplit from "./FeaturedSplit";
 
@@ -17,9 +16,9 @@ const Top10Row = dynamic(() => import("@/components/sections/Home/Top10Row"));
 /**
  * Home content stack.
  *
- * Mirrors the reference placement: media switcher, the rounded collection
- * tiles, the viewer's own progress, the two-column feature block and finally
- * the collection rails with the Top 10 ranking.
+ * Keeps only what belongs on the home screen: a centred media switcher, the
+ * viewer's own progress, the two-column feature block and finally the
+ * collection rails with the Top 10 ranking.
  */
 const HomePageList: React.FC = () => {
   const { movies, tvShows } = siteConfig.queryLists;
@@ -30,10 +29,9 @@ const HomePageList: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-5 md:gap-7">
-      {/* Switcher + collection tiles */}
-      <div className="flex flex-col gap-4 px-4 sm:px-5 md:px-8">
-        <ContentTypeSelection className="self-start" />
-        <CollectionTiles contentType={content} />
+      {/* Centred media switcher */}
+      <div className="flex justify-center px-4 sm:px-5 md:px-8">
+        <ContentTypeSelection />
       </div>
 
       {/* Viewer's own progress */}

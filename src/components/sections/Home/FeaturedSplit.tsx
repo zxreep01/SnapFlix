@@ -5,7 +5,7 @@ import { useCoverTheme } from "@/components/ui/theme/CoverThemeProvider";
 import { MOCK_MOVIES, MOCK_TV_SHOWS } from "@/utils/mockData";
 import { cn } from "@/utils/helpers";
 import { getImageUrl, mutateMovieTitle, mutateTvShowTitle } from "@/utils/movies";
-import { PlayFilled } from "@/utils/icons";
+import { ChevronRight, PlayFilled } from "@/utils/icons";
 import Reveal from "@/components/ui/other/Reveal";
 import { Skeleton } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
@@ -65,18 +65,22 @@ const FeaturedSplit: React.FC<FeaturedSplitProps> = ({ contentType }) => {
     return (
       <div className="mx-auto grid w-full max-w-[1600px] grid-cols-1 gap-6 px-4 sm:px-5 md:px-8 lg:grid-cols-[minmax(190px,240px)_1fr] lg:gap-8">
         <div className="flex flex-col gap-3">
-          <span className="sf-board">
-            <span className="sf-bulb" aria-hidden />
-            <span className="sf-board-title">Recent</span>
-          </span>
+          <div className="flex justify-center">
+            <span className="sf-board">
+              <span className="sf-bulb" aria-hidden />
+              <span className="sf-board-title">Recent</span>
+            </span>
+          </div>
           <Skeleton className="aspect-video rounded-sf opacity-25" />
           <Skeleton className="aspect-video rounded-sf opacity-25" />
         </div>
         <div className="flex flex-col gap-3">
-          <span className="sf-board">
-            <span className="sf-bulb" aria-hidden />
-            <span className="sf-board-title">Recommended</span>
-          </span>
+          <div className="flex justify-center">
+            <span className="sf-board">
+              <span className="sf-bulb" aria-hidden />
+              <span className="sf-board-title">Recommended</span>
+            </span>
+          </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {Array.from({ length: 4 }).map((_, index) => (
               <Skeleton key={index} className="aspect-square rounded-sf opacity-25" />
@@ -91,13 +95,10 @@ const FeaturedSplit: React.FC<FeaturedSplitProps> = ({ contentType }) => {
     <div className="mx-auto grid w-full max-w-[1600px] grid-cols-1 gap-6 px-4 sm:px-5 md:px-8 lg:grid-cols-[minmax(190px,240px)_1fr] lg:gap-8">
       {/* Recent — stacked wide cards */}
       <div className="flex flex-col gap-3">
-        <div className="flex items-baseline justify-between gap-2">
+        <div className="flex justify-center">
           <span className="sf-board min-w-0">
             <span className="sf-bulb" aria-hidden />
             <span className="sf-board-title">Recent</span>
-          </span>
-          <span className="shrink-0 text-[10px] font-medium tracking-[0.12em] text-[var(--sf-accent)] uppercase">
-            Just added
           </span>
         </div>
 
@@ -126,14 +127,9 @@ const FeaturedSplit: React.FC<FeaturedSplitProps> = ({ contentType }) => {
 
                   <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-2.5">
                     <p className="truncate text-[11px] font-semibold text-white sm:text-xs">{title}</p>
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="truncate text-[10px] text-white/60">
-                        {date ? new Date(date).getFullYear() : "New"}
-                      </span>
-                      <span className="sf-chip !px-2 !py-0 !text-[9px] uppercase">
-                        {isTv ? "Series" : "Film"}
-                      </span>
-                    </div>
+                    <span className="truncate text-[10px] text-white/60">
+                      {date ? new Date(date).getFullYear() : "New"}
+                    </span>
                   </div>
                 </Link>
 
@@ -152,16 +148,19 @@ const FeaturedSplit: React.FC<FeaturedSplitProps> = ({ contentType }) => {
 
       {/* Recommended For You — poster row */}
       <div className="flex min-w-0 flex-col gap-3">
-        <div className="flex items-baseline justify-between gap-2">
-          <span className="sf-board min-w-0">
-            <span className="sf-bulb" aria-hidden />
-            <span className="sf-board-title">Recommended</span>
-          </span>
+        <div className="flex justify-center">
           <Link
             href={`/discover${isTv ? "?content=tv" : ""}`}
-            className="shrink-0 text-[11px] font-semibold text-white/55 transition-colors hover:text-white"
+            className="group min-w-0"
+            aria-label="Browse recommended titles"
           >
-            See all
+            <span className="sf-board">
+              <span className="sf-bulb" aria-hidden />
+              <span className="sf-board-title transition-colors group-hover:text-white">
+                Recommended
+              </span>
+              <ChevronRight className="size-3 shrink-0 text-white/40 transition-transform duration-500 ease-sf group-hover:translate-x-0.5" />
+            </span>
           </Link>
         </div>
 
@@ -189,11 +188,6 @@ const FeaturedSplit: React.FC<FeaturedSplitProps> = ({ contentType }) => {
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/85 via-transparent to-transparent" />
-
-                {/* Corner date chip, mirroring the reference cards */}
-                <span className="absolute top-2 right-2 rounded-md bg-black/55 px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-white/85 backdrop-blur-md">
-                  {date ? new Date(date).toISOString().slice(0, 10).replace(/-/g, ".") : "NEW"}
-                </span>
 
                 <span className="absolute inset-x-0 bottom-0 truncate p-2.5 text-[11px] font-semibold text-white">
                   {title}
