@@ -168,7 +168,6 @@ const FeaturedSplit: React.FC<FeaturedSplitProps> = ({ contentType }) => {
           {recommended.map((item: any) => {
             const title = isTv ? mutateTvShowTitle(item) : mutateMovieTitle(item);
             const href = isTv ? `/tv/${item.id}` : `/movie/${item.id}`;
-            const date = item.release_date || item.first_air_date;
 
             return (
               <Link
