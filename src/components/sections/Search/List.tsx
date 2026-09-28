@@ -187,7 +187,7 @@ const SearchList = () => {
       ) : (
         <div className="flex flex-col items-center gap-6 w-full max-w-7xl px-4 md:px-8 mt-2">
           <div className="flex items-center gap-2 self-start">
-            <span className="w-1.5 h-6 bg-[#E50914] rounded-full inline-block" />
+            <span className="w-1.5 h-6 bg-[var(--sf-accent)] rounded-full inline-block" />
             <h3 className="text-xl md:text-2xl font-black text-white tracking-wide">
               Popular on SnapFlix
             </h3>

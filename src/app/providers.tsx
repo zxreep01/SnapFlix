@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppProgressProvider as ProgressProvider } from "@bprogress/next";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { CoverThemeProvider } from "@/components/ui/theme/CoverThemeProvider";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -45,15 +46,18 @@ export default function Providers({ children }: PropsWithChildren) {
           }}
         />
         <NextThemesProvider attribute="class" defaultTheme="dark" enableSystem>
-          {/* https://github.com/vercel/next.js/discussions/61654#discussioncomment-8480088 */}
-          <Suspense>
-            <ProgressProvider
-              options={{ showSpinner: false }}
-              color={`hsl(var(--heroui-${tv ? "warning" : "primary"}))`}
-            >
-              {children}
-            </ProgressProvider>
-          </Suspense>
+          {/* Every surface inherits the colour of the artwork on screen */}
+          <CoverThemeProvider>
+            {/* https://github.com/vercel/next.js/discussions/61654#discussioncomment-8480088 */}
+            <Suspense>
+              <ProgressProvider
+                options={{ showSpinner: false }}
+                color={`hsl(var(--heroui-${tv ? "warning" : "primary"}))`}
+              >
+                {children}
+              </ProgressProvider>
+            </Suspense>
+          </CoverThemeProvider>
         </NextThemesProvider>
       </HeroUIProvider>
     </QueryClientProvider>

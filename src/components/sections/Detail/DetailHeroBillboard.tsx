@@ -2,6 +2,7 @@
 
 import BookmarkButton from "@/components/ui/button/BookmarkButton";
 import ShareButton from "@/components/ui/button/ShareButton";
+import { useCoverArtTheme } from "@/components/ui/theme/CoverThemeProvider";
 import Trailer from "@/components/ui/overlay/Trailer";
 import { SavedMovieDetails } from "@/types/movie";
 import { getImageUrl, movieDurationString, mutateMovieTitle, mutateTvShowTitle } from "@/utils/movies";
@@ -42,12 +43,15 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
     saved_date: new Date().toISOString(),
   };
 
+  // The detail page takes its colour from this title's own artwork.
+  useCoverArtTheme([bgUrl, getImageUrl(media.poster_path)], bgUrl);
+
   const runtimeText = !isTv && media.runtime ? movieDurationString(media.runtime) : null;
   const seasonsText = isTv && media.number_of_seasons ? `${media.number_of_seasons} Season${media.number_of_seasons > 1 ? "s" : ""}` : null;
   const videos = media.videos?.results || [];
 
   return (
-    <div className="group relative h-[60dvh] min-h-[400px] max-h-[520px] sm:h-[68dvh] sm:min-h-[480px] sm:max-h-[620px] lg:h-[80dvh] lg:min-h-[540px] lg:max-h-[800px] 2xl:h-[78dvh] w-full select-none overflow-hidden bg-[#141414]">
+    <div className="sf-hero group relative h-[56dvh] min-h-[380px] max-h-[520px] sm:h-[62dvh] sm:min-h-[440px] sm:max-h-[600px] lg:h-[68dvh] lg:min-h-[500px] lg:max-h-[720px] w-full select-none overflow-hidden bg-black/30">
       {/* Background Backdrop: Edge-to-Edge Cinematic Brilliance */}
       <img
         src={bgUrl}
@@ -58,17 +62,17 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
 
       {/* Cinematic Vignette Gradients */}
       {/* Bottom smooth fade to content section */}
-      <div className="absolute inset-x-0 bottom-0 h-36 sm:h-48 md:h-56 bg-linear-to-t from-[#141414] via-[#141414]/50 to-transparent pointer-events-none z-10" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-linear-to-t from-black/95 via-black/45 to-transparent sm:h-48 md:h-56" />
       {/* Left subtle vignette only behind text */}
-      <div className="absolute inset-y-0 left-0 w-full sm:w-3/4 md:w-3/5 bg-linear-to-r from-[#141414]/85 via-[#141414]/35 via-50% to-transparent pointer-events-none z-10" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-linear-to-r from-black/85 via-black/35 to-transparent sm:w-3/4 md:w-3/5" />
       {/* Top subtle navbar blend */}
-      <div className="absolute top-0 inset-x-0 h-14 bg-linear-to-b from-black/20 to-transparent pointer-events-none z-10" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-14 bg-linear-to-b from-black/25 to-transparent" />
 
       {/* Hero Content Block */}
-      <div className="absolute bottom-6 sm:bottom-10 md:bottom-16 lg:bottom-20 left-4 md:left-12 right-4 md:right-auto max-w-xl lg:max-w-2xl flex flex-col gap-2 sm:gap-2.5 md:gap-3 z-20">
+      <div className="absolute bottom-6 sm:bottom-8 md:bottom-10 lg:bottom-14 left-4 sm:left-5 md:left-8 right-4 md:right-auto max-w-xl lg:max-w-2xl flex flex-col gap-2 sm:gap-2.5 md:gap-3 z-20">
         {/* Netflix Brand Tagline / Badge */}
         <div className="flex items-center gap-1.5 sm:gap-2">
-          <div className="flex items-center justify-center h-4 w-3.5 sm:h-5 sm:w-4 rounded-xs bg-linear-to-b from-[#E50914] to-[#B81D24] shadow-xs">
+          <div className="flex items-center justify-center h-4 w-3.5 sm:h-5 sm:w-4 rounded-xs bg-[var(--sf-accent)] shadow-[0_0_12px_var(--sf-glow-soft)]">
             <span className="text-[9px] sm:text-[11px] font-black text-white">S</span>
           </div>
           <span className="text-[10px] sm:text-xs md:text-sm font-extrabold tracking-[0.18em] sm:tracking-[0.22em] text-white uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
@@ -90,7 +94,7 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
 
         {/* Metadata Badges */}
         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 md:gap-3 text-[11px] sm:text-xs md:text-sm">
-          <span className="font-extrabold text-[#46D369] drop-shadow-sm">
+          <span className="font-extrabold text-[var(--sf-accent)] drop-shadow-sm">
             {matchPercentage}% Match
           </span>
           <span className="text-gray-300 font-medium">{releaseYear}</span>
@@ -177,7 +181,7 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
       </div>
 
       {/* Bottom Right: Maturity Rating Pill */}
-      <div className="absolute right-4 md:right-12 bottom-6 sm:bottom-10 md:bottom-16 lg:bottom-20 hidden sm:flex items-center bg-[#141414]/70 border-l-3 border-[#E50914] py-1.5 pl-3 pr-4 backdrop-blur-xs text-xs font-bold text-gray-200 uppercase tracking-wider z-30">
+      <div className="absolute right-4 sm:right-5 md:right-8 bottom-6 sm:bottom-8 md:bottom-10 lg:bottom-14 hidden sm:flex items-center bg-[#141414]/70 border-l-3 border-[color:var(--sf-accent)] py-1.5 pl-3 pr-4 backdrop-blur-xs text-xs font-bold text-gray-200 uppercase tracking-wider z-30">
         {media.adult ? "TV-MA / 18+" : "TV-14 / 16+"}
       </div>
     </div>

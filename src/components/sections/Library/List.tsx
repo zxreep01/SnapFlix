@@ -174,7 +174,7 @@ const LibraryList = () => {
         </div>
 
         {/* Responsive Toolbar: Switcher & Sort Controls */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 bg-[#181818]/60 p-2 sm:p-3 rounded-2xl border border-white/5 backdrop-blur-sm">
+        <div className="flex flex-col items-stretch justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-2 backdrop-blur-xl sm:flex-row sm:items-center sm:gap-4 sm:p-3">
           {/* Switcher */}
           <div className="flex justify-center sm:justify-start">
             <ContentTypeSelection />

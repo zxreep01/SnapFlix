@@ -14,13 +14,13 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
   return (
     <footer
       className={cn(
-        "w-full bg-[#070707] text-zinc-400 border-t border-white/5 pt-12 pb-8 px-6 sm:px-10 md:px-16 select-none",
+        "w-full border-t border-white/8 bg-black/25 px-4 pt-10 pb-8 text-zinc-400 select-none sm:px-6 md:px-8",
         className,
       )}
     >
-      <div className="max-w-7xl mx-auto flex flex-col">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-col">
         {/* 4-Column Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 pb-8">
+        <div className="grid grid-cols-1 gap-8 pb-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
           {/* Column 1: Brand & Feature Info */}
           <div className="flex flex-col gap-3.5 items-start">
             <BrandLogo size="md" align="left" />
@@ -76,19 +76,19 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
             </h3>
             <ul className="flex flex-col gap-2.5 text-xs text-zinc-400">
               <li className="flex items-center gap-2">
-                <IoShieldCheckmarkOutline size={14} className="text-[#E50914] shrink-0" />
+                <IoShieldCheckmarkOutline size={14} className="text-[var(--sf-accent)] shrink-0" />
                 <span>SnapFlix Ultra HD Engine</span>
               </li>
               <li className="flex items-center gap-2">
-                <IoShieldCheckmarkOutline size={14} className="text-[#E50914] shrink-0" />
+                <IoShieldCheckmarkOutline size={14} className="text-[var(--sf-accent)] shrink-0" />
                 <span>Auto-Adaptive Quality Switcher</span>
               </li>
               <li className="flex items-center gap-2">
-                <IoShieldCheckmarkOutline size={14} className="text-[#E50914] shrink-0" />
+                <IoShieldCheckmarkOutline size={14} className="text-[var(--sf-accent)] shrink-0" />
                 <span>Multi-Resolution Stream Proxy</span>
               </li>
               <li className="flex items-center gap-2">
-                <IoShieldCheckmarkOutline size={14} className="text-[#E50914] shrink-0" />
+                <IoShieldCheckmarkOutline size={14} className="text-[var(--sf-accent)] shrink-0" />
                 <span>4K Cinema Playback</span>
               </li>
             </ul>
@@ -118,7 +118,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
 
           <div className="flex items-center gap-1.5 text-zinc-400 text-center sm:text-right flex-wrap justify-center">
             <span>Designed and Developed with</span>
-            <IoHeart className="text-[#E50914] fill-[#E50914] shrink-0 inline-block" size={13} />
+            <IoHeart className="inline-block shrink-0 text-[var(--sf-accent)] fill-[var(--sf-accent)]" size={13} />
             <span>by</span>
             <a
               href="https://ansarixfarhan.cloud"

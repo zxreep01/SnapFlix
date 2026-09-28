@@ -5,7 +5,6 @@ import Footer from "@/components/ui/layout/Footer";
 const NetflixHeroBillboard = dynamic(
   () => import("@/components/sections/Home/NetflixHeroBillboard"),
 );
-const ContinueWatching = dynamic(() => import("@/components/sections/Home/ContinueWatching"));
 const HomePageList = dynamic(() => import("@/components/sections/Home/List"));
 
 interface HomePageProps {
@@ -18,15 +17,14 @@ const HomePage: NextPage<HomePageProps> = async ({ searchParams }) => {
   const { content } = await searchParams;
 
   return (
-    <div className="flex flex-col gap-6 md:gap-10">
-      {/* Netflix Full-Bleed Cinematic Hero Billboard */}
+    <div className="flex flex-col">
+      {/* Full-bleed cinematic hero, themed by its own artwork */}
       <NetflixHeroBillboard contentType={content === "tv" ? "tv" : "movie"} />
 
-      {/* User continue watching */}
-      <ContinueWatching />
-
-      {/* Netflix Content Rows & Top 10 */}
-      <HomePageList />
+      {/* Switcher, tiles, continue watching and content rails */}
+      <div className="pt-4 md:pt-6">
+        <HomePageList />
+      </div>
 
       {/* Netflix Styled Footer */}
       <Footer />

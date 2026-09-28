@@ -183,7 +183,7 @@ const WatchMoviePage: NextPage<Params<{ id: string }>> = ({ params }) => {
             {/* Quick Metadata Row */}
             <div className="flex items-center gap-2 text-[11px] text-gray-400 pt-0.5">
               {movieDetails?.vote_average && (
-                <span className="font-bold text-[#46D369]">
+                <span className="font-bold text-[var(--sf-accent)]">
                   {Math.round(movieDetails.vote_average * 10)}% Match
                 </span>
               )}
@@ -261,7 +261,7 @@ const WatchMoviePage: NextPage<Params<{ id: string }>> = ({ params }) => {
                       <div className="flex items-center justify-between text-[10px] text-gray-400">
                         <span>{rec.release_date ? new Date(rec.release_date).getFullYear() : ""}</span>
                         {rec.vote_average && (
-                          <span className="text-[#46D369] font-bold">
+                          <span className="text-[var(--sf-accent)] font-bold">
                             ★ {rec.vote_average.toFixed(1)}
                           </span>
                         )}

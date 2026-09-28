@@ -252,7 +252,7 @@ const WatchAnimePage: NextPage<Params<{ id: string; episode: string }>> = ({ par
             {/* Quick Metadata Row */}
             <div className="flex items-center gap-2 text-[11px] text-gray-400 pt-0.5">
               {animeDetails?.vote_average && (
-                <span className="font-bold text-[#46D369]">
+                <span className="font-bold text-[var(--sf-accent)]">
                   {Math.round(animeDetails.vote_average * 10)}% Match
                 </span>
               )}
@@ -311,7 +311,7 @@ const WatchAnimePage: NextPage<Params<{ id: string; episode: string }>> = ({ par
                     className={cn(
                       "flex items-center gap-3 p-2 rounded-xl transition-all cursor-pointer group",
                       isPlaying
-                        ? "bg-[#E50914]/15 border border-[#E50914] shadow-md shadow-red-950/30"
+                        ? "bg-[var(--sf-tint)] border border-[color:var(--sf-hairline)] shadow-md shadow-[0_0_18px_var(--sf-glow-soft)]"
                         : "bg-white/[0.03] hover:bg-white/[0.08] border border-white/5"
                     )}
                   >
@@ -329,7 +329,7 @@ const WatchAnimePage: NextPage<Params<{ id: string; episode: string }>> = ({ par
                       )}
                       {isPlaying ? (
                         <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                          <FaPlay className="text-[#E50914] text-xs animate-pulse" />
+                          <FaPlay className="text-[var(--sf-accent)] text-xs animate-pulse" />
                         </div>
                       ) : null}
                     </div>

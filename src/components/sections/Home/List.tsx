@@ -6,11 +6,21 @@ import { Spinner } from "@heroui/react";
 import dynamic from "next/dynamic";
 import { parseAsStringLiteral, useQueryState } from "nuqs";
 import { Suspense } from "react";
+import CollectionTiles from "./CollectionTiles";
+import ContinueWatching from "./ContinueWatching";
+import FeaturedSplit from "./FeaturedSplit";
 
 const MovieHomeList = dynamic(() => import("@/components/sections/Movie/HomeList"));
 const TvShowHomeList = dynamic(() => import("@/components/sections/TV/HomeList"));
 const Top10Row = dynamic(() => import("@/components/sections/Home/Top10Row"));
 
+/**
+ * Home content stack.
+ *
+ * Mirrors the reference placement: media switcher, the rounded collection
+ * tiles, the viewer's own progress, the two-column feature block and finally
+ * the collection rails with the Top 10 ranking.
+ */
 const HomePageList: React.FC = () => {
   const { movies, tvShows } = siteConfig.queryLists;
   const [content] = useQueryState(
@@ -19,21 +29,23 @@ const HomePageList: React.FC = () => {
   );
 
   return (
-    <div className="flex flex-col gap-8 pb-16">
-      {/* Netflix Content Type Pills */}
-      <div className="flex justify-center md:justify-start px-4 md:px-12">
-        <ContentTypeSelection />
+    <div className="flex flex-col gap-5 md:gap-7">
+      {/* Switcher + collection tiles */}
+      <div className="flex flex-col gap-4 px-4 sm:px-5 md:px-8">
+        <ContentTypeSelection className="self-start" />
+        <CollectionTiles contentType={content} />
       </div>
 
-      <div className="relative flex min-h-32 flex-col gap-8 md:gap-12">
+      {/* Viewer's own progress */}
+      <ContinueWatching />
+
+      {/* Recent + Recommended For You */}
+      <FeaturedSplit contentType={content} />
+
+      <div className="relative flex min-h-32 flex-col gap-4 md:gap-6">
         <Suspense
           fallback={
-            <Spinner
-              size="lg"
-              variant="simple"
-              className="absolute-center"
-              color="primary"
-            />
+            <Spinner size="lg" variant="simple" className="absolute-center" color="primary" />
           }
         >
           {content === "movie" && (

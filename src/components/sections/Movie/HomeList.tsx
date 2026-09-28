@@ -1,13 +1,13 @@
 "use client";
 
 import MoviePosterCard from "@/components/sections/Movie/Cards/Poster";
+import RailHeader from "@/components/ui/other/RailHeader";
 import Carousel from "@/components/ui/wrapper/Carousel";
 import { QueryList } from "@/types";
 import { MOCK_MOVIES } from "@/utils/mockData";
 import { Skeleton } from "@heroui/react";
 import { useInViewport } from "@mantine/hooks";
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
 import { kebabCase } from "string-ts";
 import { Movie } from "tmdb-ts/dist/types";
 
@@ -34,54 +34,39 @@ const MovieHomeList: React.FC<QueryList<Movie>> = ({ query, name, param }) => {
   });
 
   const results = data?.results && data.results.length > 0 ? data.results : MOCK_MOVIES;
+  const href = `/discover?type=${param}`;
 
   return (
-    <section id={key} className="min-h-[260px] md:min-h-[310px]" ref={ref}>
+    <section id={key} className="min-h-[230px] py-2 md:min-h-[270px]" ref={ref}>
       {isPending && results.length === 0 ? (
-        <div className="flex w-full flex-col gap-4 px-4 md:px-12">
+        <div className="flex w-full flex-col gap-3 px-4 sm:px-5 md:px-8">
           <div className="flex grow items-center justify-between">
-            <Skeleton className="h-6 w-44 rounded-sm opacity-20" />
-            <Skeleton className="h-4 w-16 rounded-sm opacity-20" />
+            <Skeleton className="h-6 w-44 rounded-full opacity-20" />
+            <Skeleton className="h-6 w-20 rounded-full opacity-20" />
           </div>
-          <div className="flex gap-3 overflow-hidden">
+          <div className="sf-no-scrollbar flex gap-3 overflow-hidden">
             {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} className="h-[240px] w-[160px] shrink-0 rounded-md opacity-25" />
+              <Skeleton
+                key={i}
+                className="aspect-2/3 w-[136px] shrink-0 rounded-2xl opacity-25 sm:w-[148px] md:w-[156px] lg:w-[168px]"
+              />
             ))}
           </div>
         </div>
       ) : (
-        <div className="z-3 flex flex-col gap-2">
-          <div className="flex grow items-center justify-between px-4 md:px-12">
-            <Link
-              href={`/discover?type=${param}`}
-              className="group flex items-center gap-2"
-            >
-              <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-wide text-white group-hover:text-gray-200 transition-colors">
-                {name}
-              </h2>
-              <span className="text-xs font-bold text-[#E50914] opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                Explore All &gt;
-              </span>
-            </Link>
-            <Link
-              href={`/discover?type=${param}`}
-              className="text-xs font-semibold text-gray-400 hover:text-white transition-colors"
-            >
-              See All &gt;
-            </Link>
-          </div>
-          <div className="px-4 md:px-12">
-            <Carousel>
-              {results.map((movie) => (
-                <div
-                  key={movie.id}
-                  className="embla__slide flex min-h-fit max-w-fit items-center px-1 py-3"
-                >
-                  <MoviePosterCard movie={movie} />
-                </div>
-              ))}
-            </Carousel>
-          </div>
+        <div className="flex flex-col gap-2.5">
+          <RailHeader title={name} href={href} className="px-4 sm:px-5 md:px-8" />
+
+          <Carousel classNames={{ viewport: "px-4 sm:px-5 md:px-8" }}>
+            {results.map((movie) => (
+              <div
+                key={movie.id}
+                className="embla__slide flex min-h-fit max-w-fit items-center py-2 pr-3"
+              >
+                <MoviePosterCard movie={movie} />
+              </div>
+            ))}
+          </Carousel>
         </div>
       )}
     </section>

@@ -13,12 +13,12 @@ export const metadata: Metadata = {
 
 const AboutPage: NextPage = () => {
   return (
-    <div className="flex flex-col min-h-screen justify-between pt-20">
-      <div className="flex w-full justify-center px-4 md:px-8 py-8">
+    <div className="flex min-h-full flex-col justify-between pt-5">
+      <div className="flex w-full justify-center px-4 py-6 sm:px-5 md:px-8">
         <div className="flex w-full max-w-3xl flex-col gap-6">
           <div className="flex flex-col gap-2 text-center md:text-left border-b border-white/10 pb-6">
             <h1 className="text-3xl md:text-4xl font-black text-white">
-              SnapFlix <span className="text-[#E50914]">Help Center</span>
+              SnapFlix <span className="text-[var(--sf-accent)]">Help Center</span>
             </h1>
             <p className="text-gray-400 text-sm md:text-base">
               Frequently asked questions and guides for your private streaming experience.
@@ -36,7 +36,7 @@ const AboutPage: NextPage = () => {
             </div>
             <a
               href="mailto:support@snapflix.internal"
-              className="bg-[#E50914] hover:bg-[#B81D24] text-white font-semibold text-xs md:text-sm px-5 py-2.5 rounded-sm transition-colors shadow-md"
+              className="bg-[var(--sf-accent)] hover:brightness-110 text-white font-semibold text-xs md:text-sm px-5 py-2.5 rounded-sm transition-colors shadow-md"
             >
               Contact Support
             </a>

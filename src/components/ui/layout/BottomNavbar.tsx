@@ -1,50 +1,64 @@
 "use client";
 
 import { siteConfig } from "@/config/site";
-import clsx from "clsx";
-import { Link } from "@heroui/link";
+import { cn } from "@/utils/helpers";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Chip } from "@heroui/chip";
 
+/**
+ * Floating mobile navigation.
+ *
+ * Mirrors the rail on small screens: a frosted pill dock where the active
+ * destination is filled with the current cover-art accent.
+ */
 const BottomNavbar = () => {
   const pathName = usePathname();
   const hrefs = siteConfig.navItems.map((item) => item.href);
   const show = hrefs.includes(pathName);
 
+  if (!show) return null;
+
   return (
-    show && (
-      <>
-        <div className="pt-20 md:hidden" />
-        <div className="fixed bottom-0 left-0 z-50 block h-fit w-full translate-y-px border-t border-white/10 bg-[#141414]/90 backdrop-blur-xl pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] md:hidden">
-          <div className="mx-auto grid h-full max-w-lg grid-cols-4">
-            {siteConfig.navItems.map((item) => {
-              const isActive = pathName === item.href;
-              return (
-                <Link
-                  href={item.href}
-                  key={item.href}
-                  className="flex items-center justify-center text-foreground"
-                >
-                  <div className="flex min-h-[48px] flex-col items-center justify-center">
-                    <Chip
-                      size="lg"
-                      variant={isActive ? "solid" : "light"}
-                      classNames={{
-                        base: "py-[2px] transition-all",
-                        content: "size-full",
-                      }}
-                    >
-                      {isActive ? item.activeIcon : item.icon}
-                    </Chip>
-                    <p className={clsx("text-[10px]", { "font-bold": isActive })}>{item.label}</p>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </>
-    )
+    <nav
+      aria-label="Primary"
+      className="fixed inset-x-3 bottom-3 z-50 rounded-[22px] border border-white/10 bg-black/55 backdrop-blur-2xl shadow-[0_18px_50px_rgba(0,0,0,0.6)] md:hidden"
+      style={{ paddingBottom: "max(0px, env(safe-area-inset-bottom))" }}
+    >
+      <div className="mx-auto grid h-16 max-w-lg grid-cols-4 items-center gap-1 px-2">
+        {siteConfig.navItems.map((item) => {
+          const isActive = pathName === item.href;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={isActive ? "page" : undefined}
+              className="flex min-w-0 flex-col items-center justify-center gap-1 py-1.5 text-white/70 transition-colors hover:text-white"
+            >
+              <span
+                className={cn(
+                  "flex size-9 items-center justify-center rounded-full transition-all duration-300",
+                  isActive
+                    ? "bg-[var(--sf-accent)] text-[var(--sf-on-accent)] shadow-[0_0_18px_var(--sf-glow)]"
+                    : "bg-white/6 text-white/75",
+                )}
+              >
+                <span className="block size-[19px]">
+                  {isActive ? item.activeIcon : item.icon}
+                </span>
+              </span>
+              <span
+                className={cn(
+                  "max-w-full truncate text-[10px] leading-none",
+                  isActive ? "font-bold text-white" : "font-medium",
+                )}
+              >
+                {item.label}
+              </span>
+            </Link>
+          );
+        })}
+      </div>
+    </nav>
   );
 };
 

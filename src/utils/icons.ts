@@ -27,13 +27,21 @@ import { GoArrowUpLeft } from "react-icons/go";
 import { HiArrowLongLeft, HiTrash } from "react-icons/hi2";
 import { ImCross } from "react-icons/im";
 import { IoIosClose, IoIosMail, IoIosRocket, IoIosShareAlt, IoMdHelpCircle } from "react-icons/io";
-import { IoEye, IoEyeOff, IoGrid, IoMenuOutline } from "react-icons/io5";
-import { LuHistory, LuPlay } from "react-icons/lu";
+import {
+  IoCompass,
+  IoCompassOutline,
+  IoEye,
+  IoEyeOff,
+  IoGrid,
+  IoMenuOutline,
+} from "react-icons/io5";
+import { LuHistory, LuPlay, LuShuffle } from "react-icons/lu";
 import { MdContentCopy, MdMovie } from "react-icons/md";
 import { PiTelevisionFill } from "react-icons/pi";
 import { RiLockPasswordFill, RiRobot3Fill } from "react-icons/ri";
-import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from "react-icons/tb";
+import { TbFolder, TbFolderFilled, TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from "react-icons/tb";
 import { TiThList } from "react-icons/ti";
+import { GoHome, GoHomeFill } from "react-icons/go";
 
 export {
   FaAd as Ads,
@@ -45,6 +53,8 @@ export {
   FaChevronRight as ChevronRight,
   FaClock as Clock,
   IoIosClose as Close,
+  IoCompass as CompassFilled,
+  IoCompassOutline as Compass,
   MdContentCopy as Copy,
   ImCross as Cross,
   AiFillDislike as Dislike,
@@ -55,7 +65,11 @@ export {
   IoGrid as Grid,
   IoMdHelpCircle as Help,
   LuHistory as History,
+  GoHome as Home,
+  GoHomeFill as HomeFilled,
   FaInfo as Info,
+  TbFolder as Library,
+  TbFolderFilled as LibraryFilled,
   AiFillLike as Like,
   TiThList as List,
   RiLockPasswordFill as LockPassword,
@@ -74,6 +88,7 @@ export {
   FaCloudSun as Season,
   FaServer as Server,
   IoIosShareAlt as Share,
+  LuShuffle as Shuffle,
   FaSortAlphaDown as SortAlpha,
   FaStar as Star,
   HiTrash as Trash,

@@ -10,7 +10,7 @@ import Sidebar from "@/components/ui/layout/Sidebar";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import { cn } from "@/utils/helpers";
-import { IS_PRODUCTION, SpacingClasses } from "@/utils/constants";
+import { IS_PRODUCTION } from "@/utils/constants";
 import dynamic from "next/dynamic";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Suspense } from "react";
@@ -76,11 +76,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <AdShield />
               {IS_PRODUCTION && <Disclaimer />}
               <TopNavbar />
-              <Sidebar>
-                <main className="w-full min-h-screen overflow-x-hidden">
-                  {children}
-                </main>
-              </Sidebar>
+              {/* Floating panel shell: ambient backdrop + rail + glass panel */}
+              <Sidebar>{children}</Sidebar>
               <BottomNavbar />
             </Providers>
           </NuqsAdapter>

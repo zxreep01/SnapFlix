@@ -78,7 +78,8 @@ const SHARE_BUTTONS = [
 ];
 
 const ShareButton: React.FC<ShareButtonProps> = ({ title, id, type = "movie" }) => {
-  const url = `https://${location.hostname}/${type}/${id}`;
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const url = `${origin}/${type}/${id}`;
   const description = `Watch and stream ${title} on SnapFlix!`;
 
   const [opened, { open, close }] = useDisclosure(false);

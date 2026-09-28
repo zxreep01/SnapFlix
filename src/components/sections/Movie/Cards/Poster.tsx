@@ -1,11 +1,14 @@
-import Rating from "@/components/ui/other/Rating";
+"use client";
+
+import { useCoverTheme } from "@/components/ui/theme/CoverThemeProvider";
 import VaulDrawer from "@/components/ui/overlay/VaulDrawer";
 import useBreakpoints from "@/hooks/useBreakpoints";
 import useDeviceVibration from "@/hooks/useDeviceVibration";
+import { cn } from "@/utils/helpers";
+import { PlayFilled } from "@/utils/icons";
 import { getImageUrl, mutateMovieTitle } from "@/utils/movies";
 import { Card, CardBody, CardFooter, CardHeader, Chip, Image, Tooltip } from "@heroui/react";
-import { Icon } from "@iconify/react";
-import { useDisclosure, useHover } from "@mantine/hooks";
+import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useCallback } from "react";
 import { Movie } from "tmdb-ts/dist/types";
@@ -17,14 +20,21 @@ interface MoviePosterCardProps {
   variant?: "full" | "bordered";
 }
 
+/**
+ * Poster tile for movie rails and grids.
+ *
+ * Sized by width (never height) so a rail can never overflow its panel, with a
+ * dated chip in the corner and a hover state painted in the cover-art accent.
+ */
 const MoviePosterCard: React.FC<MoviePosterCardProps> = ({ movie, variant = "full" }) => {
-  const { hovered, ref } = useHover();
   const [opened, handlers] = useDisclosure(false);
-  const releaseYear = new Date(movie.release_date).getFullYear();
+  const releaseDate = movie.release_date ? new Date(movie.release_date) : null;
+  const releaseYear = releaseDate?.getFullYear() ?? new Date().getFullYear();
   const posterImage = getImageUrl(movie.poster_path);
   const title = mutateMovieTitle(movie);
   const { mobile } = useBreakpoints();
   const { startVibration } = useDeviceVibration();
+  const { setFocusTheme, clearFocusTheme } = useCoverTheme();
 
   const callback = useCallback(() => {
     handlers.open();
@@ -47,44 +57,59 @@ const MoviePosterCard: React.FC<MoviePosterCardProps> = ({ movie, variant = "ful
         placement="right-start"
         content={<HoverPosterCard id={movie.id} />}
       >
-        <Link href={`/movie/${movie.id}`} ref={ref} {...longPress()}>
+        <Link
+          href={`/movie/${movie.id}`}
+          {...longPress()}
+          onMouseEnter={() =>
+            setFocusTheme([
+              getImageUrl(movie.backdrop_path, "backdrop", true),
+              getImageUrl(movie.poster_path),
+            ])
+          }
+          onMouseLeave={clearFocusTheme}
+        >
           {variant === "full" && (
-            <div className="group motion-preset-focus relative aspect-2/3 overflow-hidden rounded-lg border-[3px] border-transparent text-white transition-colors hover:border-primary">
-              {hovered && (
-                <Icon
-                  icon="line-md:play-filled"
-                  width="64"
-                  height="64"
-                  className="absolute-center z-20 text-white"
+            <div
+              className={cn(
+                "group relative w-[136px] shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-black/40 text-white sm:w-[148px] md:w-[156px] lg:w-[168px]",
+                "transition-all duration-300 hover:-translate-y-1 hover:border-[color:var(--sf-hairline)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.55)]",
+              )}
+            >
+              <div className="relative aspect-2/3 w-full">
+                <img
+                  src={posterImage}
+                  alt={title}
+                  className="absolute inset-0 size-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
                 />
-              )}
-              {movie.adult && (
-                <Chip
-                  color="danger"
-                  size="sm"
-                  variant="flat"
-                  className="absolute left-2 top-2 z-20"
-                >
-                  18+
-                </Chip>
-              )}
-              <div className="absolute bottom-0 z-2 h-1/2 w-full bg-linear-to-t from-black from-1%"></div>
-              <div className="absolute bottom-0 z-3 flex w-full flex-col gap-1 px-4 py-3">
-                <h6 className="truncate text-sm font-semibold">{title}</h6>
-                <div className="flex justify-between text-xs">
-                  <p>{releaseYear}</p>
-                  <Rating rate={movie?.vote_average} />
+
+                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent" />
+
+                {/* Date chip, mirroring the reference tiles */}
+                <span className="absolute top-2 right-2 rounded-md bg-black/55 px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-white/85 backdrop-blur-md">
+                  {releaseDate
+                    ? releaseDate.toISOString().slice(0, 10).replace(/-/g, ".")
+                    : "NEW"}
+                </span>
+
+                {movie.adult && (
+                  <span className="absolute top-2 left-2 rounded-md bg-danger px-1.5 py-0.5 text-[9px] font-black text-white uppercase">
+                    18+
+                  </span>
+                )}
+
+                {/* Play affordance */}
+                <span className="absolute inset-0 flex items-center justify-center">
+                  <span className="flex size-10 scale-90 items-center justify-center rounded-full bg-[var(--sf-accent)] text-[var(--sf-on-accent)] opacity-0 shadow-[0_0_18px_var(--sf-glow)] transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
+                    <PlayFilled className="size-3.5" />
+                  </span>
+                </span>
+
+                <div className="absolute inset-x-0 bottom-0 flex flex-col gap-0.5 p-2.5">
+                  <h6 className="truncate text-xs font-bold sm:text-sm">{title}</h6>
+                  <p className="truncate text-[10px] text-white/60">{releaseYear}</p>
                 </div>
               </div>
-              <Image
-                alt={title}
-                src={posterImage}
-                radius="none"
-                className="z-0 aspect-2/3 h-[250px] object-cover object-center transition group-hover:scale-110 md:h-[300px]"
-                classNames={{
-                  img: "group-hover:opacity-70",
-                }}
-              />
             </div>
           )}
 
@@ -93,44 +118,35 @@ const MoviePosterCard: React.FC<MoviePosterCardProps> = ({ movie, variant = "ful
               isHoverable
               fullWidth
               shadow="md"
-              className="group h-full bg-secondary-background"
+              className="group h-full border border-white/10 bg-secondary-background"
             >
               <CardHeader className="flex items-center justify-center pb-0">
                 <div className="relative size-full">
-                  {hovered && (
-                    <Icon
-                      icon="line-md:play-filled"
-                      width="64"
-                      height="64"
-                      className="absolute-center z-20 text-white"
-                    />
-                  )}
                   {movie.adult && (
                     <Chip
                       color="danger"
                       size="sm"
                       variant="shadow"
-                      className="absolute left-2 top-2 z-20"
+                      className="absolute top-2 left-2 z-20"
                     >
                       18+
                     </Chip>
                   )}
-                  <div className="relative overflow-hidden rounded-large">
+                  <div className="relative overflow-hidden rounded-2xl">
                     <Image
                       isBlurred
                       alt={title}
-                      className="aspect-2/3 rounded-lg object-cover object-center group-hover:scale-110"
+                      className="aspect-2/3 rounded-2xl object-cover object-center group-hover:scale-105"
                       src={posterImage}
                     />
                   </div>
                 </div>
               </CardHeader>
               <CardBody className="justify-end pb-1">
-                <p className="text-md truncate font-bold">{title}</p>
+                <p className="truncate text-sm font-bold">{title}</p>
               </CardBody>
               <CardFooter className="justify-between pt-0 text-xs">
                 <p>{releaseYear}</p>
-                <Rating rate={movie.vote_average} />
               </CardFooter>
             </Card>
           )}

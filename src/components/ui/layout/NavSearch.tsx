@@ -1,13 +1,13 @@
 "use client";
 
 import { tmdb } from "@/api/tmdb";
+import useBreakpoints from "@/hooks/useBreakpoints";
 import { cn } from "@/utils/helpers";
 import { MOCK_MOVIES, MOCK_TV_SHOWS } from "@/utils/mockData";
 import { getImageUrl } from "@/utils/movies";
 import { useClickOutside, useDebouncedValue } from "@mantine/hooks";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FaPlay } from "react-icons/fa6";
 import { IoClose, IoInformationCircleOutline, IoSearchOutline } from "react-icons/io5";
@@ -23,8 +23,17 @@ export interface SearchResultItem {
   overview?: string;
 }
 
-const NavSearch = () => {
-  const router = useRouter();
+interface NavSearchProps {
+  /**
+   * `bar` renders the compact pill used by the mobile top bar, while `rail`
+   * renders the icon button that expands out of the desktop icon rail.
+   */
+  variant?: "bar" | "rail";
+}
+
+const NavSearch: React.FC<NavSearchProps> = ({ variant = "bar" }) => {
+  const { mobile } = useBreakpoints();
+  const rail = variant === "rail";
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [debouncedQuery] = useDebouncedValue(query, 250);
@@ -53,9 +62,14 @@ const NavSearch = () => {
     }
   }, [isOpen]);
 
-  // Global ESC key and Ctrl+K listener
+  // Global ESC key and Ctrl+K listener.
+  // Only the instance matching the current breakpoint reacts, so the mobile
+  // and desktop search never open the hidden one.
   useEffect(() => {
+    const isActiveVariant = rail ? !mobile : mobile;
+
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isActiveVariant) return;
       if (e.key === "Escape" && isOpen) {
         handleClose();
       }
@@ -66,7 +80,12 @@ const NavSearch = () => {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, handleClose]);
+  }, [isOpen, handleClose, mobile, rail]);
+
+  // Reset the field when the layout swaps between the bar and the rail.
+  useEffect(() => {
+    handleClose();
+  }, [mobile, handleClose]);
 
   // Fetch search results whenever debouncedQuery changes
   useEffect(() => {
@@ -187,9 +206,9 @@ const NavSearch = () => {
   const showDropdown = isOpen && query.trim().length > 0;
 
   return (
-    <div className="relative" ref={containerRef}>
-      {/* Navbar Search Trigger & Expanding Input */}
-      <div className="flex items-center">
+    <div className={cn("relative", rail && "flex items-center justify-center")} ref={containerRef}>
+      {/* Search Trigger & Expanding Input */}
+      <div className={cn("flex items-center", rail && "shrink-0")}>
         <AnimatePresence mode="wait" initial={false}>
           {!isOpen ? (
             <motion.button
@@ -201,9 +220,17 @@ const NavSearch = () => {
               type="button"
               onClick={() => setIsOpen(true)}
               aria-label="Search titles, actors, genres"
-              className="flex items-center gap-2 p-2 text-white/80 hover:text-white transition-colors cursor-pointer group"
+              className={cn(
+                "group flex cursor-pointer items-center gap-2 transition-colors",
+                rail
+                  ? "size-11 justify-center rounded-full text-white/65 hover:bg-white/10 hover:text-white"
+                  : "p-2 text-white/80 hover:text-white",
+              )}
             >
-              <IoSearchOutline size={20} className="transition-transform duration-200 group-hover:scale-110" />
+              <IoSearchOutline
+                size={rail ? 18 : 20}
+                className="transition-transform duration-200 group-hover:scale-110"
+              />
             </motion.button>
           ) : (
             <motion.div
@@ -212,7 +239,13 @@ const NavSearch = () => {
               animate={{ width: "auto", opacity: 1, scale: 1 }}
               exit={{ width: 40, opacity: 0, scale: 0.95 }}
               transition={{ type: "spring", stiffness: 420, damping: 30 }}
-              className="flex items-center bg-black/95 border border-[#E50914] focus-within:border-[#E50914] focus-within:ring-1 focus-within:ring-[#E50914] rounded-full px-2.5 py-1 w-44 sm:w-52 md:w-56 shadow-lg shadow-red-950/40 origin-right backdrop-blur-md"
+              className={cn(
+                "flex items-center rounded-full border border-[color:var(--sf-hairline)] bg-black/90 px-2.5 py-1 shadow-lg backdrop-blur-md",
+                "focus-within:border-[color:var(--sf-accent)] focus-within:ring-1 focus-within:ring-[var(--sf-accent)]",
+                rail
+                  ? "fixed top-1/2 left-[88px] z-60 w-[min(66vw,320px)] -translate-y-1/2 shadow-black/70"
+                  : "w-[min(36vw,11rem)] origin-right shadow-black/60 sm:w-52 md:w-56",
+              )}
             >
               <IoSearchOutline size={15} className="text-gray-300 shrink-0 mr-1.5" />
               <input
@@ -265,7 +298,12 @@ const NavSearch = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.98 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
-            className="absolute top-full right-0 mt-2 w-[calc(100vw-2rem)] sm:w-[360px] md:w-[400px] max-w-[400px] bg-[#161616]/95 backdrop-blur-2xl border border-white/15 rounded-xl shadow-[0_16px_50px_rgba(0,0,0,0.9)] overflow-hidden flex flex-col z-50 text-white"
+            className={cn(
+              "absolute top-full z-50 mt-2 flex flex-col overflow-hidden rounded-2xl border border-white/12 bg-[#121212]/95 text-white shadow-[0_16px_50px_rgba(0,0,0,0.9)] backdrop-blur-2xl",
+              rail
+                ? "fixed top-[calc(50%+26px)] left-[88px] z-60 w-[min(86vw,380px)]"
+                : "right-0 w-[calc(100vw-2rem)] max-w-[400px] sm:w-[360px] md:w-[400px]",
+            )}
           >
             {/* Header: Category Filter Pills & Results Count */}
             <div className="flex items-center justify-between gap-2 px-3.5 py-2.5 bg-black/40 border-b border-white/10">
@@ -281,7 +319,7 @@ const NavSearch = () => {
                       className={cn(
                         "px-2.5 py-1 rounded-full text-xs font-semibold transition-all duration-150 cursor-pointer",
                         isActive
-                          ? "bg-[#E50914] text-white shadow-xs"
+                          ? "bg-[var(--sf-accent)] text-[var(--sf-on-accent)] shadow-xs"
                           : "bg-white/10 text-gray-300 hover:bg-white/20 hover:text-white",
                       )}
                     >
@@ -398,16 +436,16 @@ const FloatingListItem: React.FC<FloatingListItemProps> = ({ item, onClose }) =>
 
         {/* Text Content */}
         <div className="flex flex-col min-w-0 gap-0.5">
-          <h4 className="text-xs sm:text-sm font-bold text-white group-hover:text-[#E50914] transition-colors truncate">
+          <h4 className="text-xs sm:text-sm font-bold text-white group-hover:text-[var(--sf-accent)] transition-colors truncate">
             {item.title}
           </h4>
 
           <div className="flex items-center gap-2 text-[11px] text-gray-300">
-            <span className="bg-[#E50914] text-white text-[9px] font-black uppercase px-1 py-0.5 rounded-xs tracking-wider">
+            <span className="bg-[var(--sf-accent)] text-[var(--sf-on-accent)] text-[9px] font-black uppercase px-1 py-0.5 rounded-xs tracking-wider">
               {isTv ? "SERIES" : "MOVIE"}
             </span>
             {releaseYear && <span>{releaseYear}</span>}
-            <span className="text-[#46D369] font-semibold">★ {rating}</span>
+            <span className="text-[var(--sf-accent)] font-semibold">★ {rating}</span>
           </div>
 
           {item.overview && (
@@ -423,7 +461,7 @@ const FloatingListItem: React.FC<FloatingListItemProps> = ({ item, onClose }) =>
         <Link
           href={playHref}
           onClick={onClose}
-          className="flex items-center justify-center size-7 rounded-full bg-white hover:bg-white/80 text-black transition-colors shadow-xs active:scale-95"
+          className="flex items-center justify-center size-7 rounded-full bg-[var(--sf-accent)] text-[var(--sf-on-accent)] shadow-[0_0_14px_var(--sf-glow-soft)] transition-colors hover:brightness-110 active:scale-95"
           title="Play Now"
           aria-label={`Play ${item.title}`}
         >

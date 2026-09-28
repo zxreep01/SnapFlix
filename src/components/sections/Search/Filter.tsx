@@ -112,7 +112,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({ isLoading, onSearchSubmit, 
                   type="submit"
                   radius="full"
                   variant="shadow"
-                  className="bg-[#E50914] text-white font-bold"
+                  className="bg-[var(--sf-accent)] text-white font-bold"
                 >
                   {mobile ? <Search /> : "Search"}
                 </Button>
