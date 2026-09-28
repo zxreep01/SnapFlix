@@ -7,7 +7,6 @@ import dynamic from "next/dynamic";
 import { parseAsStringLiteral, useQueryState } from "nuqs";
 import { Suspense } from "react";
 import ContinueWatching from "./ContinueWatching";
-import FeaturedSplit from "./FeaturedSplit";
 
 const MovieHomeList = dynamic(() => import("@/components/sections/Movie/HomeList"));
 const TvShowHomeList = dynamic(() => import("@/components/sections/TV/HomeList"));
@@ -16,9 +15,8 @@ const Top10Row = dynamic(() => import("@/components/sections/Home/Top10Row"));
 /**
  * Home content stack.
  *
- * Keeps only what belongs on the home screen: a centred media switcher, the
- * viewer's own progress, the two-column feature block and finally the
- * collection rails with the Top 10 ranking.
+ * Ordered by how the viewer reads the page: what is playing now, what is
+ * trending today, then the catalogue rails.
  */
 const HomePageList: React.FC = () => {
   const { movies, tvShows } = siteConfig.queryLists;
@@ -28,19 +26,18 @@ const HomePageList: React.FC = () => {
   );
 
   return (
-    <div className="flex flex-col gap-5 md:gap-7">
-      {/* Centred media switcher */}
-      <div className="flex justify-center px-4 sm:px-5 md:px-8">
+    <div className="flex flex-col gap-6 md:gap-8">
+      {/* Media switcher, aligned with the rails below */}
+      <div className="flex px-4 sm:px-5 md:px-8">
         <ContentTypeSelection />
       </div>
 
       {/* Viewer's own progress */}
       <ContinueWatching />
 
-      {/* Recent + Recommended For You */}
-      <FeaturedSplit contentType={content} />
+      <div className="sf-bulbs mx-4 md:mx-8" aria-hidden />
 
-      <div className="relative flex min-h-32 flex-col gap-4 md:gap-6">
+      <div className="relative flex min-h-32 flex-col gap-5 md:gap-7">
         <Suspense
           fallback={
             <Spinner size="lg" variant="simple" className="absolute-center" color="primary" />

@@ -2,14 +2,11 @@ import { tmdb } from "@/api/tmdb";
 import { SiteConfigType } from "@/types";
 import { BiSearchAlt2, BiSolidSearchAlt2 } from "react-icons/bi";
 import { GoHomeFill, GoHome } from "react-icons/go";
-import { HiComputerDesktop } from "react-icons/hi2";
-import { IoIosSunny } from "react-icons/io";
 import {
   IoCompass,
   IoCompassOutline,
   IoInformationCircle,
   IoInformationCircleOutline,
-  IoMoon,
 } from "react-icons/io5";
 import { TbFolder, TbFolderFilled } from "react-icons/tb";
 
@@ -47,20 +44,6 @@ export const siteConfig: SiteConfigType = {
       href: "/about",
       icon: <IoInformationCircleOutline className="size-full" />,
       activeIcon: <IoInformationCircle className="size-full" />,
-    },
-  ],
-  themes: [
-    {
-      name: "light",
-      icon: <IoIosSunny className="size-full" />,
-    },
-    {
-      name: "dark",
-      icon: <IoMoon className="size-full" />,
-    },
-    {
-      name: "system",
-      icon: <HiComputerDesktop className="size-full" />,
     },
   ],
   queryLists: {

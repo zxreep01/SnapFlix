@@ -135,9 +135,9 @@ const DiscoverFilters: React.FC = () => {
   };
 
   return (
-    <div className="flex w-full flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-3 backdrop-blur-xl md:flex-row md:items-center">
+    <div className="flex w-full flex-col justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-3 backdrop-blur-xl md:flex-row md:items-center">
       {/* Left: Title + Media Toggle + Genre Dropdown */}
-      <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+      <div className="flex flex-wrap items-center gap-3 sm:gap-4">
         <span className="sf-board min-w-0">
           <span className="sf-bulb" aria-hidden />
           <span className="sf-board-title">New &amp; Popular</span>
@@ -275,7 +275,7 @@ const DiscoverFilters: React.FC = () => {
       </div>
 
       {/* Right: Clean Quick Tabs (Trending, Popular, Top Rated, etc.) */}
-      <div className="flex items-center justify-center gap-1 overflow-x-auto sf-no-scrollbar py-0.5">
+      <div className="flex items-center gap-1 overflow-x-auto sf-no-scrollbar py-0.5">
         {quickTabs.map((tab) => {
           const isSelected = queryType === tab.key && !selectedGenre;
           return (

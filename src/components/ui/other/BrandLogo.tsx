@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { BebasNeue } from "@/utils/fonts";
 import { cn } from "@/utils/helpers";
 import { useId } from "react";
 
@@ -33,7 +32,7 @@ const BrandLogo: React.FC<BrandLogoProps> = ({
     >
       {/* Netflix-style Arched Curved Wordmark SNAPFLIX (No preceding logo icon) */}
       <svg
-        viewBox={align === "left" ? "25 0 122 38" : "0 0 170 38"}
+        viewBox={align === "left" ? "20 0 140 38" : "0 0 180 38"}
         className={cn(
           "w-auto select-none overflow-visible text-[var(--sf-accent)] transition-colors duration-700",
           size === "sm" && "h-7 sm:h-8",
@@ -44,7 +43,7 @@ const BrandLogo: React.FC<BrandLogoProps> = ({
       >
         <defs>
           {/* Netflix Signature Upward Arc Baseline */}
-          <path id={pathId} d="M 6,31 Q 85,21 164,31" fill="none" />
+          <path id={pathId} d="M 4,30 Q 90,20 176,30" fill="none" />
           <filter id={filterId} x="-20%" y="-20%" width="140%" height="140%">
             <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="currentColor" floodOpacity="0.45" />
           </filter>
@@ -52,17 +51,12 @@ const BrandLogo: React.FC<BrandLogoProps> = ({
         {/* The wordmark inherits the cover-art accent through `currentColor` */}
         <text
           fill="currentColor"
-          fontWeight="900"
-          fontSize="26"
-          letterSpacing="2.2"
+          fontWeight="700"
+          fontSize="21"
+          letterSpacing="1.1"
           filter={`url(#${filterId})`}
-          className={cn(
-            "transition-all duration-300 group-hover:brightness-110",
-            BebasNeue.className,
-          )}
-          style={{
-            fontFamily: "var(--font-bebas-neue), 'Bebas Neue', Impact, 'Arial Black', sans-serif",
-          }}
+          className="transition-all duration-300 group-hover:brightness-110"
+          style={{ fontFamily: "var(--font-display)" }}
         >
           <textPath href={`#${pathId}`} startOffset="50%" textAnchor="middle">
             SNAPFLIX

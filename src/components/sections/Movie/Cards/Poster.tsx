@@ -71,7 +71,7 @@ const MoviePosterCard: React.FC<MoviePosterCardProps> = ({ movie, variant = "ful
         >
           {variant === "full" && (
             <div className="group w-[112px] shrink-0 text-white sm:w-[124px] md:w-[132px] lg:w-[144px]">
-              <div className="sf-case">
+              <div className="sf-case transition-transform duration-500 ease-sf group-hover:-translate-y-1">
                 <div className="sf-case-face">
                   <img
                     src={posterImage}
@@ -91,8 +91,8 @@ const MoviePosterCard: React.FC<MoviePosterCardProps> = ({ movie, variant = "ful
                   )}
                 
                   <span className="absolute inset-0 flex items-center justify-center">
-                    <span className="flex size-7 scale-90 items-center justify-center rounded-full bg-[var(--sf-accent)] text-[var(--sf-on-accent)] opacity-0 shadow-[0_0_14px_var(--sf-glow)] transition-all duration-500 group-hover:scale-100 group-hover:opacity-100">
-                      <PlayFilled className="size-2.5" />
+                    <span className="flex size-9 scale-90 items-center justify-center rounded-full bg-[var(--sf-accent)] text-[var(--sf-on-accent)] opacity-0 shadow-[0_0_18px_var(--sf-glow)] transition-all duration-500 ease-sf group-hover:scale-100 group-hover:opacity-100">
+                      <PlayFilled className="size-3.5" />
                     </span>
                   </span>
                 </div>
@@ -108,7 +108,7 @@ const MoviePosterCard: React.FC<MoviePosterCardProps> = ({ movie, variant = "ful
 
           {variant === "bordered" && (
             <div className="group flex h-full flex-col gap-2 rounded-2xl border border-white/10 bg-white/[0.03] p-2.5 transition-colors hover:border-[color:var(--sf-hairline)]">
-              <div className="sf-case w-full">
+              <div className="sf-case w-full transition-transform duration-500 ease-sf group-hover:-translate-y-1">
                 <div className="sf-case-face">
                   <img
                     src={posterImage}
@@ -128,8 +128,8 @@ const MoviePosterCard: React.FC<MoviePosterCardProps> = ({ movie, variant = "ful
                   )}
                 
                   <span className="absolute inset-0 flex items-center justify-center">
-                    <span className="flex size-7 scale-90 items-center justify-center rounded-full bg-[var(--sf-accent)] text-[var(--sf-on-accent)] opacity-0 shadow-[0_0_14px_var(--sf-glow)] transition-all duration-500 group-hover:scale-100 group-hover:opacity-100">
-                      <PlayFilled className="size-2.5" />
+                    <span className="flex size-9 scale-90 items-center justify-center rounded-full bg-[var(--sf-accent)] text-[var(--sf-on-accent)] opacity-0 shadow-[0_0_18px_var(--sf-glow)] transition-all duration-500 ease-sf group-hover:scale-100 group-hover:opacity-100">
+                      <PlayFilled className="size-3.5" />
                     </span>
                   </span>
                 </div>

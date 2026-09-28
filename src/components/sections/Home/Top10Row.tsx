@@ -4,7 +4,6 @@ import Carousel from "@/components/ui/wrapper/Carousel";
 import Reveal from "@/components/ui/other/Reveal";
 import { tmdb } from "@/api/tmdb";
 import { getImageUrl, mutateMovieTitle, mutateTvShowTitle } from "@/utils/movies";
-import { BebasNeue } from "@/utils/fonts";
 import { cn } from "@/utils/helpers";
 import { Skeleton, Tooltip } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
@@ -116,11 +115,10 @@ const Top10Row: React.FC<Top10RowProps> = ({ contentType: propContentType }) => 
                       {/* Netflix Stylized Giant Ranking Number */}
                       <span
                         className={cn(
-                          "netflix-number -mr-2.5 z-0 text-[64px] leading-none tracking-tighter select-none sm:-mr-3 sm:text-[80px] md:text-[94px] pointer-events-none",
-                          BebasNeue.className,
+                          "netflix-number pointer-events-none z-0 -mr-2 text-[52px] leading-none select-none sm:-mr-2.5 sm:text-[64px] md:text-[76px]",
                         )}
                         style={{
-                          WebkitTextStroke: "2.5px var(--sf-accent)",
+                          WebkitTextStroke: "2px var(--sf-accent)",
                           color: "transparent",
                         }}
                       >

@@ -2,7 +2,7 @@
 
 import { tmdb } from "@/api/tmdb";
 import BookmarkButton from "@/components/ui/button/BookmarkButton";
-import { useCoverArtTheme, useCoverTheme } from "@/components/ui/theme/CoverThemeProvider";
+import { useCoverArtTheme } from "@/components/ui/theme/CoverThemeProvider";
 import { SavedMovieDetails } from "@/types/movie";
 import { MOCK_MOVIES, MOCK_TV_SHOWS } from "@/utils/mockData";
 import { getImageUrl, movieDurationString, mutateMovieTitle, mutateTvShowTitle } from "@/utils/movies";
@@ -29,7 +29,6 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
   const isTv = currentContent === "tv";
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const { clearFocusTheme, setFocusTheme } = useCoverTheme();
 
   // Embla Carousel with true seamless Infinite Loop
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -200,8 +199,9 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
                 />
 
                 {/* Cinematic vignettes keep copy legible over any artwork */}
-                <div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-black/55 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-black/90 via-black/50 to-transparent sm:h-56" />
+                <div className="absolute inset-0 bg-linear-to-r from-black/85 via-black/40 to-transparent" />
+                <div className="absolute inset-x-0 top-0 h-20 bg-linear-to-b from-black/50 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-black/90 via-black/45 to-transparent sm:h-48" />
               </div>
             );
           })}
@@ -209,14 +209,9 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
       </div>
 
       {/* Slide Content — single overlay so text never duplicates during the loop */}
-      <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-end">
-        <div className="flex w-full flex-col items-center gap-2.5 px-4 pb-8 sm:gap-3 sm:px-5 md:px-8 md:pb-10 lg:pb-12">
-          <div className="pointer-events-auto flex max-w-[min(38rem,94%)] flex-col items-center gap-2 text-center sm:gap-2.5">
-            {/* Marquee rank chip */}
-            <span className="sf-chip sf-chip-accent !py-0.5 !text-[9px] tracking-[0.16em] uppercase">
-              Top {currentIndex + 1}
-            </span>
-
+      <div className="pointer-events-none absolute inset-0 z-20 flex flex-col justify-end">
+        <div className="flex w-full flex-col gap-2.5 px-4 pb-10 sm:gap-3 sm:px-5 md:px-8 md:pb-12 lg:pb-14">
+          <div className="pointer-events-auto flex max-w-[min(34rem,92%)] flex-col gap-2 text-left sm:gap-2.5">
             {/* Title — clamped and clamped again so long names never overflow */}
             <h1
               title={activeTitle}
@@ -226,7 +221,7 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
             </h1>
 
             {/* Metadata chips */}
-            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <span className="sf-chip !text-[10px] font-semibold text-[var(--sf-accent)]">
                 {activeMatch}% Match
               </span>
@@ -278,7 +273,7 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
       </div>
 
       {/* Slide indicators + queue preview */}
-      <div className="absolute inset-x-0 bottom-0 z-30 flex items-end justify-center gap-3 px-4 pb-3 sm:px-5 md:px-8">
+      <div className="absolute inset-x-0 bottom-0 z-30 flex items-end justify-start gap-3 px-4 pb-4 sm:px-5 md:px-8">
         <div className="flex items-center gap-2">
           {heroItems.map((_, idx) => {
             const isCurrent = idx === currentIndex;
@@ -301,35 +296,6 @@ const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
         </div>
       </div>
 
-      {/* Next-up poster card, mirroring the reference's layered artwork */}
-      {heroItems.length > 1 && (
-        <button
-          type="button"
-          onMouseEnter={() => {
-            const next = heroItems[(currentIndex + 1) % heroItems.length];
-            if (next) {
-              setFocusTheme([
-                getImageUrl(next.backdrop_path, "backdrop", true),
-                getImageUrl(next.poster_path),
-              ]);
-            }
-          }}
-          onMouseLeave={clearFocusTheme}
-          onClick={() => handleSlideClick((currentIndex + 1) % heroItems.length)}
-          className="absolute right-4 bottom-6 z-30 hidden w-[132px] shrink-0 overflow-hidden rounded-2xl border border-white/15 bg-black/40 text-left shadow-[0_16px_40px_rgba(0,0,0,0.6)] backdrop-blur-md transition-transform hover:-translate-y-1 lg:w-[150px] xl:block"
-          aria-label="Play next slide"
-        >
-          <img
-            src={getImageUrl(heroItems[(currentIndex + 1) % heroItems.length]?.poster_path)}
-            alt=""
-            className="aspect-square w-full rounded-lg object-cover opacity-90"
-            draggable={false}
-          />
-          <span className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/90 to-transparent px-2.5 pt-6 pb-2 text-[10px] font-bold text-white">
-            Up next
-          </span>
-        </button>
-      )}
     </section>
   );
 };

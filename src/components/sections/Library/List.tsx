@@ -136,8 +136,8 @@ const LibraryList = () => {
   return (
     <>
       <div className="relative flex flex-col gap-6 md:gap-8">
-        {/* Centred heading with the saved count */}
-        <div className="flex flex-col items-center gap-2 border-b border-white/10 pb-3 text-center">
+        {/* Heading with the saved count */}
+        <div className="flex flex-col gap-2 border-b border-white/10 pb-3">
           <div className="flex items-center gap-2.5">
             <span className="sf-board min-w-0">
               <span className="sf-bulb" aria-hidden />
@@ -152,14 +152,12 @@ const LibraryList = () => {
         </div>
 
         {/* Responsive Toolbar: Switcher & Sort Controls */}
-        <div className="flex flex-col items-stretch justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-2 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-center sm:gap-4 sm:p-3">
+        <div className="flex flex-col items-stretch justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-2 backdrop-blur-xl sm:flex-row sm:items-center sm:gap-4 sm:p-3">
           {/* Switcher */}
-          <div className="flex justify-center sm:justify-start">
-            <ContentTypeSelection />
-          </div>
+          <ContentTypeSelection />
 
           {/* Sort & Mobile Clear Controls */}
-          <div className="flex items-center justify-between sm:justify-center gap-2.5 w-full sm:w-auto">
+          <div className="flex w-full items-center justify-between gap-2.5 sm:w-auto">
             <div className="w-full sm:w-44">
               <Select
                 aria-label="Sort by"

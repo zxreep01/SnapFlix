@@ -11,8 +11,9 @@
 @theme {
   --animate-shine: shine 3s linear infinite;
 
-  --font-poppins: var(--font-poppins);
-  --font-bebas: var(--font-bebas-neue);
+  /* One family for the whole app — Ranade, with a safe system fallback. */
+  --font-sans: "Ranade", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Ranade", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
   /* One easing curve for the whole app: slow out, soft landing. */
   --ease-sf: cubic-bezier(0.22, 1, 0.36, 1);
@@ -56,6 +57,23 @@
     --sf-ease: cubic-bezier(0.22, 1, 0.36, 1);
   }
 
+  /* Text selection and keyboard focus share the cover-art accent. */
+  ::selection {
+    background: var(--sf-accent);
+    color: var(--sf-on-accent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--sf-accent-muted);
+    outline-offset: 2px;
+  }
+
+  a,
+  button,
+  [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   *,
   ::after,
   ::before,
@@ -73,15 +91,15 @@
   }
 
   h1 {
-    @apply text-xl font-bold md:text-2xl;
+    @apply text-xl font-semibold tracking-tight md:text-2xl;
   }
 
   h2 {
-    @apply text-lg font-bold md:text-xl;
+    @apply text-lg font-semibold tracking-tight md:text-xl;
   }
 
   h3 {
-    @apply text-base font-semibold md:text-lg;
+    @apply text-base font-semibold tracking-tight md:text-lg;
   }
 
   h4 {
@@ -261,9 +279,9 @@
 
   .sf-board-title {
     overflow: hidden;
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
     color: rgba(255, 255, 255, 0.9);
     text-transform: uppercase;
     text-overflow: ellipsis;
@@ -455,8 +473,10 @@
 
 /* Netflix stylized ranking numbers for Top 10 row */
 .netflix-number {
-  font-family: var(--font-bebas-neue), sans-serif;
-  font-weight: 900;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
   line-height: 0.8;
   color: #000000;
   -webkit-text-stroke: 4px #595959;

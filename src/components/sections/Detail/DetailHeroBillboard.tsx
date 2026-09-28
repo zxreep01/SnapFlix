@@ -63,11 +63,13 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
       {/* Cinematic Vignette Gradients */}
       {/* Bottom smooth fade to content section */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-linear-to-t from-black/95 via-black/45 to-transparent sm:h-48 md:h-56" />
+      {/* Left vignette, only behind the copy */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-linear-to-r from-black/85 via-black/35 to-transparent sm:w-3/4 md:w-3/5" />
       {/* Top subtle navbar blend */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-14 bg-linear-to-b from-black/25 to-transparent" />
 
       {/* Hero Content Block */}
-      <div className="absolute inset-x-4 bottom-6 z-20 mx-auto flex max-w-xl flex-col items-center gap-2 text-center sm:bottom-8 sm:gap-2.5 md:bottom-10 md:gap-3 lg:bottom-14 lg:max-w-2xl">
+      <div className="absolute right-4 bottom-6 left-4 z-20 flex max-w-xl flex-col gap-2 sm:bottom-8 sm:gap-2.5 md:right-auto md:bottom-10 md:left-8 md:gap-3 lg:bottom-14 lg:max-w-2xl">
         {/* Title */}
         <h1 className="line-clamp-2 text-lg leading-tight font-bold tracking-tight text-white drop-shadow-[0_4px_14px_rgba(0,0,0,0.95)] sm:text-2xl md:text-3xl lg:text-4xl">
           {title}
@@ -81,7 +83,7 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
         )}
 
         {/* Metadata Badges */}
-        <div className="flex flex-wrap items-center justify-center gap-1.5 text-[11px] sm:gap-2 md:gap-3 sm:text-xs md:text-sm">
+        <div className="flex flex-wrap items-center gap-1.5 text-[11px] sm:gap-2 sm:text-xs md:gap-3 md:text-sm">
           <span className="font-semibold text-[var(--sf-accent)] drop-shadow-sm">
             {matchPercentage}% Match
           </span>
@@ -95,7 +97,7 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
 
         {/* Genres Pills */}
         {media.genres && media.genres.length > 0 && (
-          <div className="hidden flex-wrap justify-center gap-1.5 pt-0.5 sm:flex">
+          <div className="hidden flex-wrap gap-1.5 pt-0.5 sm:flex">
             {media.genres.slice(0, 3).map((g: any) => (
               <span
                 key={g.id}
@@ -113,7 +115,7 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
         </p>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-2 pt-1 sm:gap-3 sm:pt-2">
+        <div className="flex flex-wrap items-center gap-2 pt-1 sm:gap-3 sm:pt-2">
           {/* Main Play Button */}
           <Link
             href={playHref}
