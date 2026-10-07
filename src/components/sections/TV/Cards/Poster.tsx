@@ -75,7 +75,9 @@ const TvShowPosterCard: React.FC<TvShowPosterCardProps> = ({ tv, variant = "full
                 </span>
               </div>
               <div className="absolute inset-x-0 bottom-0 z-20 bg-linear-to-t from-black via-black/75 to-transparent px-3 pt-12 pb-3">
-                <h6 className="truncate text-sm font-semibold">{title}</h6>
+                <h6 title={title} className="truncate text-sm font-semibold">
+                  {title}
+                </h6>
                 <p className="text-[11px] text-white/70">{releaseYear || "—"}</p>
               </div>
             </div>
@@ -111,7 +113,9 @@ const TvShowPosterCard: React.FC<TvShowPosterCardProps> = ({ tv, variant = "full
                 </div>
               </CardHeader>
               <CardBody className="justify-end pb-1">
-                <p className="text-md truncate font-bold">{title}</p>
+                <p title={title} className="text-md min-w-0 truncate font-bold">
+                  {title}
+                </p>
               </CardBody>
               <CardFooter className="justify-between pt-0 text-xs">
                 <p>{releaseYear ?? "—"}</p>

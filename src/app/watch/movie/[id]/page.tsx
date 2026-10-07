@@ -15,6 +15,8 @@ import { getImageUrl, movieDurationString } from "@/utils/movies";
 import { cn } from "@/utils/helpers";
 import BookmarkButton from "@/components/ui/button/BookmarkButton";
 import ShareButton from "@/components/ui/button/ShareButton";
+import { LoadingOverlay } from "@/components/ui/other/LoadingScreen";
+import PlayerStage from "@/components/ui/other/PlayerStage";
 import type { SavedMovieDetails } from "@/types/movie";
 import Link from "next/link";
 
@@ -28,7 +30,7 @@ const WatchMoviePage: NextPage<Params<{ id: string }>> = ({ params }) => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Fetch movie details
-  const { data: movieDetails } = useQuery({
+  const { data: movieDetails, isPending: isDetailsPending } = useQuery({
     queryKey: ["movie-details", id],
     queryFn: async () => {
       try {
@@ -143,13 +145,7 @@ const WatchMoviePage: NextPage<Params<{ id: string }>> = ({ params }) => {
         )}
       >
         {/* Pure Bingr Player */}
-        <iframe
-          src={`/api/bingr-clean/watch/movie/${id}`}
-          className="absolute inset-0 h-full w-full border-0 bg-black"
-          allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer"
-          allowFullScreen
-          referrerPolicy="no-referrer-when-downgrade"
-        />
+        <PlayerStage src={`/api/bingr-clean/watch/movie/${id}`} className="absolute inset-0" />
 
         {/* Top-Left Floating Back Button */}
         <div
@@ -173,10 +169,15 @@ const WatchMoviePage: NextPage<Params<{ id: string }>> = ({ params }) => {
 
       {/* 2. DETAILS & RECOMMENDATIONS (Scrollable in Portrait, Sidebar on Desktop, hidden in Landscape) */}
       {!isFullscreen && (
-        <div className="flex-1 lg:flex-none lg:w-[380px] xl:w-[440px] 2xl:w-[480px] overflow-y-auto w-full bg-[#0c0c0e] text-white px-4 sm:px-6 py-4 space-y-5 pb-20 lg:pb-8 player-responsive-details">
+        <div className="relative flex-1 lg:flex-none lg:w-[380px] xl:w-[440px] 2xl:w-[480px] overflow-y-auto w-full bg-[#0c0c0e] text-white px-4 sm:px-6 py-4 space-y-5 pb-20 lg:pb-8 player-responsive-details">
+          {isDetailsPending && <LoadingOverlay label="Loading details" size="sm" />}
+
           {/* Title & Metadata Header */}
           <div className="space-y-1.5 border-b border-white/10 pb-3">
-            <h1 className="text-lg sm:text-xl font-extrabold text-white tracking-tight line-clamp-1">
+            <h1
+              title={movieTitle}
+              className="text-lg sm:text-xl font-extrabold text-white tracking-tight line-clamp-2 break-words"
+            >
               {movieTitle}
             </h1>
 
@@ -255,7 +256,10 @@ const WatchMoviePage: NextPage<Params<{ id: string }>> = ({ params }) => {
                           className="size-full object-cover group-hover:scale-105 transition-transform duration-200"
                         />
                       </div>
-                      <h4 className="text-xs font-semibold text-white truncate group-hover:text-primary transition-colors">
+                      <h4
+                        title={rec.title}
+                        className="text-xs font-semibold text-white truncate group-hover:text-primary transition-colors"
+                      >
                         {rec.title}
                       </h4>
                       <div className="flex items-center justify-between text-[10px] text-gray-400">

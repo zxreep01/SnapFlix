@@ -134,7 +134,7 @@ const Top10Row: React.FC<Top10RowProps> = ({ contentType: propContentType }) => 
 
                         {/* Title text */}
                         <div className="absolute inset-x-0 bottom-0 z-20 p-2.5">
-                          <p className="text-xs font-bold text-white truncate drop-shadow-md">
+                          <p title={title} className="text-xs font-bold text-white truncate drop-shadow-md">
                             {title}
                           </p>
                         </div>

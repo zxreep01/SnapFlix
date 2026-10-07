@@ -36,7 +36,9 @@ const DetailFacts: React.FC<DetailFactsProps> = ({ overview, tagline, facts }) =
             {visible.map(([label, value]) => (
               <div key={label}>
                 <dt className="text-[11px] font-semibold tracking-wide text-white/40 uppercase">{label}</dt>
-                <dd className="mt-1 text-sm text-white/90">{value}</dd>
+                <dd title={value} className="mt-1 text-sm text-white/90 break-words">
+                  {value}
+                </dd>
               </div>
             ))}
           </dl>

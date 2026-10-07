@@ -3,11 +3,12 @@ import Genres from "@/components/ui/other/Genres";
 import { cn, isEmpty } from "@/utils/helpers";
 import { Calendar, List, Play, Season } from "@/utils/icons";
 import { getImageUrl, mutateTvShowTitle } from "@/utils/movies";
-import { Button, Chip, Image, Link, Spinner } from "@heroui/react";
+import { Button, Chip, Image, Link } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import Rating from "../../../ui/other/Rating";
 import { SavedMovieDetails } from "@/types/movie";
 import BookmarkButton from "@/components/ui/button/BookmarkButton";
+import PopcornTvLoader from "@/components/ui/other/PopcornTvLoader";
 
 const TvShowHoverCard: React.FC<{ id: number; fullWidth?: boolean }> = ({ id, fullWidth }) => {
   const { data: tv, isPending } = useQuery({
@@ -17,8 +18,8 @@ const TvShowHoverCard: React.FC<{ id: number; fullWidth?: boolean }> = ({ id, fu
 
   if (isPending) {
     return (
-      <div className="h-96 w-80">
-        <Spinner size="lg" color="warning" variant="simple" className="absolute-center" />
+      <div className="grid h-96 w-80 place-items-center">
+        <PopcornTvLoader size="md" hideLabel />
       </div>
     );
   }
@@ -83,7 +84,9 @@ const TvShowHoverCard: React.FC<{ id: number; fullWidth?: boolean }> = ({ id, fu
           >
             TV
           </Chip>
-          <h4 className="text-xl font-bold text-white">{fullTitle}</h4>
+          <h4 title={fullTitle} className="text-xl font-bold text-white break-words line-clamp-2">
+            {fullTitle}
+          </h4>
           <div className="flex flex-wrap items-center gap-2 text-xs md:gap-2">
             <span className="font-extrabold text-[#46D369]">
               {Math.min(99, Math.round((tv.vote_average || 7.5) * 10 + 8))}% Match

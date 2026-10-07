@@ -6,7 +6,7 @@ SnapFlix is a private, proprietary movies and TV shows streaming platform built 
 
 - **🎬 Netflix Aesthetic**: Immersive dark cinema experience with dynamic Hero Billboard, Top 10 rankings, and high-contrast visuals.
 - **🧭 Dynamic Discovery**: Real-time trending, popular, top-rated, and upcoming movies and series.
-- **🍿 Popcorn ⇄ TV Loader**: custom SVG shape-morphing loading animation (no canned placeholder data, ever).
+- **🍿 Minimal Popcorn ⇄ TV Loader**: one quiet, custom SVG shape-morphing mark used by every screen — route level loading states, lazy section fallbacks, query pending states and the player stage (no canned placeholder data, ever).
 - **🔎 Instant Search**: Quick search capabilities across titles, actors, genres, and directors.
 - **📂 Personal Watchlist**: Save favorites and track watch history securely.
 - **💻📱 Fully Responsive**: Fluid desktop and mobile playback experience.

@@ -20,7 +20,7 @@ const CastsSection: React.FC<CastCardProps> = ({ casts }) => {
           {casts.map((cast) => {
             const avatar = cast.profile_path ? getImageUrl(cast.profile_path, "avatar") : "";
             return (
-              <div key={cast.id || cast.name} className="w-[6.75rem] shrink-0 px-1 py-2 sm:w-32">
+              <div key={cast.id || cast.name} className="w-[6.75rem] min-w-0! shrink-0 px-1 py-2 sm:w-32">
                 {avatar ? (
                   <img
                     src={avatar}
@@ -32,8 +32,15 @@ const CastsSection: React.FC<CastCardProps> = ({ casts }) => {
                     {cast.name?.slice(0, 1)}
                   </div>
                 )}
-                <p className="mt-2 line-clamp-1 text-sm font-semibold text-white">{cast.name}</p>
-                <p className="line-clamp-1 text-xs text-white/50">{cast.character}</p>
+                <p title={cast.name} className="mt-2 line-clamp-2 text-sm font-semibold text-white break-words">
+                  {cast.name}
+                </p>
+                <p
+                  title={cast.character}
+                  className="line-clamp-2 text-xs text-white/50 break-words"
+                >
+                  {cast.character}
+                </p>
               </div>
             );
           })}

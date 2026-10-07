@@ -4,11 +4,12 @@ import useBreakpoints from "@/hooks/useBreakpoints";
 import { cn, formatDate, isEmpty } from "@/utils/helpers";
 import { PlayOutline } from "@/utils/icons";
 import { getImageUrl, getLoadingLabel, movieDurationString } from "@/utils/movies";
-import { Card, CardBody, CardFooter, Chip, Image, Spinner } from "@heroui/react";
+import { Card, CardBody, CardFooter, Chip, Image } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { memo } from "react";
 import { Episode } from "tmdb-ts/dist/types/tv-episode";
+import PopcornTvLoader from "@/components/ui/other/PopcornTvLoader";
 
 interface TvShowEpisodesSelectionProps {
   id: number;
@@ -50,8 +51,8 @@ const TvShowEpisodesSelection: React.FC<TvShowEpisodesSelectionProps> = ({
 
   if (isPending) {
     return (
-      <div className="flex h-full items-center justify-center">
-        <Spinner variant="wave" size="lg" label={getLoadingLabel()} color="danger" />
+      <div className="flex h-full min-h-64 items-center justify-center py-10">
+        <PopcornTvLoader size="md" label={getLoadingLabel()} />
       </div>
     );
   }
@@ -161,7 +162,7 @@ export const EpisodeListCard: React.FC<EpisodeCardProps> = ({
         <p
           title={episode.name}
           className={cn(
-            "line-clamp-1 text-xl font-semibold transition-colors",
+            "line-clamp-1 text-xl font-semibold break-words transition-colors",
             !isNotReleased && "group-hover:text-warning",
           )}
         >

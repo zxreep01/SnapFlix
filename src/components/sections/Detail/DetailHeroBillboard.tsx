@@ -85,7 +85,10 @@ const DetailHeroBillboard: React.FC<DetailHeroBillboardProps> = ({
           )}
         </p>
 
-        <h1 className="line-clamp-2 text-[1.7rem] leading-[1.05] font-black tracking-tight text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)] sm:text-5xl lg:text-6xl">
+        <h1
+          title={title}
+          className="line-clamp-3 text-[1.7rem] leading-[1.05] font-black tracking-tight text-white break-words drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)] sm:text-5xl lg:text-6xl"
+        >
           {title}
         </h1>
 

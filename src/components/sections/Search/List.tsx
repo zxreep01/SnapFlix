@@ -91,9 +91,11 @@ const SearchList = () => {
   const renderResults = () => {
     if (isEmpty(results)) {
       return (
-        <h5 className="mt-24 text-center text-xl">
+        <h5 className="mt-24 text-center text-xl break-words">
           No {content === "movie" ? "movies" : "TV series"} found with query{" "}
-          <span className="text-warning font-semibold">"{submittedSearchQuery}"</span>
+          <span className="text-warning font-semibold break-words">
+                    "{submittedSearchQuery}"
+                  </span>
         </h5>
       );
     }
@@ -141,12 +143,12 @@ const SearchList = () => {
             {triggered ? (
               <>
                 {!isEmpty(results) && (
-                  <h5 className="text-center text-xl">
+                  <h5 className="text-center text-xl break-words">
                     <span className="motion-preset-focus">
                       Found{" "}
                       <span className="text-success font-semibold">{totalResults}</span>{" "}
                       {content === "movie" ? "movies" : "TV series"} with query{" "}
-                      <span className="text-warning font-semibold">
+                      <span className="text-warning font-semibold break-words">
                         "{submittedSearchQuery}"
                       </span>
                     </span>

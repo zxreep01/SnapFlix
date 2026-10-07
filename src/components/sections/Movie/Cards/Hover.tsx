@@ -6,10 +6,11 @@ import { SavedMovieDetails } from "@/types/movie";
 import { cn, isEmpty } from "@/utils/helpers";
 import { Calendar, Clock } from "@/utils/icons";
 import { getImageUrl, movieDurationString, mutateMovieTitle } from "@/utils/movies";
-import { Button, Chip, Image, Link, Spinner } from "@heroui/react";
+import { Button, Chip, Image, Link } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useQuery } from "@tanstack/react-query";
 import { Genre } from "tmdb-ts";
+import PopcornTvLoader from "@/components/ui/other/PopcornTvLoader";
 
 const HoverPosterCard: React.FC<{ id: number; fullWidth?: boolean }> = ({ id, fullWidth }) => {
   const { data: movie, isPending } = useQuery({
@@ -19,8 +20,8 @@ const HoverPosterCard: React.FC<{ id: number; fullWidth?: boolean }> = ({ id, fu
 
   if (isPending) {
     return (
-      <div className="h-96 w-80">
-        <Spinner size="lg" variant="simple" className="absolute-center" />
+      <div className="grid h-96 w-80 place-items-center">
+        <PopcornTvLoader size="md" hideLabel />
       </div>
     );
   }
@@ -91,7 +92,9 @@ const HoverPosterCard: React.FC<{ id: number; fullWidth?: boolean }> = ({ id, fu
                 </Chip>
               )}
             </div>
-            <h4 className="text-xl font-bold text-white">{fullTitle}</h4>
+            <h4 title={fullTitle} className="text-xl font-bold text-white break-words line-clamp-2">
+              {fullTitle}
+            </h4>
             <div className="flex flex-wrap items-center gap-2 text-xs *:z-10">
               <span className="font-extrabold text-[#46D369]">
                 {Math.min(99, Math.round((movie.vote_average || 7.5) * 10 + 8))}% Match

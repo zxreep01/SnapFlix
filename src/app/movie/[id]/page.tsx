@@ -1,7 +1,6 @@
 "use client";
 
 import { Suspense, use } from "react";
-import { Spinner } from "@heroui/spinner";
 import { useQuery } from "@tanstack/react-query";
 import { getMovieDetails } from "@/actions/catalog";
 import { tmdb } from "@/api/tmdb";
@@ -15,6 +14,7 @@ import { mutateMovieTitle } from "@/utils/movies";
 import { siteConfig } from "@/config/site";
 import { useDocumentTitle } from "@mantine/hooks";
 import Footer from "@/components/ui/layout/Footer";
+import LoadingScreen, { LoadingOverlay } from "@/components/ui/other/LoadingScreen";
 import { Skeleton } from "@heroui/react";
 const PhotosSection = dynamic(() => import("@/components/ui/other/PhotosSection"));
 const DetailHeroBillboard = dynamic(() => import("@/components/sections/Detail/DetailHeroBillboard"));
@@ -60,6 +60,7 @@ const MovieDetailPage: NextPage<Params<{ id: number }>> = ({ params }) => {
     return (
       <div className="relative h-[62dvh] min-h-[420px] w-full overflow-hidden bg-[#0c0c0e] sm:h-[70dvh] lg:h-[78dvh]">
         <Skeleton className="size-full rounded-none opacity-20" />
+        <LoadingOverlay label="Loading title" size="md" />
       </div>
     );
   }
@@ -75,7 +76,9 @@ const MovieDetailPage: NextPage<Params<{ id: number }>> = ({ params }) => {
 
   return (
     <div className="flex w-full flex-col overflow-x-hidden">
-      <Suspense fallback={<Spinner size="lg" className="absolute-center" variant="simple" />}>
+      <Suspense
+        fallback={<LoadingScreen size="md" minHeight="section" label="Loading title details" />}
+      >
         <DetailHeroBillboard media={movie} type="movie" />
 
         <div className="relative z-10 flex flex-col gap-8 pt-2 pb-16 md:gap-11">

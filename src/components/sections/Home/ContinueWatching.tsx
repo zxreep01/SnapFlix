@@ -5,10 +5,31 @@ import ResumeCard from "./Cards/Resume";
 import { useQuery } from "@tanstack/react-query";
 import { getUserHistories } from "@/actions/histories";
 import RowHeader from "@/components/ui/other/RowHeader";
+import { Skeleton } from "@heroui/react";
 import type { HistoryDetail } from "@/types/movie";
 
+/** Placeholder cards shown while the merged watch history is resolved. */
+const ContinueWatchingSkeleton: React.FC = () => (
+  <section
+    id="continue-watching"
+    aria-busy="true"
+    aria-live="polite"
+    className="flex min-h-[220px] flex-col gap-2 px-4 md:px-12"
+  >
+    <RowHeader title="Continue watching" />
+    <div className="flex gap-3 overflow-hidden py-2">
+      {[0, 1, 2].map((index) => (
+        <Skeleton
+          key={`continue-watching-skeleton-${index}`}
+          className="aspect-video h-[150px] w-[266px] shrink-0 rounded-xl opacity-15 md:h-[200px] md:w-[356px]"
+        />
+      ))}
+    </div>
+  </section>
+);
+
 const ContinueWatching: React.FC = () => {
-  const { data: list } = useQuery({
+  const { data: list, isPending } = useQuery({
     queryFn: async (): Promise<HistoryDetail[]> => {
       // 1. Fetch Supabase histories (for logged in users)
       let serverItems: HistoryDetail[] = [];
@@ -63,6 +84,8 @@ const ContinueWatching: React.FC = () => {
     staleTime: 0,
     refetchOnMount: "always",
   });
+
+  if (isPending) return <ContinueWatchingSkeleton />;
 
   if (!list || list.length === 0) return null;
 

@@ -4,11 +4,13 @@ import { getWatchlist, removeAllWatchlist } from "@/actions/library";
 import { queryClient } from "@/app/providers";
 import BackToTopButton from "@/components/ui/button/BackToTopButton";
 import ContentTypeSelection from "@/components/ui/other/ContentTypeSelection";
+import LoadingScreen from "@/components/ui/other/LoadingScreen";
+import PopcornTvLoader from "@/components/ui/other/PopcornTvLoader";
 import useDiscoverFilters from "@/hooks/useDiscoverFilters";
 import useSupabaseUser from "@/hooks/useSupabaseUser";
 import { isEmpty } from "@/utils/helpers";
 import { Trash } from "@/utils/icons";
-import { addToast, Button, Select, SelectItem, Spinner } from "@heroui/react";
+import { addToast, Button, Select, SelectItem } from "@heroui/react";
 import { useDisclosure, useInViewport } from "@mantine/hooks";
 import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
 import { Suspense, useEffect, useMemo, useState, useTransition } from "react";
@@ -227,11 +229,14 @@ const LibraryList = () => {
         </div>
 
         {status === "pending" ? (
-          <Spinner
+          <LoadingScreen
             size="lg"
-            variant="simple"
-            className="absolute-center mt-[30vh]"
-            color={content === "movie" ? "primary" : "warning"}
+            minHeight="section"
+            label={
+              isUserLoading
+                ? "Opening your library"
+                : `Loading your ${content === "movie" ? "movies" : "TV shows"}`
+            }
           />
         ) : hasItems ? (
           <>
@@ -276,14 +281,7 @@ const LibraryList = () => {
               })}
             </div>
             <div ref={ref} className="flex h-24 items-center justify-center">
-              {isFetchingNextPage && (
-                <Spinner
-                  size="lg"
-                  variant="wave"
-                  label={getLoadingLabel()}
-                  color={content === "movie" ? "primary" : "warning"}
-                />
-              )}
+              {isFetchingNextPage && <PopcornTvLoader size="sm" label={getLoadingLabel()} />}
               {!hasNextPage && !isFetchingNextPage && sortedWatchlist.length > 0 && (
                 <p className="text-muted-foreground text-center text-base">
                   You have reached the end of your watchlist.

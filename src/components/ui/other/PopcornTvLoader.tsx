@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import { cn } from "@/utils/helpers";
 import {
@@ -17,33 +17,31 @@ import {
 /**
  * PopcornTvLoader
  * ---------------
- * A loading indicator that continuously morphs a popcorn bucket into a TV set
- * and back again.
+ * A deliberately quiet loading indicator: a thin popcorn bucket that morphs
+ * into a TV set and back again, wrapped in a single hairline progress arc.
  *
- * The morph is a real shape interpolation, not a cross fade: both icons are
- * described by the same number of closed sub paths, every sub path is sampled
- * into an equal amount of points, the rings are rotationally aligned (so the
- * shapes don't twist while morphing) and then point-by-point interpolated into
- * a smooth closed Catmull-Rom path on every frame.
+ * The morph itself is a real shape interpolation, not a cross fade: both icons
+ * are described by the same number of closed sub paths, every sub path is
+ * sampled into an equal amount of points, the rings are rotationally aligned
+ * (so the shapes don't twist while morphing) and then point-by-point
+ * interpolated into a smooth closed Catmull-Rom path on every frame.
+ *
+ * Everything else was stripped away — no halo, no flying kernels, no bouncy
+ * dots — so the animation reads as one calm, small mark on screen.
  *
  * Before hydration (and when `prefers-reduced-motion` is set) the static
  * popcorn bucket is rendered instead.
  */
 
-const HOLD_MS = 820;
-const MORPH_MS = 880;
+const HOLD_MS = 900;
+const MORPH_MS = 900;
 const CYCLE_MS = HOLD_MS * 2 + MORPH_MS * 2;
 
-/** Kernels that pop out of the bucket while it is visible. */
-const PARTICLES = [
-  { cx: 38, cy: 42, r: 3 },
-  { cx: 50, cy: 32, r: 2.4 },
-  { cx: 62, cy: 42, r: 3 },
-];
+export type PopcornTvLoaderSize = "xs" | "sm" | "md" | "lg";
 
 export interface PopcornTvLoaderProps {
   /** Visual size of the animation. */
-  size?: "sm" | "md" | "lg";
+  size?: PopcornTvLoaderSize;
   /** Optional caption rendered under the animation. */
   label?: string;
   /** Hides the caption (useful inside tight layouts). */
@@ -51,11 +49,19 @@ export interface PopcornTvLoaderProps {
   className?: string;
 }
 
+/**
+ * Stroke widths are expressed in the 100×100 viewBox, so they are pre-scaled
+ * to land on roughly the same hairline thickness (1.3px → 2.1px) at every size.
+ */
 const SIZES = {
-  sm: { box: 40, stroke: 5.5, text: "text-[11px]" },
-  md: { box: 64, stroke: 5, text: "text-xs" },
-  lg: { box: 92, stroke: 4.6, text: "text-sm" },
+  xs: { box: 20, stroke: 6.5, arc: 5.5, text: "text-[10px]" },
+  sm: { box: 30, stroke: 5, arc: 4.2, text: "text-[11px]" },
+  md: { box: 44, stroke: 4.1, arc: 3.4, text: "text-xs" },
+  lg: { box: 60, stroke: 3.5, arc: 3, text: "text-sm" },
 } as const;
+
+/** Short arc drawn on a r=45 circle (circumference ≈ 282.7). */
+const ARC_DASH = "34 249";
 
 /**
  * All loaders on a page share a single requestAnimationFrame loop (a busy home
@@ -139,12 +145,8 @@ const PopcornTvLoader: React.FC<PopcornTvLoaderProps> = ({
   hideLabel = false,
   className,
 }) => {
-  const generatedId = useId();
-  // useId() contains colons, which are not valid inside a `url(#id)` reference.
-  const gradientId = `popcorn-tv-${generatedId.replace(/[^a-zA-Z0-9]/g, "")}`;
   const reducedMotion = useReducedMotion();
   const pathRefs = useRef<Array<SVGPathElement | null>>([]);
-  const [phase, setPhase] = useState<"popcorn" | "tv">("popcorn");
   const dimensions = SIZES[size] ?? SIZES.md;
 
   useEffect(() => {
@@ -162,10 +164,6 @@ const PopcornTvLoader: React.FC<PopcornTvLoaderProps> = ({
           element.setAttribute("d", morphPath(rings.from[index], rings.to[index], progress));
         }
       }
-
-      // Only re-renders when the phase actually flips.
-      const nextPhase: "popcorn" | "tv" = progress > 0.5 ? "tv" : "popcorn";
-      setPhase((previous) => (previous === nextPhase ? previous : nextPhase));
     };
 
     subscribe(handler);
@@ -180,7 +178,7 @@ const PopcornTvLoader: React.FC<PopcornTvLoaderProps> = ({
       role="status"
       aria-live="polite"
       aria-label={label || "Loading"}
-      className={cn("flex flex-col items-center justify-center gap-3 text-white/70", className)}
+      className={cn("flex flex-col items-center justify-center gap-2.5 text-white/60", className)}
     >
       <div className="relative" style={{ width: dimensions.box, height: dimensions.box }}>
         <svg
@@ -189,61 +187,36 @@ const PopcornTvLoader: React.FC<PopcornTvLoaderProps> = ({
           aria-hidden="true"
           focusable="false"
         >
-          <defs>
-            <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#FF666E" />
-              <stop offset="55%" stopColor="#E50914" />
-              <stop offset="100%" stopColor="#f5c451" />
-            </linearGradient>
-          </defs>
+          {/* Hairline track */}
+          <circle cx={50} cy={50} r={45} fill="none" stroke="currentColor" strokeWidth={1} opacity={0.12} />
 
-          {/* Breathing halo */}
-          <motion.circle
-            cx={50}
-            cy={50}
-            r={45}
-            fill="none"
-            stroke={`url(#${gradientId})`}
-            strokeWidth={1.2}
-            strokeDasharray="5 11"
+          {/* A single slow arc sweeping around the track */}
+          <motion.g
             style={{ transformOrigin: "50% 50%" }}
-            animate={
+            animate={reducedMotion ? { rotate: 0 } : { rotate: 360 }}
+            transition={
               reducedMotion
-                ? { opacity: 0.18, scale: 1, rotate: 0 }
-                : { opacity: [0.14, 0.32, 0.14], scale: [0.94, 1.05, 0.94], rotate: [0, 180] }
+                ? { duration: 0 }
+                : { duration: 2.4, repeat: Infinity, ease: "linear" }
             }
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          />
-
-          {/* Popping kernels (popcorn phase only) */}
-          {!reducedMotion && (
-            <motion.g
-              animate={{ opacity: phase === "popcorn" ? 1 : 0 }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-            >
-              {PARTICLES.map((particle, index) => (
-                <motion.circle
-                  key={`particle-${index}`}
-                  cx={particle.cx}
-                  cy={particle.cy}
-                  r={particle.r}
-                  fill={`url(#${gradientId})`}
-                  animate={{ cy: [particle.cy, particle.cy - 22], opacity: [0, 0.85, 0] }}
-                  transition={{
-                    duration: 1.7,
-                    repeat: Infinity,
-                    delay: index * 0.26,
-                    ease: "easeOut",
-                  }}
-                />
-              ))}
-            </motion.g>
-          )}
+          >
+            <circle
+              cx={50}
+              cy={50}
+              r={45}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={dimensions.arc}
+              strokeLinecap="round"
+              strokeDasharray={ARC_DASH}
+              opacity={0.55}
+            />
+          </motion.g>
 
           {/* The morphing icon itself */}
           <g
             fill="none"
-            stroke={`url(#${gradientId})`}
+            stroke="currentColor"
             strokeWidth={dimensions.stroke}
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -262,20 +235,16 @@ const PopcornTvLoader: React.FC<PopcornTvLoaderProps> = ({
       </div>
 
       {label && !hideLabel && (
-        <p className={cn("max-w-[22rem] text-center leading-snug text-white/60", dimensions.text)}>
+        <p className={cn("max-w-[22rem] text-center leading-snug text-white/45", dimensions.text)}>
           {label}
-          <span className="ml-1 inline-flex items-end gap-0.5">
-            {[0, 1, 2].map((index) => (
-              <motion.span
-                key={`dot-${index}`}
-                className="size-1 rounded-full bg-current"
-                animate={
-                  reducedMotion ? { opacity: 0.4 } : { opacity: [0.25, 1, 0.25], y: [0, -2, 0] }
-                }
-                transition={{ duration: 1.2, repeat: Infinity, delay: index * 0.18 }}
-              />
-            ))}
-          </span>
+          <motion.span
+            aria-hidden="true"
+            className="ml-0.5 inline-block"
+            animate={reducedMotion ? { opacity: 0.5 } : { opacity: [0.25, 0.75, 0.25] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          >
+            …
+          </motion.span>
         </p>
       )}
     </div>

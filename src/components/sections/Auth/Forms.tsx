@@ -4,11 +4,12 @@ import { tmdb } from "@/api/tmdb";
 import ThreeDMarquee from "@/components/ui/background/ThreeDMarquee";
 import IconButton from "@/components/ui/button/IconButton";
 import Brand from "@/components/ui/other/BrandLogo";
+import PopcornTvLoader from "@/components/ui/other/PopcornTvLoader";
 import { SpacingClasses } from "@/utils/constants";
 import { cn, isEmpty, shuffleArray } from "@/utils/helpers";
 import { ArrowLeft } from "@/utils/icons";
 import { getImageUrl } from "@/utils/movies";
-import { addToast, Card, CardBody, CardHeader, ScrollShadow, Spinner } from "@heroui/react";
+import { addToast, Card, CardBody, CardHeader, ScrollShadow } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
@@ -67,7 +68,16 @@ const AuthForms: React.FC = () => {
   }, [error]);
 
   if (isPendingMovies || isPendingTv) {
-    return <Spinner size="lg" className="absolute-center" variant="simple" />;
+    return (
+      <div
+        className={cn(
+          "relative z-50 flex h-screen w-screen items-center justify-center overflow-hidden",
+          SpacingClasses.reset,
+        )}
+      >
+        <PopcornTvLoader size="lg" label="Setting up your screen" />
+      </div>
+    );
   }
 
   return (

@@ -13,6 +13,7 @@ import { Suspense, use } from "react";
 import dynamic from "next/dynamic";
 import { NextPage } from "next";
 import Footer from "@/components/ui/layout/Footer";
+import { LoadingOverlay } from "@/components/ui/other/LoadingScreen";
 
 const PhotosSection = dynamic(() => import("@/components/ui/other/PhotosSection"));
 const TvShowRelatedSection = dynamic(() => import("@/components/sections/TV/Details/Related"));
@@ -58,6 +59,7 @@ const TVShowDetailPage: NextPage<Params<{ id: number }>> = ({ params }) => {
     return (
       <div className="relative h-[62dvh] min-h-[420px] w-full overflow-hidden bg-[#0c0c0e] sm:h-[70dvh] lg:h-[78dvh]">
         <Skeleton className="size-full rounded-none opacity-20" />
+        <LoadingOverlay label="Loading series" size="md" />
       </div>
     );
   }
@@ -73,7 +75,14 @@ const TVShowDetailPage: NextPage<Params<{ id: number }>> = ({ params }) => {
 
   return (
     <div className="flex w-full flex-col overflow-x-hidden">
-      <Suspense fallback={<Skeleton className="h-[62dvh] w-full rounded-none opacity-20" />}>
+      <Suspense
+        fallback={
+          <div className="relative h-[62dvh] w-full overflow-hidden bg-transparent">
+            <Skeleton className="size-full rounded-none opacity-20" />
+            <LoadingOverlay label="Loading series details" size="md" />
+          </div>
+        }
+      >
         <DetailHeroBillboard
           media={tv}
           type="tv"

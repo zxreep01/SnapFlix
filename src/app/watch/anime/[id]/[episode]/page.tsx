@@ -16,6 +16,8 @@ import { getImageUrl } from "@/utils/movies";
 import { cn } from "@/utils/helpers";
 import BookmarkButton from "@/components/ui/button/BookmarkButton";
 import ShareButton from "@/components/ui/button/ShareButton";
+import { LoadingOverlay } from "@/components/ui/other/LoadingScreen";
+import PlayerStage from "@/components/ui/other/PlayerStage";
 import type { SavedMovieDetails } from "@/types/movie";
 
 const WatchAnimePage: NextPage<Params<{ id: string; episode: string }>> = ({ params }) => {
@@ -31,7 +33,7 @@ const WatchAnimePage: NextPage<Params<{ id: string; episode: string }>> = ({ par
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Fetch anime details
-  const { data: animeDetails } = useQuery({
+  const { data: animeDetails, isPending: isDetailsPending } = useQuery({
     queryKey: ["anime-details", id],
     queryFn: async () => {
       try {
@@ -234,17 +236,25 @@ const WatchAnimePage: NextPage<Params<{ id: string; episode: string }>> = ({ par
 
       {/* 2. DETAILS & EPISODES (Scrollable in Portrait, Sidebar on Desktop, hidden in Landscape) */}
       {!isFullscreen && (
-        <div className="flex-1 lg:flex-none lg:w-[380px] xl:w-[440px] 2xl:w-[480px] overflow-y-auto w-full bg-[#0c0c0e] text-white px-4 sm:px-6 py-4 space-y-5 pb-20 lg:pb-8 player-responsive-details">
+        <div className="relative flex-1 lg:flex-none lg:w-[380px] xl:w-[440px] 2xl:w-[480px] overflow-y-auto w-full bg-[#0c0c0e] text-white px-4 sm:px-6 py-4 space-y-5 pb-20 lg:pb-8 player-responsive-details">
+          {isDetailsPending && <LoadingOverlay label="Loading details" size="sm" />}
+
           {/* Title & Active Episode Header */}
           <div className="space-y-1.5 border-b border-white/10 pb-3">
-            <h1 className="text-lg sm:text-xl font-extrabold text-white tracking-tight line-clamp-1">
+            <h1
+              title={animeTitle}
+              className="text-lg sm:text-xl font-extrabold text-white tracking-tight line-clamp-2 break-words"
+            >
               {animeTitle}
             </h1>
             <div className="flex items-center gap-2">
               <span className="text-xs sm:text-sm font-semibold text-primary">
                 Episode {currentEpisode}
               </span>
-              <span className="text-xs text-gray-400 font-medium line-clamp-1">
+              <span
+                title={currentEpisodeData?.name}
+                className="text-xs text-gray-400 font-medium line-clamp-1 break-words"
+              >
                 {currentEpisodeData?.name || `Episode ${currentEpisode}`}
               </span>
             </div>
@@ -337,7 +347,10 @@ const WatchAnimePage: NextPage<Params<{ id: string; episode: string }>> = ({ par
                     {/* Episode Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-1">
-                        <h3 className="text-xs sm:text-sm font-semibold text-white truncate group-hover:text-primary transition-colors">
+                        <h3
+                          title={ep.name}
+                          className="text-xs sm:text-sm font-semibold text-white truncate group-hover:text-primary transition-colors"
+                        >
                           {ep.episode_number}. {ep.name}
                         </h3>
                         {isPlaying && (
@@ -359,7 +372,9 @@ const WatchAnimePage: NextPage<Params<{ id: string; episode: string }>> = ({ par
           {/* Synopsis */}
           {animeDetails?.overview && (
             <div className="space-y-1.5 border-t border-white/10 pt-4">
-              <h3 className="text-xs sm:text-sm font-bold text-gray-300">About {animeTitle}</h3>
+              <h3 className="text-xs sm:text-sm font-bold text-gray-300 line-clamp-2 break-words">
+                About {animeTitle}
+              </h3>
               <p className="text-xs text-gray-400 leading-relaxed line-clamp-3">
                 {animeDetails.overview}
               </p>

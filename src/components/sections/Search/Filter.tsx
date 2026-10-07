@@ -143,6 +143,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({ isLoading, onSearchSubmit, 
                       <ListboxItem
                         key={`history-${index}`}
                         className="text-start"
+                        classNames={{ title: "truncate" }}
                         startContent={<History />}
                         endContent={
                           <Button
@@ -171,6 +172,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({ isLoading, onSearchSubmit, 
                       <ListboxItem
                         key={`suggestion-${index}`}
                         className="text-start"
+                        classNames={{ title: "truncate" }}
                         startContent={
                           type === "movie" ? (
                             <Movie className="text-primary" />

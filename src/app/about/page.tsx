@@ -1,5 +1,6 @@
 import FAQ from "@/components/sections/About/FAQ";
 import Footer from "@/components/ui/layout/Footer";
+import LoadingScreen from "@/components/ui/other/LoadingScreen";
 import { siteConfig } from "@/config/site";
 import { Metadata } from "next/dist/lib/metadata/types/metadata-interface";
 import { NextPage } from "next";
@@ -38,7 +39,9 @@ const AboutPage: NextPage = () => {
           </div>
         </header>
 
-        <Suspense>
+        <Suspense
+          fallback={<LoadingScreen size="md" minHeight="inline" label="Loading questions" />}
+        >
           <FAQ />
         </Suspense>
 

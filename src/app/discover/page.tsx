@@ -3,9 +3,11 @@ import { siteConfig } from "@/config/site";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import Footer from "@/components/ui/layout/Footer";
-import PopcornTvLoader from "@/components/ui/other/PopcornTvLoader";
+import LoadingScreen from "@/components/ui/other/LoadingScreen";
 
-const DiscoverListGroup = dynamic(() => import("@/components/sections/Discover/ListGroup"));
+const DiscoverListGroup = dynamic(() => import("@/components/sections/Discover/ListGroup"), {
+  loading: () => <LoadingScreen size="lg" minHeight="screen" label="Loading new & popular" />,
+});
 
 export const metadata: Metadata = {
   title: `New & Popular | ${siteConfig.name}`,
@@ -14,11 +16,7 @@ export const metadata: Metadata = {
 const DiscoverPage: NextPage = () => {
   return (
     <Suspense
-      fallback={
-        <div className="flex min-h-screen items-center justify-center">
-          <PopcornTvLoader size="lg" label="Loading new & popular" />
-        </div>
-      }
+      fallback={<LoadingScreen size="lg" minHeight="screen" label="Loading new & popular" />}
     >
       <div className="flex flex-col">
         <DiscoverListGroup />
